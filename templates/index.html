@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <title>Instagram Stalker</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/min-3.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/customStyles.css') }}">
+
+
+    <!-- Meta tags generated from: https://metatags.io/ -->
+    <!-- Primary Meta Tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="Get a whole new identity at the Fake Name Generator">
+    <meta name="description"
+        content="Generate completely random and fake information + a photo of the fake profile. No Ads, No Sign-up, No Tracking">
+    <meta name="keywords"
+        content="name generator, fake, generator, identity, credit card, social security number, random" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Get a whole new identity at the Fake Name Generator">
+    <meta property="og:description"
+        content="Generate completely random and fake information + a photo of the fake profile. No Ads, No Sign-up, No Tracking">
+    <meta property="og:image" content="{{ url_for('static', filename='images/Fake-Name-Generator.jpg') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Get a whole new identity at the Fake Name Generator">
+    <meta property="twitter:description"
+        content="Generate completely random and fake information + a photo of the fake profile. No Ads, No Sign-up, No Tracking">
+    <meta property="twitter:image" content="{{ url_for('static', filename='images/Fake-Name-Generator.jpg') }}">
+
+</head>
+
+<body>
+
+    <div id="wrapper-1" class="wrapper">
+
+        <div id="wrapper-2" class="wrapper">
+            <div class="content">
+
+                <div id="body">
+                    <div class="content">
+                        <h2>Instragm Account Information of {{ accinfo.username }}</h2>
+
+                        <div id="details">
+                            <div class="bcsw ctr">
+                                <div id="cw-16411233781330">
+                                </div>
+                            </div>
+                            <div class="content">
+
+                                <div class="bcs">
+                                    <div class="content">
+                                        <div>
+                                            <a href="{{ accinfo.profile_pic_url }}" target="_blank"
+                                                rel="noopener noreferrer">
+                                                <img src="{{ accinfo.profile_pic_url }}" width="121" height="auto"
+                                                    alt="Profile Picture" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="info">
+                                    <div class="content">
+
+                                        <div class="address">
+                                            <h3>{{ accinfo.full_name }}</h3>
+                                            <div class="adr">
+                                                {{ address }} </div>
+                                        </div>
+
+                                        <p>
+                                            Curious what <strong>{{ accinfo.full_name.split(' ')[0] }}</strong> means?
+                                            <a
+                                                href="https://www.babysfirstdomain.com/meaning/girl/{{ accinfo.full_name.split(' ')[0] }}">
+                                                Click here to find out!
+                                            </a>
+                                        </p>
+
+                                        <div class="extra">
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Username</dt>
+                                                <a href="{{ accinfo.external_url }}" target="_blank"
+                                                    rel="noopener noreferrer">
+                                                    <dd>{{ accinfo.username }}</dd>
+                                                </a>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Full Name</dt>
+                                                <dd>{{ accinfo.full_name }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Biography</dt>
+                                                <dd>{{ accinfo.biography }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Profile ID</dt>
+                                                <dd>{{ accinfo.profile_id }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Is Private?</dt>
+                                                <dd>{{ accinfo.is_private }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Is Verified?</dt>
+                                                <dd>{{ accinfo.is_verified }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Media Count</dt>
+                                                <dd>{{ accinfo.mediacount }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>IGTV Count</dt>
+                                                <dd>{{ accinfo.igtv_count }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Followers</dt>
+                                                <dd>{{ accinfo.followers }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Followees</dt>
+                                                <dd>{{ accinfo.followees }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>External URL:</dt>
+                                                <dd>{{ accinfo.external_url }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Profile Picture URL:</dt>
+                                                <dd>
+                                                    <a href="{{ accinfo.profile_pic_url }}" target="_blank"
+                                                        rel="noopener noreferrer">
+                                                        Click Here to Open
+                                                    </a>
+                                                </dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Is Bussiness Account?</dt>
+                                                <dd>{{ accinfo.is_business_account }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Bussiness Catgeory Name</dt>
+                                                <dd>{{ accinfo.business_category_name }}</dd>
+                                            </dl>
+
+
+                                            <h3 class="hh3">Other Information</h3>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Follows Viewer</dt>
+                                                <dd>{{ accinfo.follows_viewer }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Followed by Viewer</dt>
+                                                <dd>{{ accinfo.followed_by_viewer }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Has Blocked Viewer</dt>
+                                                <dd>{{ accinfo.has_blocked_viewer }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Blocked by Viewer</dt>
+                                                <dd>{{ accinfo.blocked_by_viewer }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Has Highlight Reels?</dt>
+                                                <dd>{{ accinfo.has_highlight_reels }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Has Public Story</dt>
+                                                <dd>{{ accinfo.has_public_story }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Has viewable Story</dt>
+                                                <dd>{{ accinfo.has_viewable_story }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Has Requested Viewer</dt>
+                                                <dd>{{ accinfo.has_requested_viewer }}</dd>
+                                            </dl>
+
+                                            <dl class="dl-horizontal">
+                                                <dt>Requested by Viewer</dt>
+                                                <dd>{{ accinfo.requested_by_viewer }}</dd>
+                                            </dl>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cb"></div>
+                            </div>
+                        </div>
+
+                        <div class="bcsw ctr">
+                            <div id="cw-16411233781331">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
