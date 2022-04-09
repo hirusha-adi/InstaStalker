@@ -41,6 +41,8 @@ class Manager:
         self.profile = None
         self.profile_dict = None
         self.uploaded_posts = None
+        self.followers = None
+        self.followees = None
 
     def ask(self, q: str):
         return input(q)
@@ -126,12 +128,38 @@ class Manager:
         self.saveAllIGTVPosts()
 
     def getFollowersList(self):
-        self.followers = self.profile.get_followers()
+        if self.followers is None:
+            self.followers = self.profile.get_followers()
         return self.followers
 
+    def saveFollowers(self):
+        followers = self.getFollowersList()
+        count = 1
+        with open(os.path.join(os.getcwd(), str(self.profile.username) + "_followers.txt"), "w", encoding="utf-8") as _file_followers:
+            for profile in followers:
+                text = f"{count} | {profile.username} | {profile.full_name} | {profile.userid} | {'Private' if profile.is_private == True else 'Not Private'} | {'Verified' if profile.is_verified == True else 'Not Verified'} | {profile.mediacount} Media | {profile.followers} Followers | {profile.followees} Followees | {'Bussiness Account' if profile.is_business_account == True else 'Normal Account'} | " + \
+                    str('-'.join(profile.biography.split('\n'))) + \
+                    f" | {profile.profile_pic_url}"
+                print(text)
+                _file_followers.write(text + "\n")
+                count += 1
+
     def getFolloweesList(self):
-        self.followees = self.profile.get_followees()
+        if self.followees:
+            self.followees = self.profile.get_followees()
         return self.followees
+
+    def saveFollowees(self):
+        followees = self.getFolloweesList()
+        count = 1
+        with open(os.path.join(os.getcwd(), str(self.profile.username) + "_followees.txt"), "w", encoding="utf-8") as _file_followees:
+            for profile in followees:
+                text = f"{count} | {profile.username} | {profile.full_name} | {profile.userid} | {'Private' if profile.is_private == True else 'Not Private'} | {'Verified' if profile.is_verified == True else 'Not Verified'} | {profile.mediacount} Media | {profile.followers} Followers | {profile.followees} Followees | {'Bussiness Account' if profile.is_business_account == True else 'Normal Account'} | " + \
+                    str('-'.join(profile.biography.split('\n'))) + \
+                    f" |{profile.profile_pic_url}"
+                print(text)
+                _file_followees.write(text + "\n")
+                count += 1
 
     def saveProfileInfo(self):
         data = self.getProfileInfo()
@@ -141,3 +169,5 @@ class Manager:
     def saveAll(self):
         self.saveAllPosts()
         self.saveProfileInfo()
+        self.saveFollowers()
+        self.saveFollowees()

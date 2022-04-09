@@ -18,37 +18,49 @@ def index():
     )
 
 
-@app.route("/download/posts")
+@app.route("/followers")
+def followers():
+    obj.saveFollowers()
+    return "Done"
+
+
+@app.route("/followees")
+def followees():
+    obj.saveFollowees()
+    return "Done"
+
+
+@app.route("/posts")
 def download_posts():
     obj.savePosts()
     return "Done!"
 
 
-@app.route("/download/tagged")
+@app.route("/tagged")
 def download_tagged_posts():
     obj.saveAllTaggedPosts()
     return "Done!"
 
 
-@app.route("/download/igtv")
+@app.route("/igtv")
 def download_igtv_posts():
     obj.saveAllIGTVPosts()
     return "Done!"
 
 
-@app.route("/download/posts/all")
+@app.route("/posts/all")
 def download_all_posts():
     obj.saveAllPosts()
     return "Done!"
 
 
-@app.route("/download/profile")
+@app.route("/profile")
 def download_profile_info():
     obj.saveProfileInfo()
     return "Done!"
 
 
-@app.route("/download/all")
+@app.route("/all")
 def download_all():
     obj.saveAll()
     return "Done!"
