@@ -1,5 +1,34 @@
 import os
+import json
+import sys
 from instaloader import Instaloader, Profile
+
+
+class Database:
+    config_filename = os.path.join(os.getcwd(), "config.json")
+
+    if not(os.path.isfile(config_filename)):
+        with open(config_filename, "w", encoding="utf-8") as _file:
+            _file.write(
+                '{\n\t"username": "",\n\t"password": ""\n\t"web": {\n\t\t"host": "0.0.0.0",\n\t\t"port": 8080,\n\t\t"debug": false\n\t}\n}')
+
+    with open(config_filename, "r", encoding="utf-8") as _file:
+        _data = json.load(_file)
+
+    USERNAME = _data["username"]
+    PASSWORD = _data["password"]
+
+    if USERNAME is None:
+        sys.exit(
+            "No username/email/phone-number is given to log-in. Please fill it in the `config.json` file")
+
+    if PASSWORD is None:
+        sys.exit(
+            "No passowrd is given to log-in. Please fill it in the `config.json` file")
+
+    HOST = _data["web"]["host"]
+    PORT = _data["web"]["port"]
+    DEBUG = _data["web"]["debug"]
 
 
 class Manager:
@@ -11,6 +40,7 @@ class Manager:
 
         self.profile = None
         self.profile_dict = None
+        self.uploaded_posts = None
 
     def ask(self, q: str):
         return input(q)
@@ -50,4 +80,64 @@ class Manager:
         }
 
     def getProfileInfo(self):
+        if self.profile_dict is None:
+            self.processProfile()
         return self.profile_dict
+
+    def getPosts(self):
+        if self.uploaded_posts is None:
+            self.uploaded_posts = self.profile.get_posts()
+        return self.uploaded_posts
+
+    def savePosts(self):
+        for post in self.getPosts():
+            self.insta.download_post(
+                post,
+                target=self.profile.username
+            )
+
+    def getAllTaggedPosts(self):
+        if self.tagged_posts is None:
+            self.tagged_posts = self.profile.get_tagged_posts()
+        return self.tagged_posts
+
+    def saveAllTaggedPosts(self):
+        for post in self.getAllTaggedPosts():
+            self.insta.download_post(
+                post,
+                target=self.profile.username
+            )
+
+    def getAllIGTVPosts(self):
+        if self.igtv_posts is None:
+            self.igtv_posts = self.profile.get_igtv_posts()
+        return self.igtv_posts
+
+    def saveAllIGTVPosts(self):
+        for post in self.getAllIGTVPosts():
+            self.insta.download_post(
+                post,
+                target=self.profile.username
+            )
+
+    def saveAllPosts(self):
+        self.savePosts()
+        self.saveAllTaggedPosts()
+        self.saveAllIGTVPosts()
+
+    def getFollowersList(self):
+        self.followers = self.profile.get_followers()
+        return self.followers
+
+    def getFolloweesList(self):
+        self.followees = self.profile.get_followees()
+        return self.followees
+
+    def saveProfileInfo(self):
+        data = self.getProfileInfo()
+        with open(os.path.join(os.getcwd(), str(self.profile.username) + ".json"), "w", encoding="utf-8") as file:
+            json.dump(data, file)
+
+    def saveAll(self):
+        self.saveAllPosts()
+        self.saveProfileInfo()

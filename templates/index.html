@@ -107,12 +107,12 @@
                                             </dl>
 
                                             <dl class="dl-horizontal">
-                                                <dt>Is Private?</dt>
+                                                <dt>Is Private</dt>
                                                 <dd>{{ accinfo.is_private }}</dd>
                                             </dl>
 
                                             <dl class="dl-horizontal">
-                                                <dt>Is Verified?</dt>
+                                                <dt>Is Verified</dt>
                                                 <dd>{{ accinfo.is_verified }}</dd>
                                             </dl>
 
@@ -137,8 +137,13 @@
                                             </dl>
 
                                             <dl class="dl-horizontal">
-                                                <dt>External URL:</dt>
-                                                <dd>{{ accinfo.external_url }}</dd>
+                                                <dt>Website URL:</dt>
+                                                <dd>
+                                                    <a href="{{ accinfo.external_url }}" target="_blank"
+                                                        rel="noopener noreferrer">
+                                                        {{ accinfo.external_url }}
+                                                    </a>
+                                                </dd>
                                             </dl>
 
                                             <dl class="dl-horizontal">
@@ -152,7 +157,7 @@
                                             </dl>
 
                                             <dl class="dl-horizontal">
-                                                <dt>Is Bussiness Account?</dt>
+                                                <dt>Is Bussiness Account</dt>
                                                 <dd>{{ accinfo.is_business_account }}</dd>
                                             </dl>
 
@@ -185,7 +190,7 @@
                                             </dl>
 
                                             <dl class="dl-horizontal">
-                                                <dt>Has Highlight Reels?</dt>
+                                                <dt>Has Highlight Reels</dt>
                                                 <dd>{{ accinfo.has_highlight_reels }}</dd>
                                             </dl>
 
