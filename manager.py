@@ -17,8 +17,6 @@ class InstaProfile:
         self.uploaded_posts = None
         self.followers = None
         self.followees = None
-        self.followers_list = None
-        self.followees_list = None
 
         # variables used to manage stuff of the object
         self.is_logged_in = False
@@ -277,14 +275,12 @@ class InstaProfile:
         if followers_or_followees.lower().strip() == "followers":
             users_list = self.getFollowersList()
             followers = True
-            followees = False
         elif followers_or_followees.lower().strip() == "followees":
             users_list = self.getFolloweesList()
             followers = False
-            followees = True
         else:
             sys.exit(
-                'Error: Improper value for `what` has been passed to `saveFollowersFollowees()`')
+                'Error: Improper value for `followers_or_followees` has been passed to `saveFollowersFollowees()`')
 
         if output == "print_only":
             count = 1
@@ -306,36 +302,8 @@ class InstaProfile:
                 print(text)
                 count += 1
 
-        elif output == "json":
-            full_dict = {"data": []}
-            count = 1
-            for profile in users_list:
-                text = information.format(
-                    count=count,
-                    username=profile.username,
-                    full_name=profile.full_name,
-                    userid=profile.userid,
-                    is_private=profile.is_private,
-                    is_verified=profile.is_verified,
-                    is_business_account=profile.is_business_account,
-                    meida_count=profile.mediacount,
-                    followers=profile.followers,
-                    followees=profile.followees,
-                    biography=profile.biography,
-                    profile_pic_url=profile.profile_pic_url
-                )
-                print(text)
-                full_dict["data"].append(text)
-                count += 1
-            with open(os.path.join(os.getcwd(), str(self.profile.username) + "_followers.json"), "w", encoding="utf-8") as _file_follow:
-                json.dump(full_dict, _file_follow)
-                if followers_or_followees.lower().strip() == "followers":
-                    self.followers_list = full_dict
-                elif followers_or_followees.lower().strip() == "followees":
-                    self.followees_list = full_dict
-
         else:  # `text`
-            with open(os.path.join(os.getcwd(), str(self.profile.username) + "_followers.txt"), "w", encoding="utf-8") as _file_follow:
+            with open(os.path.join(os.getcwd(), str(self.profile.username) + f"_{'followers' if followers == True else 'followees'}.txt"), "w", encoding="utf-8") as _file_follow:
                 count = 1
                 for profile in users_list:
                     text = information.format(
