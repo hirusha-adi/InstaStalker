@@ -37,8 +37,8 @@ class InstaProfile:
             target (str): Target's username of the instagram account
         """
         if self.is_target_set:
-            sys.exit(
-                "Error: Unable to set the target again! Unable to use `setTARGET()` now")
+            print("Error: Skipping: Target is already set")
+            return "Error: Skipping: Target is already set"
         self.TARGET = target
         self.is_target_set = True
 
@@ -51,7 +51,8 @@ class InstaProfile:
             password (str): Password of the instagram account
         """
         if self.is_logged_in:
-            sys.exit("Error: Already logged in. Unable to use `login()` now")
+            print("Error: Skipping: Already logged in!")
+            return "Error: Skipping: Already logged in!"
         self.insta.login(user=username, passwd=password)
         self.is_logged_in = True
 
@@ -258,7 +259,6 @@ class InstaProfile:
 
         `output`: str -->
             print_only
-            json
             text
         """
 
@@ -324,17 +324,14 @@ class InstaProfile:
                     _file_follow.write(text + "\n")
                     count += 1
 
-    # Profile Info
-    # -----------------------------------------------------------------------
-
     def saveProfileInfo(self):
         data = self.getProfileInfo()
         with open(os.path.join(os.getcwd(), str(self.profile.username) + ".json"), "w", encoding="utf-8") as file:
             json.dump(data, file)
 
     def saveAll(self):
-        self.saveAllPosts()
         self.saveProfileInfo()
+        self.saveAllPosts()
         self.saveFollowersFollowees(followers_or_followees="followers")
         self.saveFollowersFollowees(followers_or_followees="followees")
 
