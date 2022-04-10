@@ -140,6 +140,10 @@ class InstaProfile:
         return self.uploaded_posts
 
     def savePosts(self):
+        """
+        Save all the posts uploaded by the target user
+            insde `./targetUserName/` directory
+        """
         for post in self.getPosts():
             self.insta.download_post(
                 post,
@@ -147,11 +151,21 @@ class InstaProfile:
             )
 
     def getAllTaggedPosts(self):
+        """
+        get all Posts that have tagged the target user
+
+        Returns:
+            NodeIterator[Post]
+        """
         if self.tagged_posts is None:
             self.tagged_posts = self.profile.get_tagged_posts()
         return self.tagged_posts
 
     def saveAllTaggedPosts(self):
+        """
+        Save all Posts that have tagged the target user
+            insde `./targetUserName/` directory
+        """
         for post in self.getAllTaggedPosts():
             self.insta.download_post(
                 post,
@@ -159,11 +173,21 @@ class InstaProfile:
             )
 
     def getAllIGTVPosts(self):
+        """
+        get the IGTV list uploaded by the target user
+
+        Returns:
+            NodeIterator[Post]
+        """
         if self.igtv_posts is None:
             self.igtv_posts = self.profile.get_igtv_posts()
         return self.igtv_posts
 
     def saveAllIGTVPosts(self):
+        """
+        Save all the IGTV uploaded by the target user
+            insde `./targetUserName/` directory
+        """
         for post in self.getAllIGTVPosts():
             self.insta.download_post(
                 post,
@@ -171,26 +195,38 @@ class InstaProfile:
             )
 
     def saveAllPosts(self):
+        """
+        Save all posts -->
+            uploaded by the target +
+            where the target has been tagged and
+            in IGTV
+        """
         self.savePosts()
         self.saveAllTaggedPosts()
         self.saveAllIGTVPosts()
 
-    # Followers
-    # -----------------------------------------------------------------------
     def getFollowersList(self):
+        """
+        get the follower list of the target
+
+        Returns:
+            NodeIterator[Profile]
+        """
         if self.followers is None:
             self.followers = self.profile.get_followers()
         return self.followers
 
-    # Followees
-    # -----------------------------------------------------------------------
     def getFolloweesList(self):
+        """
+        get the followee list of the target
+
+        Returns:
+            NodeIterator[Profile]
+        """
         if self.followees:
             self.followees = self.profile.get_followees()
         return self.followees
 
-    # Save Followers or Followees
-    # -----------------------------------------------------------------------
     def saveFollowersFollowees(
         self,
         followers_or_followees: str,
@@ -240,8 +276,12 @@ class InstaProfile:
 
         if followers_or_followees.lower().strip() == "followers":
             users_list = self.getFollowersList()
+            followers = True
+            followees = False
         elif followers_or_followees.lower().strip() == "followees":
             users_list = self.getFolloweesList()
+            followers = False
+            followees = True
         else:
             sys.exit(
                 'Error: Improper value for `what` has been passed to `saveFollowersFollowees()`')
