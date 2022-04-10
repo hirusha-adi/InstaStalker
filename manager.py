@@ -11,55 +11,130 @@ class InstaProfile:
 
         self.insta = Instaloader()
 
+        # variables used to store stuff of the user
         self.profile = None
         self.profile_dict = None
         self.uploaded_posts = None
         self.followers = None
         self.followees = None
+        self.followers_list = None
+        self.followees_list = None
+
+        # variables used to manage stuff of the object
+        self.is_logged_in = False
+        self.is_target_set = False
+        self.is_profile_processed = False
 
     def ask(self, q: str):
+        """
+        Take uer input
+        """
         return input(q)
 
-    def setTARGET(self, target):
+    def setTARGET(self, target: str):
+        """
+        Set the taget user
+
+        Args:
+            target (str): Target's username of the instagram account
+        """
+        if self.is_target_set:
+            sys.exit(
+                "Error: Unable to set the target again! Unable to use `setTARGET()` now")
         self.TARGET = target
+        self.is_target_set = True
 
     def login(self, username: str, password: str):
+        """
+        Login into your instagram account
+
+        Args:
+            username (str): Username/Email/Phone-Number of the instagram account
+            password (str): Password of the instagram account
+        """
+        if self.is_logged_in:
+            sys.exit("Error: Already logged in. Unable to use `login()` now")
         self.insta.login(user=username, passwd=password)
+        self.is_logged_in = True
 
     def processProfile(self):
-        self.profile = Profile.from_username(self.insta.context, self.TARGET)
-        self.profile_dict = {
-            'username': self.profile.username,
-            'profile_id': self.profile.userid,
-            'is_private': self.profile.is_private,
-            'followed_by_viewer': self.profile.followed_by_viewer,
-            'mediacount': self.profile.mediacount,
-            'igtv_count': self.profile.igtvcount,
-            'followers': self.profile.followers,
-            'followees': self.profile.followees,
-            'external_url': self.profile.external_url,
-            'is_business_account': self.profile.is_business_account,
-            'business_category_name': self.profile.business_category_name,
-            'biography': self.profile.biography,
-            'blocked_by_viewer': self.profile.blocked_by_viewer,
-            'follows_viewer': self.profile.follows_viewer,
-            'full_name': self.profile.full_name,
-            'has_blocked_viewer': self.profile.has_blocked_viewer,
-            'has_highlight_reels': self.profile.has_highlight_reels,
-            'has_public_story': self.profile.has_public_story,
-            'has_viewable_story': self.profile.has_viewable_story,
-            'has_requested_viewer': self.profile.has_requested_viewer,
-            'is_verified': self.profile.is_verified,
-            'requested_by_viewer': self.profile.requested_by_viewer,
-            'profile_pic_url': self.profile.profile_pic_url
-        }
+        """
+        Process the target profile's basic information
+        """
+        if self.is_profile_processed:
+            print("Already Processed")
+            return "Already Processed"
+        else:
+            self.is_profile_processed = True
+            self.profile = Profile.from_username(
+                self.insta.context, self.TARGET)
+            self.profile_dict = {
+                'username': self.profile.username,
+                'profile_id': self.profile.userid,
+                'is_private': self.profile.is_private,
+                'followed_by_viewer': self.profile.followed_by_viewer,
+                'mediacount': self.profile.mediacount,
+                'igtv_count': self.profile.igtvcount,
+                'followers': self.profile.followers,
+                'followees': self.profile.followees,
+                'external_url': self.profile.external_url,
+                'is_business_account': self.profile.is_business_account,
+                'business_category_name': self.profile.business_category_name,
+                'biography': self.profile.biography,
+                'blocked_by_viewer': self.profile.blocked_by_viewer,
+                'follows_viewer': self.profile.follows_viewer,
+                'full_name': self.profile.full_name,
+                'has_blocked_viewer': self.profile.has_blocked_viewer,
+                'has_highlight_reels': self.profile.has_highlight_reels,
+                'has_public_story': self.profile.has_public_story,
+                'has_viewable_story': self.profile.has_viewable_story,
+                'has_requested_viewer': self.profile.has_requested_viewer,
+                'is_verified': self.profile.is_verified,
+                'requested_by_viewer': self.profile.requested_by_viewer,
+                'profile_pic_url': self.profile.profile_pic_url
+            }
 
     def getProfileInfo(self):
-        if self.profile_dict is None:
+        """
+        Get the basic information of the target profile
+
+        Returns:
+            dict: with keys -->
+                "username"
+                "profile_id"
+                "is_private"
+                "followed_by_viewer"
+                "mediacount"
+                "igtv_count"
+                "followers"
+                "followees"
+                "external_url"
+                "is_business_account"
+                "business_category_name"
+                "biography"
+                "blocked_by_viewer"
+                "follows_viewer"
+                "full_name"
+                "has_blocked_viewer"
+                "has_highlight_reels"
+                "has_public_story"
+                "has_viewable_story"
+                "has_requested_viewer"
+                "is_verified"
+                "requested_by_viewer"
+                "profile_pic_url"
+        """
+        if (self.profile_dict is None) or (self.is_profile_processed is False):
             self.processProfile()
         return self.profile_dict
 
     def getPosts(self):
+        """
+        get the Post list uploaded by the target user
+
+        Returns:
+            NodeIterator[Post]
+        """
         if self.uploaded_posts is None:
             self.uploaded_posts = self.profile.get_posts()
         return self.uploaded_posts
@@ -100,123 +175,34 @@ class InstaProfile:
         self.saveAllTaggedPosts()
         self.saveAllIGTVPosts()
 
+    # Followers
+    # -----------------------------------------------------------------------
     def getFollowersList(self):
         if self.followers is None:
             self.followers = self.profile.get_followers()
         return self.followers
 
-    def saveFollowers(self, formatting: str = None, mode: str = "simple", output: str = "print_only"):
-        """
-        `formatting`: str -->
-            count
-            username
-            full_name
-            userid
-            is_private
-            is_verified
-            meida_count
-            followers
-            followees
-            is_business_account
-            biography
-            profile_pic_url
-        
-        `mode`: str -->
-            low
-            mid
-            all/high
-
-        `output`: str -->
-            print_only
-            json
-            text
-        """
-
-        if formatting is None:
-            if mode == "low":
-                information = "{count} | {username} | {full_name}"
-            elif mode == "mid":
-                information = "{count} | {username} | {full_name} | {userid} | {is_private} | {is_verified} | {meida_count} | {followers} | {followees}"
-            elif mode == "all" or mode == "high":
-                information = "{count} | {username} | {full_name} | {userid} | {is_private} | {is_verified} | {meida_count} | {is_business_account} | {followers} | {followees} | {biography} | {profile_pic_url}"
-        else:
-            information = formatting
-
-        followers = self.getFollowersList()
-
-        if output == "print_only":
-            count = 1
-            for profile in followers:
-                text = information.format(
-                    count=count,
-                    username=profile.username,
-                    full_name=profile.full_name,
-                    userid=profile.userid,
-                    is_private=profile.is_private,
-                    is_verified=profile.is_verified,
-                    is_business_account=profile.is_business_account,
-                    meida_count=profile.mediacount,
-                    followers=profile.followers,
-                    followees=profile.followees,
-                    biography=profile.biography,
-                    profile_pic_url=profile.profile_pic_url
-                )                
-                print(text)
-                count += 1
-        
-        if output == "json":
-            full_dict = {"data": []}
-            count = 1
-            for profile in followers:
-                text = information.format(
-                    count=count,
-                    username=profile.username,
-                    full_name=profile.full_name,
-                    userid=profile.userid,
-                    is_private=profile.is_private,
-                    is_verified=profile.is_verified,
-                    is_business_account=profile.is_business_account,
-                    meida_count=profile.mediacount,
-                    followers=profile.followers,
-                    followees=profile.followees,
-                    biography=profile.biography,
-                    profile_pic_url=profile.profile_pic_url
-                )                
-                print(text)
-                full_dict["data"].append(text)
-                count += 1
-            with open(os.path.join(os.getcwd(), str(self.profile.username) + "_followers.json"), "w", encoding="utf-8") as _file_followers:
-                json.dump(full_dict, _file_followers)
-
-        if output == "text":
-            with open(os.path.join(os.getcwd(), str(self.profile.username) + "_followers.txt"), "w", encoding="utf-8") as _file_followers:
-                count = 1
-                for profile in followers:
-                    text = information.format(
-                        count=count,
-                        username=profile.username,
-                        full_name=profile.full_name,
-                        userid=profile.userid,
-                        is_private=profile.is_private,
-                        is_verified=profile.is_verified,
-                        is_business_account=profile.is_business_account,
-                        meida_count=profile.mediacount,
-                        followers=profile.followers,
-                        followees=profile.followees,
-                        biography=profile.biography,
-                        profile_pic_url=profile.profile_pic_url
-                    )                
-                    print(text)
-                    _file_followers.write(text + "\n")
-                    count += 1
-
+    # Followees
+    # -----------------------------------------------------------------------
     def getFolloweesList(self):
         if self.followees:
             self.followees = self.profile.get_followees()
         return self.followees
 
-    def saveFollowees(self, formatting: str = None, mode: str = "simple", output: str = "print_only"):
+    # Save Followers or Followees
+    # -----------------------------------------------------------------------
+    def saveFollowersFollowees(
+        self,
+        followers_or_followees: str,
+        formatting: str = None,
+        mode: str = "simple",
+        output: str = "text"
+    ):
         """
+        `followers_or_followees`: str -->
+            followers
+            followees
+
         `formatting`: str -->
             count
             username
@@ -230,12 +216,12 @@ class InstaProfile:
             is_business_account
             biography
             profile_pic_url
-        
+
         `mode`: str -->
             low
             mid
             all/high
-        
+
         `output`: str -->
             print_only
             json
@@ -252,11 +238,17 @@ class InstaProfile:
         else:
             information = formatting
 
-        followees = self.getFolloweesList()
+        if followers_or_followees.lower().strip() == "followers":
+            users_list = self.getFollowersList()
+        elif followers_or_followees.lower().strip() == "followees":
+            users_list = self.getFolloweesList()
+        else:
+            sys.exit(
+                'Error: Improper value for `what` has been passed to `saveFollowersFollowees()`')
 
         if output == "print_only":
             count = 1
-            for profile in followees:
+            for profile in users_list:
                 text = information.format(
                     count=count,
                     username=profile.username,
@@ -270,14 +262,14 @@ class InstaProfile:
                     followees=profile.followees,
                     biography=profile.biography,
                     profile_pic_url=profile.profile_pic_url
-                )                
+                )
                 print(text)
                 count += 1
-        
-        if output == "json":
+
+        elif output == "json":
             full_dict = {"data": []}
             count = 1
-            for profile in followees:
+            for profile in users_list:
                 text = information.format(
                     count=count,
                     username=profile.username,
@@ -291,18 +283,21 @@ class InstaProfile:
                     followees=profile.followees,
                     biography=profile.biography,
                     profile_pic_url=profile.profile_pic_url
-                )                
+                )
                 print(text)
                 full_dict["data"].append(text)
                 count += 1
-            with open(os.path.join(os.getcwd(), str(self.profile.username) + "_followees.json"), "w", encoding="utf-8") as _file_followees:
-                json.dump(full_dict, _file_followees)
+            with open(os.path.join(os.getcwd(), str(self.profile.username) + "_followers.json"), "w", encoding="utf-8") as _file_follow:
+                json.dump(full_dict, _file_follow)
+                if followers_or_followees.lower().strip() == "followers":
+                    self.followers_list = full_dict
+                elif followers_or_followees.lower().strip() == "followees":
+                    self.followees_list = full_dict
 
-
-        if output == "text":
-            with open(os.path.join(os.getcwd(), str(self.profile.username) + "_followees.txt"), "w", encoding="utf-8") as _file_followees:
+        else:  # `text`
+            with open(os.path.join(os.getcwd(), str(self.profile.username) + "_followers.txt"), "w", encoding="utf-8") as _file_follow:
                 count = 1
-                for profile in followees:
+                for profile in users_list:
                     text = information.format(
                         count=count,
                         username=profile.username,
@@ -316,10 +311,13 @@ class InstaProfile:
                         followees=profile.followees,
                         biography=profile.biography,
                         profile_pic_url=profile.profile_pic_url
-                    )  
+                    )
                     print(text)
-                    _file_followees.write(text + "\n")
+                    _file_follow.write(text + "\n")
                     count += 1
+
+    # Profile Info
+    # -----------------------------------------------------------------------
 
     def saveProfileInfo(self):
         data = self.getProfileInfo()
@@ -329,8 +327,8 @@ class InstaProfile:
     def saveAll(self):
         self.saveAllPosts()
         self.saveProfileInfo()
-        self.saveFollowers()
-        self.saveFollowees()
+        self.saveFollowersFollowees(followers_or_followees="followers")
+        self.saveFollowersFollowees(followers_or_followees="followees")
 
 
 class Database:
@@ -346,7 +344,7 @@ class Database:
 
     USERNAME = _data["username"].strip()
     PASSWORD = _data["password"].strip()
-        
+
     if USERNAME is None:
         username_file = os.path.join(os.getcwd(), "username.txt")
         if os.path.isfile(username_file):
