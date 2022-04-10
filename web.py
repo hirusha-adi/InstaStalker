@@ -1,9 +1,9 @@
 from flask import Flask, render_template
-from manager import Manager, Database
+from manager import InstaProfile, Database
 app = Flask(__name__)
 
 
-obj = Manager()
+obj = InstaProfile()
 obj.setTARGET("ac3.desu")
 obj.login(username=Database.USERNAME, password=Database.PASSWORD)
 obj.processProfile()
