@@ -37,10 +37,10 @@ class InstaProfile:
             target (str): Target's username of the instagram account
         """
         if self.is_target_set:
-            print("Error: Skipping: Target is already set")
-            return "Error: Skipping: Target is already set"
+            return False
         self.TARGET = target
         self.is_target_set = True
+        return True
 
     def login(self, username: str, password: str):
         """
@@ -51,8 +51,7 @@ class InstaProfile:
             password (str): Password of the instagram account
         """
         if self.is_logged_in:
-            print("Error: Skipping: Already logged in!")
-            return "Error: Skipping: Already logged in!"
+            return False
         self.insta.login(user=username, passwd=password)
         self.is_logged_in = True
 
