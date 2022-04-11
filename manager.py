@@ -60,8 +60,7 @@ class InstaProfile:
         Process the target profile's basic information
         """
         if self.is_profile_processed:
-            print("Already Processed")
-            return "Already Processed"
+            return False
         else:
             self.is_profile_processed = True
             self.profile = Profile.from_username(
@@ -91,6 +90,7 @@ class InstaProfile:
                 'requested_by_viewer': self.profile.requested_by_viewer,
                 'profile_pic_url': self.profile.profile_pic_url
             }
+            return True
 
     def getProfileInfo(self):
         """
