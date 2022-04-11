@@ -323,10 +323,50 @@ class InstaProfile:
                     _file_follow.write(text + "\n")
                     count += 1
 
-    def saveProfileInfo(self):
+    def saveProfileInfo(self, file_format: str = "json", filename: str = None):
+        if filename is None:
+            filename_file = os.path.join(
+                os.getcwd(), str(self.profile.username) + ".json")
+        else:
+            if file_format == "txt":
+                if not(filename.endswith(".txt")):
+                    filename += ".txt"
+            else:
+                if not(filename.endswith(".json")):
+                    filename += ".json"
+
+            filename_file = os.path.join(os.getcwd(), filename)
+
         data = self.getProfileInfo()
-        with open(os.path.join(os.getcwd(), str(self.profile.username) + ".json"), "w", encoding="utf-8") as file:
-            json.dump(data, file)
+        with open(filename_file, "w", encoding="utf-8") as file:
+            if file_format == "txt":
+                file.write(f"""
+Username: {data['username']}
+Profile ID: {data['profile_id']}
+Is Private: {data['is_private']}
+Followed by viewer: {data['followed_by_viewer']}
+Media Count: {data['mediacount']}
+IGTV Count: {data['igtv_count']}
+Followers: {data['followers']}
+Followees: {data['followees']}
+External URL: {data['external_url']}
+Is Business Account: {data['is_business_account']}
+Business Category Name: {data['business_category_name']}
+Bography: {data['biography']}
+Blocked by viewer: {data['blocked_by_viewer']}
+Follows viewer: {data['follows_viewer']}
+Full Name: {data['full_name']}
+Has blocked viewer: {data['has_blocked_viewer']}
+Has highlight reels: {data['has_highlight_reels']}
+Has public story: {data['has_public_story']}
+Has viewable story: {data['has_viewable_story']}
+Has requested viewer: {data['has_requested_viewer']}
+Is Verified: {data['is_verified']}
+Requested by viewer: {data['requested_by_viewer']}
+Profile pic url: {data['profile_pic_url']}
+                """)
+            else:
+                json.dump(data, file)
 
     def saveAll(self):
         self.saveProfileInfo()
