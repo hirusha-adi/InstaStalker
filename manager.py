@@ -17,6 +17,8 @@ class InstaProfile:
         self.uploaded_posts = None
         self.followers = None
         self.followees = None
+        self.followers_list = {'data': []}
+        self.followees_list = {'data': []}
 
         # variables used to manage stuff of the object
         self.is_logged_in = False
@@ -290,7 +292,22 @@ class InstaProfile:
             sys.exit(
                 'Error: Improper value for `followers_or_followees` has been passed to `saveFollowersFollowees()`')
 
-        if output == "print_only":
+        file_name = os.path.join(
+            os.getcwd(),
+            str(self.profile.username) +
+            f"_{'followers' if followers == True else 'followees'}"
+        )
+
+        if (output == "txt") or (output == "text"):
+            if not file_name.lower().endswith(".txt"):
+                file_name += ".txt"
+            text_file = True
+        else:  # ``
+            if not file_name.lower().endswith(".json"):
+                file_name += ".json"
+            text_file = False
+
+        with open(file_name, "w", encoding="utf-8") as _file_follow:
             count = 1
             for profile in users_list:
                 text = information.format(
@@ -307,30 +324,24 @@ class InstaProfile:
                     biography=profile.biography,
                     profile_pic_url=profile.profile_pic_url
                 )
+
+                if followers:
+                    self.followers_list['data'].append(text)
+                else:
+                    self.followees_list['data'].append(text)
+
                 print(text)
+
+                if text_file:
+                    _file_follow.write(text + "\n")
+
                 count += 1
 
-        else:  # `text`
-            with open(os.path.join(os.getcwd(), str(self.profile.username) + f"_{'followers' if followers == True else 'followees'}.txt"), "w", encoding="utf-8") as _file_follow:
-                count = 1
-                for profile in users_list:
-                    text = information.format(
-                        count=count,
-                        username=profile.username,
-                        full_name=profile.full_name,
-                        userid=profile.userid,
-                        is_private=profile.is_private,
-                        is_verified=profile.is_verified,
-                        is_business_account=profile.is_business_account,
-                        meida_count=profile.mediacount,
-                        followers=profile.followers,
-                        followees=profile.followees,
-                        biography=profile.biography,
-                        profile_pic_url=profile.profile_pic_url
-                    )
-                    print(text)
-                    _file_follow.write(text + "\n")
-                    count += 1
+            if not text_file:
+                if self.followers:
+                    json.dump(self.followers_list, _file_follow)
+                else:
+                    json.dump(self.followees_list, _file_follow)
 
     def saveProfileInfo(self, file_format: str = "json", filename: str = None):
         if filename is None:
