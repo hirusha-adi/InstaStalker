@@ -59,9 +59,9 @@ Available commands in the home menu,
 def show_help_profile_menu():
     print(r"""
 Available commands in the home menu,
-    [1] help --> display this text
+    [1] help                     --> display this text
 
-    [2] all
+    [2] all                      --> Show all information
     [3] username                 --> Username
     [4] profile_id               --> Profile ID
     [5] is_private               --> Is Privatee
@@ -86,11 +86,11 @@ Available commands in the home menu,
     [24] requested_by_viewer     --> Requested by viewer
     [25] profile_pic_url         --> Profile pic url
 
-    [26] save
+    [26] save                    --> Save all profile info
 
-    [99] clear
-    [100] back
-    [101] exit
+    [99] clear                   --> Clear Screen
+    [100] back                   --> Go back to main menu
+    [101] exit                   --> exit app
     """)
 
 
