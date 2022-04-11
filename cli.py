@@ -20,69 +20,99 @@ def show_logo():
 
 def show_logo_profile():
     print(r"""
-            ____             _____ __
-           / __ \_________  / __(_) /__
-          / /_/ / ___/ __ \/ /_/ / / _ \
-         / ____/ /  / /_/ / __/ / /  __/
-        /_/   /_/   \____/_/ /_/_/\___/
+██████╗ ██████╗  ██████╗ ███████╗██╗██╗     ███████╗
+██╔══██╗██╔══██╗██╔═══██╗██╔════╝██║██║     ██╔════╝
+██████╔╝██████╔╝██║   ██║█████╗  ██║██║     █████╗  
+██╔═══╝ ██╔══██╗██║   ██║██╔══╝  ██║██║     ██╔══╝  
+██║     ██║  ██║╚██████╔╝██║     ██║███████╗███████╗
+╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚══════╝
+    """)
 
+
+def show_logo_posts():
+    print(r"""
+██████╗  ██████╗ ███████╗████████╗███████╗
+██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝██╔════╝
+██████╔╝██║   ██║███████╗   ██║   ███████╗
+██╔═══╝ ██║   ██║╚════██║   ██║   ╚════██║
+██║     ╚██████╔╝███████║   ██║   ███████║
+╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝
+                                          
     """)
 
 
 def show_help_main_menu():
     print(r"""
 Available commands in the home menu,
-    [1] help        --> display this text
+    [1] help - -> display this text
 
-    [2] target      --> set target if not set
-    [3] login       --> login to instagram account
+    [2] target - -> set target if not set
+    [3] login - -> login to instagram account
 
-    [4] profile     --> profile menu
-    [5] posts       --> posts menu
-    [6] followers   --> followers menu
-    [7] followees   --> followees menu
-    [8] DUMPALL    --> Save all data (BETA)
+    [4] profile - -> profile menu
+    [5] posts - -> posts menu
+    [6] followers - -> followers menu
+    [7] followees - -> followees menu
+    [8] DUMPALL - -> Save all data(BETA)
 
-    [99] clear      --> Clear Screen/Console
-    [100] exit/back --> exit the script
+    [99] clear - -> Clear Screen/Console
+    [100] exit/back - -> exit the script
     """)
 
 
 def show_help_profile_menu():
     print(r"""
 Available commands in the home menu,
-    [1] help                     --> display this text
+    [1] help - -> display this text
 
-    [2] all                      --> Show all information
-    [3] username                 --> Username
-    [4] profile_id               --> Profile ID
-    [5] is_private               --> Is Privatee
-    [6] followed_by_viewer       --> Followed by viewer
-    [7] mediacount               --> Media Count
-    [8] igtv_count               --> IGTV Count
-    [9] followers                --> Followers
-    [1] followees                --> Followees
-    [11] external_url            --> External URL
-    [12] is_business_account     --> Is Business Account
-    [13] business_category_name  --> Business Category Name
-    [14] biography               --> Biography
-    [15] blocked_by_viewer       --> Blocked by viewer
-    [16] follows_viewer          --> Follows viewer
-    [17] full_name               --> Full Name
-    [18] has_blocked_viewer      --> Has blocked viewer
-    [19] has_highlight_reels     --> Has highlight reels
-    [20] has_public_story        --> Has public story
-    [21] has_viewable_story      --> Has viewable story
-    [22] has_requested_viewer    --> Has requested viewer
-    [23] is_verified             --> Is Verified
-    [24] requested_by_viewer     --> Requested by viewer
-    [25] profile_pic_url         --> Profile pic url
+    [2] all - -> Show all information
+    [3] username - -> Username
+    [4] profile_id - -> Profile ID
+    [5] is_private - -> Is Privatee
+    [6] followed_by_viewer - -> Followed by viewer
+    [7] mediacount - -> Media Count
+    [8] igtv_count - -> IGTV Count
+    [9] followers - -> Followers
+    [1] followees - -> Followees
+    [11] external_url - -> External URL
+    [12] is_business_account - -> Is Business Account
+    [13] business_category_name - -> Business Category Name
+    [14] biography - -> Biography
+    [15] blocked_by_viewer - -> Blocked by viewer
+    [16] follows_viewer - -> Follows viewer
+    [17] full_name - -> Full Name
+    [18] has_blocked_viewer - -> Has blocked viewer
+    [19] has_highlight_reels - -> Has highlight reels
+    [20] has_public_story - -> Has public story
+    [21] has_viewable_story - -> Has viewable story
+    [22] has_requested_viewer - -> Has requested viewer
+    [23] is_verified - -> Is Verified
+    [24] requested_by_viewer - -> Requested by viewer
+    [25] profile_pic_url - -> Profile pic url
 
-    [26] save                    --> Save all profile info
+    [26] save - -> Save all profile info
 
-    [99] clear                   --> Clear Screen
-    [100] back                   --> Go back to main menu
-    [101] exit                   --> exit app
+    [99] clear - -> Clear Screen
+    [100] back - -> Go back to main menu
+    [101] exit - -> exit app
+    """)
+
+
+def show_help_posts_menu():
+    print(r"""
+Available commands in the home menu,
+    [1] help - -> display this text
+    [2] info --> Display posts information
+    
+    [3] posts --> Download all uploaded posts
+    [4] tagged --> Download all tagged posts
+    [5] igtv --> Download all IGTV posts
+    [6] all --> Download all uploaded, tagged and IGTV posts
+
+
+    [99] clear - -> Clear Screen
+    [100] back - -> Go back to main menu
+    [101] exit - -> exit app
     """)
 
 
@@ -91,18 +121,14 @@ def clear_screen():
 
 
 def ENTIRE_PROGRAM():
-    show_logo()
-
-    # Main Menu Option
     mmo = input("home> ").strip()
 
     if (mmo == 'help') or (mmo == '1'):
         show_help_main_menu()
-        input("Press `Enter` to go back!")
         ENTIRE_PROGRAM()
 
     elif (mmo == 'target') or (mmo == '2'):
-        target_username = input("target's username> ").strip()
+        target_username = input("? target's username> ").strip()
         target = insta.setTARGET(target=target_username)
         if target:
             print("[+] Target username has been set!")
@@ -167,14 +193,15 @@ def ENTIRE_PROGRAM():
         sys.exit("Quitting! Have a nice day!")
 
 
+PROFILE_MENU_first_time = True
+
+
 def PROFILE_MENU():
-    show_logo_profile()
-
-    print('[*] Please wait while information is being gathered!')
+    print('\n[*] Please wait while information is being gathered!')
     profile_info = insta.getProfileInfo()
-    print('[+] Done!')
+    print('[+] Done!\n')
 
-    mm1 = input('profile> ').strip()
+    mm1 = input('home/profile> ').strip()
 
     if (mm1 == 'help') or (mm1 == '1'):
         show_help_profile_menu()
@@ -207,9 +234,9 @@ Profile pic url: {profile_info['profile_pic_url']}
                 """)
 
     elif (mm1 == 'save') or (mm1 == '26'):
-        custom_format = input("format [txt / json(default)]>")
+        custom_format = input("? format [txt / json(default)]>")
         custom_filename = input(
-            "custom filename (defaults to username)> ").strip()
+            "? custom filename (defaults to username)> ").strip()
 
         if isinstance(custom_format, str):
             if (custom_format == "txt") or (custom_format == "json"):
@@ -239,7 +266,7 @@ Profile pic url: {profile_info['profile_pic_url']}
         ENTIRE_PROGRAM()
 
     elif (mm1 == 'exit') or (mm1 == '101'):
-        sys.exit("[!!] Have a nice day!")
+        sys.exit("Quitting! Have a nice day!")
 
     else:
         if len(mm1) <= 2:
@@ -268,7 +295,10 @@ Profile pic url: {profile_info['profile_pic_url']}
                 '25': 'requested_by_viewer',
                 '26': 'profile_pic_ur'
             }
-            print(profile_info[items[mm1]])
+            try:
+                print(profile_info[items[mm1]])
+            except:
+                pass
         else:
             try:
                 print(profile_info[mm1])
@@ -279,7 +309,48 @@ Profile pic url: {profile_info['profile_pic_url']}
 
 
 def POSTS_MENU():
-    pass
+    print('\n[*] Please wait while information is being gathered!')
+    profile_info = insta.getProfileInfo()
+    print('[+] Done!\n')
+
+    mm2 = input('home/posts> ').strip()
+
+    if (mm2 == 'help') or (mm2 == '1'):
+        show_help_posts_menu()
+        POSTS_MENU()
+
+    elif (mm2 == 'info') or (mm2 == '2'):
+        print(f"""
+Posts Information of {profile_info["username"]} | {profile_info["full_name"]}
+    Total Media Count: {profile_info["mediacount"]}
+        """)
+
+    elif (mm2 == 'posts') or (mm2 == '3'):
+        print("[*] Saving all posts!")
+        insta.savePosts()
+
+    elif (mm2 == 'tagged') or (mm2 == '4'):
+        print("[*] Saving all tagged posts!")
+        insta.saveAllTaggedPosts()
+
+    elif (mm2 == 'igtv') or (mm2 == '5'):
+        print("[*] Saving all IGTV posts!")
+        insta.saveAllIGTVPosts()
+
+    elif (mm2 == 'all') or (mm2 == '6'):
+        print("[*] Saving all uploaded, tagged and IGTV posts!")
+        insta.saveAllPosts()
+
+    elif (mm2 == 'clear') or (mm2 == '99'):
+        clear_screen()
+
+    elif (mm2 == 'back') or (mm2 == '100'):
+        pass
+
+    elif (mm2 == 'exit') or (mm2 == '101'):
+        sys.exit("Quitting! Have a nice day!")
+
+    POSTS_MENU()
 
 
 def FOLLOWERS_MENU():
