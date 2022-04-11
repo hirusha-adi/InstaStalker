@@ -526,7 +526,8 @@ Example for custom formatting -->
 
 
 def DUMP_ALL():
-    pass
+    level = input("? Enter the level of information to dump [all/mid/low] >")
+    insta.saveAll(level=level)
 
 
 if __name__ == "__main__":
