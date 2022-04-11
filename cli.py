@@ -63,28 +63,28 @@ Available commands in the home menu,
 
     [2] all
     [3] username                 --> Username
-    [4] profile_id               -->
-    [5] is_private               -->
-    [6] followed_by_viewer       -->
-    [7] mediacount               -->
-    [8] igtv_count               -->
-    [9] followers                -->
-    [1] followees                -->
-    [11] external_url            -->
-    [12] is_business_account     -->
-    [13] business_category_name  -->
-    [14] biography               -->
-    [15] blocked_by_viewer       -->
-    [16] follows_viewer          -->
-    [17] full_name               -->
-    [18] has_blocked_viewer      -->
-    [19] has_highlight_reels     -->
-    [20] has_public_story        -->
-    [21] has_viewable_story      -->
-    [22] has_requested_viewer    -->
-    [23] is_verified             -->
-    [24] requested_by_viewer     -->
-    [25] profile_pic_url         -->
+    [4] profile_id               --> Profile ID
+    [5] is_private               --> Is Privatee
+    [6] followed_by_viewer       --> Followed by viewer
+    [7] mediacount               --> Media Count
+    [8] igtv_count               --> IGTV Count
+    [9] followers                --> Followers
+    [1] followees                --> Followees
+    [11] external_url            --> External URL
+    [12] is_business_account     --> Is Business Account
+    [13] business_category_name  --> Business Category Name
+    [14] biography               --> Biography
+    [15] blocked_by_viewer       --> Blocked by viewer
+    [16] follows_viewer          --> Follows viewer
+    [17] full_name               --> Full Name
+    [18] has_blocked_viewer      --> Has blocked viewer
+    [19] has_highlight_reels     --> Has highlight reels
+    [20] has_public_story        --> Has public story
+    [21] has_viewable_story      --> Has viewable story
+    [22] has_requested_viewer    --> Has requested viewer
+    [23] is_verified             --> Is Verified
+    [24] requested_by_viewer     --> Requested by viewer
+    [25] profile_pic_url         --> Profile pic url
 
     [26] save
 
