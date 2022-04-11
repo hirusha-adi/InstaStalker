@@ -2,37 +2,29 @@ from manager import InstaProfile, Database
 import os
 import sys
 
-
-obj = InstaProfile()
-obj.setTARGET("ac3.desu")
-obj.login(username=Database.USERNAME, password=Database.PASSWORD)
-
-
-accinfo = obj.getProfileInfo()
-
 CLEAR = 'clear' if os.name == 'posix' else 'cls'
 
 
 def show_logo():
     print(r"""
-    ____           __        _____ __        ____            
+    ____           __        _____ __        ____
    /  _/___  _____/ /_____ _/ ___// /_____ _/ / /_____  _____
    / // __ \/ ___/ __/ __ `/\__ \/ __/ __ `/ / //_/ _ \/ ___/
- _/ // / / (__  ) /_/ /_/ /___/ / /_/ /_/ / / ,< /  __/ /    
-/___/_/ /_/____/\__/\__,_//____/\__/\__,_/_/_/|_|\___/_/     
-                        
+ _/ // / / (__  ) /_/ /_/ /___/ / /_/ /_/ / / ,< /  __/ /
+/___/_/ /_/____/\__/\__,_//____/\__/\__,_/_/_/|_|\___/_/
+
                            v1.0
-                    Made by ZeaCeR#5641                                     
+                    Made by ZeaCeR#5641
     """)
 
 
 def show_logo_profile():
     print(r"""
-            ____             _____ __   
-           / __ \_________  / __(_) /__ 
+            ____             _____ __
+           / __ \_________  / __(_) /__
           / /_/ / ___/ __ \/ /_/ / / _ \
          / ____/ /  / /_/ / __/ / /  __/
-        /_/   /_/   \____/_/ /_/_/\___/ 
+        /_/   /_/   \____/_/ /_/_/\___/
 
     """)
 
@@ -47,12 +39,12 @@ Available commands in the home menu,
 
     [4] profile     --> profile menu
     [5] posts       --> posts menu
-    [6] followers   --> followers menu 
+    [6] followers   --> followers menu
     [7] followees   --> followees menu
-    [8] DUMP ALL    --> Save all data (BETA)
-    
+    [8] DUMPALL    --> Save all data (BETA)
+
     [99] clear      --> Clear Screen/Console
-    [100] exit      --> exit the script 
+    [100] exit/back --> exit the script
     """)
 
 
@@ -119,34 +111,76 @@ def ENTIRE_PROGRAM():
         ENTIRE_PROGRAM()
 
     elif (mmo == 'login') or (mmo == '3'):
-        login_username = input("username> ")
-        login_password = input("password> ")
-        print("[*] Please wait user is logging in!")
-        login_status = insta.login(
-            username=login_username,
-            password=login_password
-        )
-        if login_status:
-            print("[+] Logged in successfully!")
+        if ((Database.USERNAME is None) or (Database.USERNAME == "")) or ((Database.PASSWORD is None) or (Database.PASSWORD == "")):
+            login_username = input("username> ").strip()
+            login_password = input("password> ").strip()
+
+            if ((login_username is None) or (login_username == "")) or ((login_password is None) or (login_password == "")):
+                pass
+            else:
+                print("[*] Please wait user is logging in!")
+                try:
+                    login_status = insta.login(
+                        username=login_username,
+                        password=login_password
+                    )
+                    if login_status:
+                        print("[+] Logged in successfully!")
+                    else:
+                        print("[+] Skipping! User is already logged in!")
+                except Exception as e:
+                    print(f"[-] Error: Unable to login! {e}")
         else:
-            print("[+] Skipping! User is already logged in!")
+            try:
+                login_status = insta.login(
+                    username=Database.USERNAME,
+                    password=Database.PASSWORD
+                )
+                if login_status:
+                    print("[+] Logged in successfully!")
+                else:
+                    print("[+] Skipping! User is already logged in!")
+            except Exception as e:
+                print(f"[-] Error: Unable to login! {e}")
+
         ENTIRE_PROGRAM()
 
     elif (mmo == 'profile') or (mmo == '4'):
-        show_logo_profile()
+        PROFILE_MENU()
 
-        print('[*] Please wait while information is being gathered!')
-        profile_info = insta.getProfileInfo()
-        print('[+] Done!')
+    elif (mmo == 'posts') or (mmo == '5'):
+        POSTS_MENU()
 
-        mm1 = input('profile> ').strip()
-        if (mm1 == 'help') or (mm1 == '1'):
-            show_help_profile_menu()
-            input("Press `Enter` to go back!")
-            ENTIRE_PROGRAM()
+    elif (mmo == 'followers') or (mmo == '6'):
+        FOLLOWERS_MENU()
 
-        elif (mm1 == 'all') or (mm1 == '2'):
-            print(f"""
+    elif (mmo == 'followees') or (mmo == '7'):
+        FOLLOWERS_MENU()
+
+    elif (mmo == 'DUMPALL') or (mmo == '8'):
+        DUMP_ALL()
+
+    elif (mmo == 'clear') or (mmo == '99'):
+        clear_screen()
+
+    elif (mmo == 'exit') or (mmo == 'back') or (mmo == '8'):
+        sys.exit("Quitting! Have a nice day!")
+
+
+def PROFILE_MENU():
+    show_logo_profile()
+
+    print('[*] Please wait while information is being gathered!')
+    profile_info = insta.getProfileInfo()
+    print('[+] Done!')
+
+    mm1 = input('profile> ').strip()
+
+    if (mm1 == 'help') or (mm1 == '1'):
+        show_help_profile_menu()
+
+    elif (mm1 == 'all') or (mm1 == '2'):
+        print(f"""
 Username: {profile_info['username']}
 Profile ID: {profile_info['profile_id']}
 Is Private: {profile_info['is_private']}
@@ -172,76 +206,92 @@ Requested by viewer: {profile_info['requested_by_viewer']}
 Profile pic url: {profile_info['profile_pic_url']}
                 """)
 
-        elif (mm1 == 'save') or (mm1 == '26'):
-            custom_format = input("format [txt / json(default)]>")
-            custom_filename = input(
-                "custom filename (defaults to username)> ").strip()
+    elif (mm1 == 'save') or (mm1 == '26'):
+        custom_format = input("format [txt / json(default)]>")
+        custom_filename = input(
+            "custom filename (defaults to username)> ").strip()
 
-            if isinstance(custom_format, str):
-                if (custom_format == "txt") or (custom_format == "json"):
-                    pass
+        if isinstance(custom_format, str):
+            if (custom_format == "txt") or (custom_format == "json"):
+                pass
+        else:
+            custom_format = False
+
+        if isinstance(custom_filename, str):
+            if len(custom_filename) >= 2:
+                pass
             else:
-                custom_format = False
+                custom_filename = None
 
-            if isinstance(custom_filename, str):
-                if len(custom_filename) >= 2:
-                    pass
-                else:
-                    custom_filename = None
-
-            if custom_format is False:
-                insta.saveProfileInfo(filename=custom_filename)
-            else:
-                insta.saveProfileInfo(
-                    file_format=custom_format,
-                    filename=custom_filename
-                )
-
-        elif (mm1 == 'clear') or (mm1 == '99'):
-            clear_screen()
-
-        elif (mm1 == 'back') or (mm1 == '100'):
-            ENTIRE_PROGRAM()
-
-        elif (mm1 == 'exit') or (mm1 == '101'):
-            sys.exit("[!!] Have a nice day!")
+        if custom_format is False:
+            insta.saveProfileInfo(filename=custom_filename)
 
         else:
-            if len(mm1) <= 2:
-                items = {
-                    '3': 'username',
-                    '4': 'profile_id',
-                    '5': 'is_private',
-                    '6': 'followed_by_viewer',
-                    '7': 'mediacount',
-                    '8': 'igtv_count',
-                    '9': 'followers',
-                    '1': 'followees',
-                    '12': 'external_url',
-                    '13': 'is_business_account',
-                    '14': 'business_category_name',
-                    '15': 'biography',
-                    '16': 'blocked_by_viewer',
-                    '17': 'follows_viewer',
-                    '18': 'full_name',
-                    '19': 'has_blocked_viewer',
-                    '20': 'has_highlight_reels',
-                    '21': 'has_public_story',
-                    '22': 'has_viewable_story',
-                    '23': 'has_requested_viewer',
-                    '24': 'is_verified',
-                    '25': 'requested_by_viewer',
-                    '26': 'profile_pic_ur'
-                }
-                print(profile_info[items[mm1]])
+            insta.saveProfileInfo(
+                file_format=custom_format,
+                filename=custom_filename
+            )
 
-            else:
-                try:
-                    print(profile_info[mm1])
-                except KeyError:
-                    print(f"[-] Error: No key named `{mm1}` in data set!")
+    elif (mm1 == 'clear') or (mm1 == '99'):
+        clear_screen()
 
+    elif (mm1 == 'back') or (mm1 == '100'):
         ENTIRE_PROGRAM()
+
+    elif (mm1 == 'exit') or (mm1 == '101'):
+        sys.exit("[!!] Have a nice day!")
+
+    else:
+        if len(mm1) <= 2:
+            items = {
+                '3': 'username',
+                '4': 'profile_id',
+                '5': 'is_private',
+                '6': 'followed_by_viewer',
+                '7': 'mediacount',
+                '8': 'igtv_count',
+                '9': 'followers',
+                '1': 'followees',
+                '12': 'external_url',
+                '13': 'is_business_account',
+                '14': 'business_category_name',
+                '15': 'biography',
+                '16': 'blocked_by_viewer',
+                '17': 'follows_viewer',
+                '18': 'full_name',
+                '19': 'has_blocked_viewer',
+                '20': 'has_highlight_reels',
+                '21': 'has_public_story',
+                '22': 'has_viewable_story',
+                '23': 'has_requested_viewer',
+                '24': 'is_verified',
+                '25': 'requested_by_viewer',
+                '26': 'profile_pic_ur'
+            }
+            print(profile_info[items[mm1]])
+        else:
+            try:
+                print(profile_info[mm1])
+            except KeyError:
+                print(f"[-] Error: No key named `{mm1}` in data set!")
+
+    PROFILE_MENU()
+
+
+def POSTS_MENU():
+    pass
+
+
+def FOLLOWERS_MENU():
+    pass
+
+
+def FOLLOWEES_MENU():
+    pass
+
+
+def DUMP_ALL():
+    pass
 
 
 if __name__ == "__main__":
