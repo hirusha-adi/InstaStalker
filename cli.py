@@ -62,29 +62,29 @@ Available commands in the home menu,
     [1] help --> display this text
 
     [2] all
-    [3] username
-    [4] profile_id
-    [5] is_private
-    [6] followed_by_viewer
-    [7] mediacount
-    [8] igtv_count
-    [9] followers
-    [1] followees
-    [11] external_url
-    [12] is_business_account
-    [13] business_category_name
-    [14] biography
-    [15] blocked_by_viewer
-    [16] follows_viewer
-    [17] full_name
-    [18] has_blocked_viewer
-    [19] has_highlight_reels
-    [20] has_public_story
-    [21] has_viewable_story
-    [22] has_requested_viewer
-    [23] is_verified
-    [24] requested_by_viewer
-    [25] profile_pic_url
+    [3] username                 --> Username
+    [4] profile_id               -->
+    [5] is_private               -->
+    [6] followed_by_viewer       -->
+    [7] mediacount               -->
+    [8] igtv_count               -->
+    [9] followers                -->
+    [1] followees                -->
+    [11] external_url            -->
+    [12] is_business_account     -->
+    [13] business_category_name  -->
+    [14] biography               -->
+    [15] blocked_by_viewer       -->
+    [16] follows_viewer          -->
+    [17] full_name               -->
+    [18] has_blocked_viewer      -->
+    [19] has_highlight_reels     -->
+    [20] has_public_story        -->
+    [21] has_viewable_story      -->
+    [22] has_requested_viewer    -->
+    [23] is_verified             -->
+    [24] requested_by_viewer     -->
+    [25] profile_pic_url         -->
 
     [26] save
 
@@ -172,6 +172,40 @@ Requested by viewer: {profile_info['requested_by_viewer']}
 Profile pic url: {profile_info['profile_pic_url']}
                 """)
 
+        elif (mm1 == 'save') or (mm1 == '26'):
+            custom_format = input("format [txt / json(default)]>")
+            custom_filename = input(
+                "custom filename (defaults to username)> ").strip()
+
+            if isinstance(custom_format, str):
+                if (custom_format == "txt") or (custom_format == "json"):
+                    pass
+            else:
+                custom_format = False
+
+            if isinstance(custom_filename, str):
+                if len(custom_filename) >= 2:
+                    pass
+                else:
+                    custom_filename = None
+
+            if custom_format is False:
+                insta.saveProfileInfo(filename=custom_filename)
+            else:
+                insta.saveProfileInfo(
+                    file_format=custom_format,
+                    filename=custom_filename
+                )
+
+        elif (mm1 == 'clear') or (mm1 == '99'):
+            clear_screen()
+
+        elif (mm1 == 'back') or (mm1 == '100'):
+            ENTIRE_PROGRAM()
+
+        elif (mm1 == 'exit') or (mm1 == '101'):
+            sys.exit("[!!] Have a nice day!")
+
         else:
             if len(mm1) <= 2:
                 items = {
@@ -206,6 +240,8 @@ Profile pic url: {profile_info['profile_pic_url']}
                     print(profile_info[mm1])
                 except KeyError:
                     print(f"[-] Error: No key named `{mm1}` in data set!")
+
+        ENTIRE_PROGRAM()
 
 
 if __name__ == "__main__":
