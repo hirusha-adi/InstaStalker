@@ -70,29 +70,27 @@ Available commands in the home menu,
     [8] igtv_count
     [9] followers
     [1] followees
-    [12] external_url
-    [13] is_business_account
-    [14] business_category_name
-    [15] biography
-    [16] blocked_by_viewer
-    [17] follows_viewer
-    [18] full_name
-    [19] has_blocked_viewer
-    [20] has_highlight_reels
-    [21] has_public_story
-    [22] has_viewable_story
-    [23] has_requested_viewer
-    [24] is_verified
-    [25] requested_by_viewer
-    [26] profile_pic_url
+    [11] external_url
+    [12] is_business_account
+    [13] business_category_name
+    [14] biography
+    [15] blocked_by_viewer
+    [16] follows_viewer
+    [17] full_name
+    [18] has_blocked_viewer
+    [19] has_highlight_reels
+    [20] has_public_story
+    [21] has_viewable_story
+    [22] has_requested_viewer
+    [23] is_verified
+    [24] requested_by_viewer
+    [25] profile_pic_url
 
-    [27] save
+    [26] save
 
     [99] clear
     [100] back
     [101] exit
-    
-
     """)
 
 
@@ -174,35 +172,40 @@ Requested by viewer: {profile_info['requested_by_viewer']}
 Profile pic url: {profile_info['profile_pic_url']}
                 """)
 
-    else:
-        if len(mmo) <= 2:
-            items = {
-                '3': 'username',
-                '4': 'profile_id',
-                '5': 'is_private',
-                '6': 'followed_by_viewer',
-                '7': 'mediacount',
-                '8': 'igtv_count',
-                '9': 'followers',
-                '1': 'followees',
-                '12': 'external_url',
-                '13': 'is_business_account',
-                '14': 'business_category_name',
-                '15': 'biography',
-                '16': 'blocked_by_viewer',
-                '17': 'follows_viewer',
-                '18': 'full_name',
-                '19': 'has_blocked_viewer',
-                '20': 'has_highlight_reels',
-                '21': 'has_public_story',
-                '22': 'has_viewable_story',
-                '23': 'has_requested_viewer',
-                '24': 'is_verified',
-                '25': 'requested_by_viewer',
-                '26': 'profile_pic_ur'
-            }
-            items[mmo]
-            print(2)
+        else:
+            if len(mm1) <= 2:
+                items = {
+                    '3': 'username',
+                    '4': 'profile_id',
+                    '5': 'is_private',
+                    '6': 'followed_by_viewer',
+                    '7': 'mediacount',
+                    '8': 'igtv_count',
+                    '9': 'followers',
+                    '1': 'followees',
+                    '12': 'external_url',
+                    '13': 'is_business_account',
+                    '14': 'business_category_name',
+                    '15': 'biography',
+                    '16': 'blocked_by_viewer',
+                    '17': 'follows_viewer',
+                    '18': 'full_name',
+                    '19': 'has_blocked_viewer',
+                    '20': 'has_highlight_reels',
+                    '21': 'has_public_story',
+                    '22': 'has_viewable_story',
+                    '23': 'has_requested_viewer',
+                    '24': 'is_verified',
+                    '25': 'requested_by_viewer',
+                    '26': 'profile_pic_ur'
+                }
+                print(profile_info[items[mm1]])
+
+            else:
+                try:
+                    print(profile_info[mm1])
+                except KeyError:
+                    print(f"[-] Error: No key named `{mm1}` in data set!")
 
 
 if __name__ == "__main__":
