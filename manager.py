@@ -14,7 +14,9 @@ class InstaProfile:
         # variables used to store stuff of the user
         self.profile = None
         self.profile_dict = None
+        self.tagged_posts = None
         self.uploaded_posts = None
+        self.igtv_posts = None
         self.followers = None
         self.followees = None
         self.followers_list = {'data': []}
@@ -347,10 +349,15 @@ class InstaProfile:
     def saveProfileInfo(self, file_format: str = "json", filename: str = None):
         if filename is None:
             filename_file = os.path.join(
-                os.getcwd(),
-                str(self.profile.username) +
-                ".json" if file_format == "json" else ".txt"
-            )
+                os.getcwd(), str(self.profile.username))
+
+            if file_format == "txt":
+                if not(filename_file.endswith(".txt")):
+                    filename_file += ".txt"
+            else:
+                if not(filename_file.endswith(".json")):
+                    filename_file += ".json"
+
         else:
             if file_format == "txt":
                 if not(filename.endswith(".txt")):

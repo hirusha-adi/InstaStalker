@@ -18,29 +18,6 @@ def show_logo():
     """)
 
 
-def show_logo_profile():
-    print(r"""
-██████╗ ██████╗  ██████╗ ███████╗██╗██╗     ███████╗
-██╔══██╗██╔══██╗██╔═══██╗██╔════╝██║██║     ██╔════╝
-██████╔╝██████╔╝██║   ██║█████╗  ██║██║     █████╗  
-██╔═══╝ ██╔══██╗██║   ██║██╔══╝  ██║██║     ██╔══╝  
-██║     ██║  ██║╚██████╔╝██║     ██║███████╗███████╗
-╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚══════╝
-    """)
-
-
-def show_logo_posts():
-    print(r"""
-██████╗  ██████╗ ███████╗████████╗███████╗
-██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝██╔════╝
-██████╔╝██║   ██║███████╗   ██║   ███████╗
-██╔═══╝ ██║   ██║╚════██║   ██║   ╚════██║
-██║     ╚██████╔╝███████║   ██║   ███████║
-╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝
-                                          
-    """)
-
-
 def show_help_main_menu():
     print(r"""
 Available commands in the home menu,
@@ -53,7 +30,7 @@ Available commands in the home menu,
     [5] posts - -> posts menu
     [6] followers - -> followers menu
     [7] followees - -> followees menu
-    [8] DUMPALL - -> Save all data(BETA)
+    [8] DUMPALL - -> Save all data
 
     [99] clear - -> Clear Screen/Console
     [100] exit/back - -> exit the script
@@ -153,7 +130,6 @@ def ENTIRE_PROGRAM():
 
     if (mmo == 'help') or (mmo == '1'):
         show_help_main_menu()
-        ENTIRE_PROGRAM()
 
     elif (mmo == 'target') or (mmo == '2'):
         target_username = input("? target's username> ").strip()
@@ -162,7 +138,6 @@ def ENTIRE_PROGRAM():
             print("[+] Target username has been set!")
         else:
             print("[-] Skipping! Target username has been set already!")
-        ENTIRE_PROGRAM()
 
     elif (mmo == 'login') or (mmo == '3'):
         if ((Database.USERNAME is None) or (Database.USERNAME == "")) or ((Database.PASSWORD is None) or (Database.PASSWORD == "")):
@@ -197,8 +172,6 @@ def ENTIRE_PROGRAM():
             except Exception as e:
                 print(f"[-] Error: Unable to login! {e}")
 
-        ENTIRE_PROGRAM()
-
     elif (mmo == 'profile') or (mmo == '4'):
         PROFILE_MENU()
 
@@ -220,8 +193,7 @@ def ENTIRE_PROGRAM():
     elif (mmo == 'exit') or (mmo == 'back') or (mmo == '8'):
         sys.exit("Quitting! Have a nice day!")
 
-
-PROFILE_MENU_first_time = True
+    ENTIRE_PROGRAM()
 
 
 def PROFILE_MENU():
@@ -262,7 +234,7 @@ Profile pic url: {profile_info['profile_pic_url']}
                 """)
 
     elif (mm1 == 'save') or (mm1 == '26'):
-        custom_format = input("? format [txt / json(default)]>")
+        custom_format = input("? format [txt/json(default)]>")
         custom_filename = input(
             "? custom filename (defaults to username)> ").strip()
 
@@ -270,13 +242,15 @@ Profile pic url: {profile_info['profile_pic_url']}
             if (custom_format == "txt") or (custom_format == "json"):
                 pass
         else:
-            custom_format = False
+            custom_format = "json"
 
         if isinstance(custom_filename, str):
             if len(custom_filename) >= 2:
                 pass
             else:
-                custom_filename = None
+                custom_filename = profile_info['username']
+        else:
+            custom_filename = profile_info['username']
 
         if custom_format is False:
             insta.saveProfileInfo(filename=custom_filename)
@@ -536,4 +510,5 @@ if __name__ == "__main__":
     print('[+] Done!')
 
     clear_screen()
+    show_logo()
     ENTIRE_PROGRAM()
