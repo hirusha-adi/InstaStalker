@@ -62,7 +62,7 @@ Available commands in the home menu,
 
 def show_help_profile_menu():
     print(r"""
-Available commands in the home menu,
+Available commands in the profile menu,
     [1] help - -> display this text
 
     [2] all - -> Show all information
@@ -100,7 +100,7 @@ Available commands in the home menu,
 
 def show_help_posts_menu():
     print(r"""
-Available commands in the home menu,
+Available commands in the posts menu,
     [1] help - -> display this text
     [2] info --> Display posts information
     
@@ -109,6 +109,34 @@ Available commands in the home menu,
     [5] igtv --> Download all IGTV posts
     [6] all --> Download all uploaded, tagged and IGTV posts
 
+
+    [99] clear - -> Clear Screen
+    [100] back - -> Go back to main menu
+    [101] exit - -> exit app
+    """)
+
+
+def show_help_followers_menu():
+    print(r"""
+Available commands in the followers menu,
+    [1] help - -> display this text
+    
+    [2] count --> display the total amount of followers
+    [3] save --> Save all followers list
+
+    [99] clear - -> Clear Screen
+    [100] back - -> Go back to main menu
+    [101] exit - -> exit app
+    """)
+
+
+def show_help_followees_menu():
+    print(r"""
+Available commands in the followees menu,
+    [1] help - -> display this text
+    
+    [2] count --> display the total amount of followees
+    [3] save --> Save all followees list
 
     [99] clear - -> Clear Screen
     [100] back - -> Go back to main menu
@@ -197,9 +225,9 @@ PROFILE_MENU_first_time = True
 
 
 def PROFILE_MENU():
-    print('\n[*] Please wait while information is being gathered!')
+    # print('\n[*] Please wait while information is being gathered!')
     profile_info = insta.getProfileInfo()
-    print('[+] Done!\n')
+    # print('[+] Done!\n')
 
     mm1 = input('home/profile> ').strip()
 
@@ -309,9 +337,9 @@ Profile pic url: {profile_info['profile_pic_url']}
 
 
 def POSTS_MENU():
-    print('\n[*] Please wait while information is being gathered!')
+    # print('\n[*] Please wait while information is being gathered!')
     profile_info = insta.getProfileInfo()
-    print('[+] Done!\n')
+    # print('[+] Done!\n')
 
     mm2 = input('home/posts> ').strip()
 
@@ -354,11 +382,147 @@ Posts Information of {profile_info["username"]} | {profile_info["full_name"]}
 
 
 def FOLLOWERS_MENU():
-    pass
+    # print('\n[*] Please wait while information is being gathered!')
+    profile_info = insta.getProfileInfo()
+    # print('[+] Done!\n')
+
+    mm3 = input("home/followers>").strip()
+
+    if (mm3 == 'help') or (mm3 == '1'):
+        show_help_followers_menu()
+
+    elif (mm3 == 'count') or (mm3 == '2'):
+        print(profile_info["followers"])
+
+    elif (mm3 == 'save') or (mm3 == '3'):
+        select_mode = input("? Select mode [low/mid/all/custom] >")
+
+        if not(select_mode in ("low", "mid" "all", "high", "custom")):
+            print("[-] Error: Invalid mode entered! Will set to default --> 'low'")
+            select_mode = "low"
+
+        if select_mode == "custom":
+            print(r"""
+Available Custom Formatting Options:
+    count
+    username
+    full_name
+    userid
+    is_private
+    is_verified
+    meida_count
+    followers
+    followees
+    is_business_account
+    biography
+    profile_pic_url
+
+Example for custom formatting -->
+    {count} , {username} , {full_name}
+            """)
+            formatting = input("? Enter custom formatting > ")
+            if not(("{" in formatting) or ("}" in formatting)):
+                print(
+                    "[-] Error: Invalid custom formatting enetered! Will set to default --> 'low' mode")
+                print("\t{count} | {username} | {full_name}")
+                select_mode = "mid"
+
+        filetype = input("? Enter filetype [print_only/json/txt] > ")
+        if not(filetype in ("print_only", "json", "txt")):
+            print(
+                "[-] Error: Invalid file type entered! Will set to default --> 'json'")
+
+        print(
+            f'[+] Starting to save {profile_info["followers"]} follwers info!')
+        insta.saveFollowersFollowees(
+            followers_or_followees="followers",
+            formatting=formatting,
+            mode=select_mode,
+            output=filetype
+        )
+
+    elif (mm3 == 'clear') or (mm3 == '99'):
+        clear_screen()
+
+    elif (mm3 == 'back') or (mm3 == '100'):
+        ENTIRE_PROGRAM()
+
+    elif (mm3 == 'exit') or (mm3 == '101'):
+        sys.exit("Quitting! Have a nice day!")
+
+    FOLLOWERS_MENU()
 
 
 def FOLLOWEES_MENU():
-    pass
+    # print('\n[*] Please wait while information is being gathered!')
+    profile_info = insta.getProfileInfo()
+    # print('[+] Done!\n')
+
+    mm3 = input("home/followees>").strip()
+
+    if (mm3 == 'help') or (mm3 == '1'):
+        show_help_followees_menu()
+
+    elif (mm3 == 'count') or (mm3 == '2'):
+        print(profile_info["followees"])
+
+    elif (mm3 == 'save') or (mm3 == '3'):
+        select_mode = input("? Select mode [low/mid/all/custom] >")
+
+        if not(select_mode in ("low", "mid" "all", "high", "custom")):
+            print("[-] Error: Invalid mode entered! Will set to default --> 'low'")
+            select_mode = "low"
+
+        if select_mode == "custom":
+            print(r"""
+Available Custom Formatting Options:
+    count
+    username
+    full_name
+    userid
+    is_private
+    is_verified
+    meida_count
+    followers
+    followees
+    is_business_account
+    biography
+    profile_pic_url
+
+Example for custom formatting -->
+    {count} , {username} , {full_name}
+            """)
+            formatting = input("? Enter custom formatting > ")
+            if not(("{" in formatting) or ("}" in formatting)):
+                print(
+                    "[-] Error: Invalid custom formatting enetered! Will set to default --> 'low' mode")
+                print("\t{count} | {username} | {full_name}")
+                select_mode = "mid"
+
+        filetype = input("? Enter filetype [print_only/json/txt] > ")
+        if not(filetype in ("print_only", "json", "txt")):
+            print(
+                "[-] Error: Invalid file type entered! Will set to default --> 'json'")
+
+        print(
+            f'[+] Starting to save {profile_info["followees"]} follwers info!')
+        insta.saveFollowersFollowees(
+            followers_or_followees="followees",
+            formatting=formatting,
+            mode=select_mode,
+            output=filetype
+        )
+
+    elif (mm3 == 'clear') or (mm3 == '99'):
+        clear_screen()
+
+    elif (mm3 == 'back') or (mm3 == '100'):
+        ENTIRE_PROGRAM()
+
+    elif (mm3 == 'exit') or (mm3 == '101'):
+        sys.exit("Quitting! Have a nice day!")
+
+    FOLLOWEES_MENU()
 
 
 def DUMP_ALL():
@@ -369,5 +533,6 @@ if __name__ == "__main__":
     print('[*] Please wait while the object is being instantiated!')
     insta = InstaProfile()
     print('[+] Done!')
+
     clear_screen()
     ENTIRE_PROGRAM()
