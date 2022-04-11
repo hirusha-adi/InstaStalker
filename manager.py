@@ -241,7 +241,7 @@ class InstaProfile:
         followers_or_followees: str,
         formatting: str = None,
         mode: str = "simple",
-        output: str = "text"
+        output: str = "json"
     ):
         """
         `followers_or_followees`: str -->
@@ -277,7 +277,8 @@ class InstaProfile:
                 information = "{count} | {username} | {full_name}"
             elif mode == "mid":
                 information = "{count} | {username} | {full_name} | {userid} | {is_private} | {is_verified} | {meida_count} | {followers} | {followees}"
-            elif mode == "all" or mode == "high":
+            # elif mode == "all" or mode == "high":
+            else:
                 information = "{count} | {username} | {full_name} | {userid} | {is_private} | {is_verified} | {meida_count} | {is_business_account} | {followers} | {followees} | {biography} | {profile_pic_url}"
         else:
             information = formatting
@@ -346,7 +347,10 @@ class InstaProfile:
     def saveProfileInfo(self, file_format: str = "json", filename: str = None):
         if filename is None:
             filename_file = os.path.join(
-                os.getcwd(), str(self.profile.username) + ".json")
+                os.getcwd(),
+                str(self.profile.username) +
+                ".json" if file_format == "json" else ".txt"
+            )
         else:
             if file_format == "txt":
                 if not(filename.endswith(".txt")):
@@ -388,11 +392,31 @@ Profile pic url: {data['profile_pic_url']}
             else:
                 json.dump(data, file, ensure_ascii=True, indent=4)
 
-    def saveAll(self):
-        self.saveProfileInfo()
+    def saveAll(self, level: str = "low"):
+        """
+        Dump/Save all information of the target instagram profile
+
+        Args:
+            level (str, optional): `all`/`high`, `mid`, `low` are the only possible values. Defaults to "high".
+        """
+        if not level in ("all", "mid", "low", "high"):
+            level = "high"
+
+        self.saveProfileInfo(file_format="json")
         self.saveAllPosts()
-        self.saveFollowersFollowees(followers_or_followees="followers")
-        self.saveFollowersFollowees(followers_or_followees="followees")
+
+        self.saveFollowersFollowees(
+            followers_or_followees="followers",
+            formatting=None,
+            mode=level,
+            output="json"
+        )
+        self.saveFollowersFollowees(
+            followers_or_followees="followees",
+            formatting=None,
+            mode=level,
+            output="json"
+        )
 
 
 class Database:
