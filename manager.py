@@ -142,7 +142,10 @@ class InstaProfile:
         Save all the posts uploaded by the target user
             insde `./targetUserName/` directory
         """
+        count = 1
         for post in self.getPosts():
+            print(
+                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}")
             self.insta.download_post(
                 post,
                 target=self.profile.username
@@ -164,7 +167,10 @@ class InstaProfile:
         Save all Posts that have tagged the target user
             insde `./targetUserName/` directory
         """
+        count = 1
         for post in self.getAllTaggedPosts():
+            print(
+                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}")
             self.insta.download_post(
                 post,
                 target=self.profile.username
@@ -186,7 +192,10 @@ class InstaProfile:
         Save all the IGTV uploaded by the target user
             insde `./targetUserName/` directory
         """
+        count = 1
         for post in self.getAllIGTVPosts():
+            print(
+                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}")
             self.insta.download_post(
                 post,
                 target=self.profile.username
@@ -366,7 +375,7 @@ Requested by viewer: {data['requested_by_viewer']}
 Profile pic url: {data['profile_pic_url']}
                 """)
             else:
-                json.dump(data, file)
+                json.dump(data, file, ensure_ascii=True, indent=4)
 
     def saveAll(self):
         self.saveProfileInfo()
