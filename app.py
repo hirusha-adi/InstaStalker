@@ -29,7 +29,18 @@ def index():
             'full_name': "Hirusha Adikari",
             'username': 'hirushaadi',
             'profile_pic_url': "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/KDE_logo.svg/1200px-KDE_logo.svg.png",
-            'sample': ''
+            'profile_id': 99550234,
+            'is_verified': False,
+            'is_private': True,
+            "biography": "fuck=nigerr\n\tasfcsed",
+            'igtv_count': 888,
+            'is_business_account': False,
+            'has_blocked_viewer': False,
+            'has_highlight_reels': False,
+            'has_public_story': False,
+            'has_viewable_story': False,
+            'has_requested_viewer': False,
+            'business_category_name': 'YourMom'
         }
     )
 
