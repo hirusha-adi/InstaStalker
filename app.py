@@ -67,12 +67,39 @@ print(
 print(
     f"[+] Saved profile picture to ./static/data/{target_username}/{target_username}_profile_pic.png")
 
+print("[*] Please wait while the history is being loaded!")
+all_sessions_folder = os.path.join(
+    os.getcwd(),
+    "static",
+    "data"
+)
+final_all_history_list = []
+for folder_name in os.listdir(all_sessions_folder):
+    if not(folder_name == target_username):
+        current_history_folder = os.path.join(all_sessions_folder, folder_name)
+        # current_history_profile_picture = os.path.join(
+        #     current_history_folder, f'{folder_name}_profile_pic.png')
+        current_history_profile_info_filename = os.path.join(
+            current_history_folder, f'{folder_name}.json')
+        with open(current_history_profile_info_filename, "r", encoding="utf-8") as current_history_profile_info_file:
+            history_current_profile_info = json.load(
+                current_history_profile_info_file)
+        final_all_history_list.append(
+            {
+                'username': f"@{folder_name}",
+                'followers': history_current_profile_info['followers'],
+                'full_name': history_current_profile_info['full_name'],
+                'image_url_for_web_server': f'/static/data/{folder_name}/{folder_name}_profile_pic.png'
+            }
+        )
+
 
 @ app.route("/")
 def index():
     return render_template(
         "index.html",
         accinfo=accinfo,
+        final_all_history_list=final_all_history_list,
     )
 
 
