@@ -1,9 +1,8 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, send_file
 from manager import InstaProfile, Database
 import requests
 import os
 import json
-from PIL import Image
 from threading import Thread
 import subprocess
 
@@ -96,6 +95,12 @@ for folder_name in os.listdir(all_sessions_folder):
             }
         )
 
+# Other Files and Folder Paths
+information_filename_txt = os.path.join(
+    current_session_folder,
+    f"{target_username}.txt"
+)
+
 
 @ app.route("/")
 def index():
@@ -108,15 +113,26 @@ def index():
 
 @app.route("/save/profile_pic")
 def save_profile_pic():
-    def open_folder():
-        if os.name == 'nt':
-            subprocess.Popen(['explorer', current_session_folder])
-        else:
-            subprocess.Popen(['xdg-open', current_session_folder])
 
-    t1 = Thread(target=open_folder)
-    t1.start()
-    return redirect(url_for("index"))
+    # Will decide about this in the future
+    # def open_folder_profile_pic():
+    # if os.name == 'nt':
+    # subprocess.Popen(['explorer', current_session_folder])
+    # else:
+    # subprocess.Popen(['xdg-open', current_session_folder])
+    #
+    # t1 = Thread(target=open_folder_profile_pic)
+    # t1.start()
+
+    return send_file(profile_picture_filename)
+
+
+@app.route("/save/profile_info/txt")
+def save_profile_info_txt():
+    if not(os.path.isfile(profile_picture_filename)):
+        obj.saveProfileInfo(
+            filename=information_filename_txt, file_format='txt')
+    return send_file(information_filename_txt, as_attachment=True)
 
 
 def runWebServer():
