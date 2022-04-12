@@ -59,6 +59,8 @@ class InstaProfile:
         self.insta.login(user=username, passwd=password)
         self.is_logged_in = True
 
+    def get_is_logged_in(self): return self.is_logged_in
+
     def processProfile(self):
         """
         Process the target profile's basic information
@@ -98,6 +100,9 @@ class InstaProfile:
 
     def setProfileInfo(self, info):
         self.profile_dict = info
+
+    def getTrue_profile_dict(self):
+        return self.profile_dict
 
     def getProfileInfo(self):
         """
@@ -374,8 +379,7 @@ class InstaProfile:
         data = self.getProfileInfo()
         with open(filename_file, "w", encoding="utf-8") as file:
             if file_format == "txt":
-                file.write(f"""
-Username: {data['username']}
+                file.write(f"""Username: {data['username']}
 Profile ID: {data['profile_id']}
 Is Private: {data['is_private']}
 Followed by viewer: {data['followed_by_viewer']}
@@ -386,7 +390,7 @@ Followees: {data['followees']}
 External URL: {data['external_url']}
 Is Business Account: {data['is_business_account']}
 Business Category Name: {data['business_category_name']}
-Biography: \n{data['biography']}\n
+\nBiography: \n{data['biography']}\n
 Blocked by viewer: {data['blocked_by_viewer']}
 Follows viewer: {data['follows_viewer']}
 Full Name: {data['full_name']}
@@ -397,8 +401,7 @@ Has viewable story: {data['has_viewable_story']}
 Has requested viewer: {data['has_requested_viewer']}
 Is Verified: {data['is_verified']}
 Requested by viewer: {data['requested_by_viewer']}
-Profile pic url: {data['profile_pic_url']}
-                """)
+Profile pic url: {data['profile_pic_url']}""")
             else:
                 json.dump(data, file, ensure_ascii=True, indent=4)
 
