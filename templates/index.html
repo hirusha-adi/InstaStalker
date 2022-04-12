@@ -1,234 +1,264 @@
 <!DOCTYPE html>
-<html class="no-js">
-
+<html lang="en" >
 <head>
-    <title>Instagram Stalker</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/min-3.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/customStyles.css') }}">
+  <meta charset="UTF-8">
+  <title>CodePen - Profile dashboard</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
 
-    <!-- Meta tags generated from: https://metatags.io/ -->
-    <!-- Primary Meta Tags -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="title" content="Get a whole new identity at the Fake Name Generator">
-    <meta name="description"
-        content="Generate completely random and fake information + a photo of the fake profile. No Ads, No Sign-up, No Tracking">
-    <meta name="keywords"
-        content="name generator, fake, generator, identity, credit card, social security number, random" />
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Get a whole new identity at the Fake Name Generator">
-    <meta property="og:description"
-        content="Generate completely random and fake information + a photo of the fake profile. No Ads, No Sign-up, No Tracking">
-    <meta property="og:image" content="{{ url_for('static', filename='images/Fake-Name-Generator.jpg') }}">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Get a whole new identity at the Fake Name Generator">
-    <meta property="twitter:description"
-        content="Generate completely random and fake information + a photo of the fake profile. No Ads, No Sign-up, No Tracking">
-    <meta property="twitter:image" content="{{ url_for('static', filename='images/Fake-Name-Generator.jpg') }}">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 
 </head>
-
 <body>
-
-    <div id="wrapper-1" class="wrapper">
-
-        <div id="wrapper-2" class="wrapper">
-            <div class="content">
-
-                <div id="body">
-                    <div class="content">
-                        <h2>Instragm Account Information of {{ accinfo.username }}</h2>
-
-                        <div id="details">
-                            <div class="bcsw ctr">
-                                <div id="cw-16411233781330">
-                                </div>
-                            </div>
-                            <div class="content">
-
-                                <div class="bcs">
-                                    <div class="content">
-                                        <div>
-                                            <a href="{{ accinfo.profile_pic_url }}" target="_blank"
-                                                rel="noopener noreferrer">
-                                                <img src="{{ accinfo.profile_pic_url }}" width="121" height="auto"
-                                                    alt="Profile Picture" />
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="info">
-                                    <div class="content">
-
-                                        <div class="address">
-                                            <h3>{{ accinfo.full_name }}</h3>
-                                            <div class="adr">
-                                                {{ address }} </div>
-                                        </div>
-
-                                        <p>
-                                            Curious what <strong>{{ accinfo.full_name.split(' ')[0] }}</strong> means?
-                                            <a
-                                                href="https://www.babysfirstdomain.com/meaning/girl/{{ accinfo.full_name.split(' ')[0] }}">
-                                                Click here to find out!
-                                            </a>
-                                        </p>
-
-                                        <div class="extra">
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Username</dt>
-                                                <a href="{{ accinfo.external_url }}" target="_blank"
-                                                    rel="noopener noreferrer">
-                                                    <dd>{{ accinfo.username }}</dd>
-                                                </a>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Full Name</dt>
-                                                <dd>{{ accinfo.full_name }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Biography</dt>
-                                                <dd>{{ accinfo.biography }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Profile ID</dt>
-                                                <dd>{{ accinfo.profile_id }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Is Private</dt>
-                                                <dd>{{ accinfo.is_private }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Is Verified</dt>
-                                                <dd>{{ accinfo.is_verified }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Media Count</dt>
-                                                <dd>{{ accinfo.mediacount }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>IGTV Count</dt>
-                                                <dd>{{ accinfo.igtv_count }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Followers</dt>
-                                                <dd>{{ accinfo.followers }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Followees</dt>
-                                                <dd>{{ accinfo.followees }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Website URL:</dt>
-                                                <dd>
-                                                    <a href="{{ accinfo.external_url }}" target="_blank"
-                                                        rel="noopener noreferrer">
-                                                        {{ accinfo.external_url }}
-                                                    </a>
-                                                </dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Profile Picture URL:</dt>
-                                                <dd>
-                                                    <a href="{{ accinfo.profile_pic_url }}" target="_blank"
-                                                        rel="noopener noreferrer">
-                                                        Click Here to Open
-                                                    </a>
-                                                </dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Is Bussiness Account</dt>
-                                                <dd>{{ accinfo.is_business_account }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Bussiness Catgeory Name</dt>
-                                                <dd>{{ accinfo.business_category_name }}</dd>
-                                            </dl>
-
-
-                                            <h3 class="hh3">Other Information</h3>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Follows Viewer</dt>
-                                                <dd>{{ accinfo.follows_viewer }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Followed by Viewer</dt>
-                                                <dd>{{ accinfo.followed_by_viewer }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Has Blocked Viewer</dt>
-                                                <dd>{{ accinfo.has_blocked_viewer }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Blocked by Viewer</dt>
-                                                <dd>{{ accinfo.blocked_by_viewer }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Has Highlight Reels</dt>
-                                                <dd>{{ accinfo.has_highlight_reels }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Has Public Story</dt>
-                                                <dd>{{ accinfo.has_public_story }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Has viewable Story</dt>
-                                                <dd>{{ accinfo.has_viewable_story }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Has Requested Viewer</dt>
-                                                <dd>{{ accinfo.has_requested_viewer }}</dd>
-                                            </dl>
-
-                                            <dl class="dl-horizontal">
-                                                <dt>Requested by Viewer</dt>
-                                                <dd>{{ accinfo.requested_by_viewer }}</dd>
-                                            </dl>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="cb"></div>
-                            </div>
-                        </div>
-
-                        <div class="bcsw ctr">
-                            <div id="cw-16411233781331">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- partial:index.partial.html -->
+<body>
+ <div class="body-container">
+ 
+  <div class="dashboard">
+   <div class="grid-container">
+      <div class="profile grid-area">
+        <div class="img">
+<!--           <i class="fas fa-ellipsis-v"></i> -->
+          <img src="https://images.unsplash.com/photo-1502292754603-a0891e807332?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80">
+          <h3>Chloe</h3>
+          <h5 class="online">Online</h5>
+          <div class="button"><i class="fas fa-sliders-h"></i></div>
+         </div>
+        <div class="profile-data">
+            <div class="data-details">
+              <h5>Age</h5>
+              <h4>24</h4>
             </div>
+            <div class="data-details">
+              <h5>Location</h5>
+              <h4>Paris</h4>
+            </div>
+            <div class="data-details">
+              <h5>Score</h5>
+              <h4>150</h4>
+            </div>
+          </div>
+        <div class="profile-more">
+          <h5>Show more</h5>
         </div>
-    </div>
-
+     </div>
+     <div class="last-view grid-area">
+       <h2>Your latest visits.</h2>
+       <div class="profiles-display">
+         <div class="one-profile online">
+           <div class="img">
+           <img src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+           </div>
+           <h4>Alicia</h4>
+         </div>
+          <div class="one-profile">
+           <div class="img">
+           <img src="https://images.unsplash.com/photo-1495078065017-564723e7e3e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1300&q=80">
+           </div>
+           <h4>Dan</h4>
+         </div>
+         <div class="one-profile online">
+           <div class="img">
+           <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+           </div>
+           <h4>Lea</h4>
+         </div>
+         
+         <div class="one-profile">
+           <div class="img">
+           <img src="https://images.unsplash.com/photo-1517935541300-19815e88fa63?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+           </div>
+           <h4>John</h4>
+         </div>
+         <div class="one-profile">
+           <div class="img">
+           <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+           </div>
+           <h4>Christopher</h4>
+         </div>
+       </div>
+          
+     </div>
+     
+      <div class="last-like grid-area">
+        <h2>They liked your profile !</h2>
+        <div class="profiles-display">
+         <div class="one-profile online">
+           <div class="img">
+           <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+           </div>
+           <h4>Lea</h4>
+         </div>
+          <div class="one-profile">
+           <div class="img">
+           <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+           </div>
+           <h4>Christopher</h4>
+         </div>
+       </div>
+      </div>
+     
+     <div class="edit-profile grid-area">
+        <div class="header">
+          <h1>Edit your profile</h1>
+        </div>
+       <div class="profile-picture">
+         <img src="https://images.unsplash.com/photo-1502292754603-a0891e807332?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=934&amp;q=80">
+       </div>
+       <h1>Chloe C</h1>
+       <div class="edit-infos">
+         <h3>Personal information<i class="fas fa-pen"></i></h3>
+         <div class="profile-data">
+            <div class="data-details">
+              <h5>Age</h5>
+              <h4>24</h4>
+            </div>
+           <div class="data-details">
+              <h5>Gender</h5>
+              <h4>Woman</h4>
+            </div>
+            <div class="data-details">
+              <h5>Location</h5>
+              <h4>Paris</h4>
+            </div>
+         </div>
+       </div>
+       <div class="edit-interest">
+         <h3>What are you looking for ?<i class="fas fa-pen"></i></h3>
+         <p class="p-small">Men and Women</p>
+       </div>
+       <div class="edit-interest">
+         <h3>Bio<i class="fas fa-pen"></i></h3>
+         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi aliquam leo eu sapien tristique, eu efficitur mi ornare. Aliquam erat volutpat. Pellentesque rhoncus volutpat laoreet.Aliquam erat volutpat. Pellentesque rhoncus volutpat laoreet.Aliquam erat volutpat. Pellentesque rhoncus volutpat laoreet.</p>
+       </div>
+       <div class="edit-interest">
+         <h3>Your interests <i class="fas fa-pen"></i></h3>
+         <p>#traveling #cooking #summer #jazz #friends #art #walk #dogs #design #architecture #photo #nature #fun </p>
+       </div>
+       <div class="edit-picture">
+         <div class="picture">
+           <img src="https://images.unsplash.com/photo-1540218660726-95c6764dd7ea?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80">
+         </div>
+          <div class="picture">
+            <img src="https://images.unsplash.com/photo-1467020421390-2fb2647a413e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1235&q=80">
+         </div>
+          <div class="picture">
+            <img src="https://images.unsplash.com/photo-1488751045188-3c55bbf9a3fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80">
+         </div>
+         <div class="picture-add">
+           <i class="fas fa-plus"></i>
+         </div>
+       </div>
+     </div>
+     
+     
+      <div class="matchs grid-area">
+        <div class="header">
+          <h1>Your Matchs</h1>
+        </div>
+        <div class="display-matchs">
+          <div class="one-match">
+            <div class="one-match-content">
+             <img src="https://images.unsplash.com/photo-1517935541300-19815e88fa63?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+              <div class="match-info">
+               <h4>John, 30</h4>
+                <h5>Last seen 2d ago</h5>
+              </div>
+            </div>
+          </div>
+           <div class="one-match">
+             <div class="one-match-content">
+             <img src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+              <div class="match-info">
+               <h4>Alicia, 23</h4>
+                <h5 class="online">Online</h5>
+              </div>
+             </div>
+          </div>
+           <div class="one-match">
+             <div class="one-match-content">
+             <img src="https://images.unsplash.com/photo-1495078065017-564723e7e3e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1300&q=80">
+              <div class="match-info">
+               <h4>Dan, 49</h4>
+                <h5 >Last seen 15h ago</h5>
+              </div>
+             </div>
+          </div>
+           <div class="one-match">
+             <div class="one-match-content">
+               <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+                <div class="match-info">
+                 <h4>Christopher, 27</h4>
+                  <h5 >Last seen 1w ago</h5>
+                </div>
+             </div>
+          </div>
+           <div class="one-match">
+             <div class="one-match-content">
+             <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+              <div class="match-info">
+               <h4>Lea, 25</h4>
+                <h5 class="online">Online</h5>
+              </div>
+             </div>
+          </div>
+         <div class="one-match">
+           <div class="one-match-content">
+             <img src="https://images.unsplash.com/photo-1517935541300-19815e88fa63?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+              <div class="match-info">
+               <h4>John, 30</h4>
+                <h5>Last seen 2d ago</h5>
+              </div>
+           </div>
+          </div>
+           <div class="one-match">
+             <div class="one-match-content">
+             <img src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+              <div class="match-info">
+               <h4>Alicia, 23</h4>
+                <h5 class="online">Online</h5>
+              </div>
+             </div>
+          </div>
+           <div class="one-match">
+             <div class="one-match-content">
+             <img src="https://images.unsplash.com/photo-1495078065017-564723e7e3e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1300&q=80">
+              <div class="match-info">
+               <h4>Dan, 49</h4>
+                <h5 >Last seen 15h ago</h5>
+              </div>
+             </div>
+          </div>
+           <div class="one-match">
+             <div class="one-match-content">
+               <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+                <div class="match-info">
+                 <h4>Christopher, 27</h4>
+                  <h5 >Last seen 1w ago</h5>
+                </div>
+             </div>
+          </div>
+           <div class="one-match">
+             <div class="one-match-content">
+             <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+              <div class="match-info">
+               <h4>Lea, 25</h4>
+                <h5 class="online">Online</h5>
+              </div>
+             </div>
+          </div>
+        </div>
+     </div>
+   </div>
+  </div>
+ </div>
+  
 </body>
+<!-- partial -->
+  <script src='https://code.jquery.com/jquery-3.3.1.slim.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js'></script>
+<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js'></script>
+</body>
+</html>
