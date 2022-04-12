@@ -20,11 +20,17 @@ print("[+] Loaded all basic target's profile information!")
 
 @app.route("/")
 def index():
-
     return render_template(
         "index.html",
-        # accinfo=accinfo,
-        # profile_image="file://" + os.path.join(os.getcwd(), "profilepic")
+        accinfo={
+            'followers': 300,
+            'followees': 1500,
+            'mediacount': 1000,
+            'full_name': "Hirusha Adikari",
+            'username': 'hirushaadi',
+            'profile_pic_url': "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/KDE_logo.svg/1200px-KDE_logo.svg.png",
+            'sample': ''
+        }
     )
 
 
