@@ -125,64 +125,108 @@
 
                     <div class="edit-profile grid-area" id="additiona-information-of-profile">
                         <div class="header">
-                            <h1>Additional Info</h1>
+                            <h1>@{{ accinfo.username }}</h1>
                         </div>
 
                         <div class="profile-picture">
                             <img src="{{ accinfo.profile_pic_url }}">
                         </div>
 
-                        <h1>Chloe C</h1>
+                        <h1>{{ accinfo.full_name }}</h1>
                         <div class="edit-infos">
-                            <h3>Personal information<i class="fas fa-pen"></i></h3>
-                            <div class="profile-data">
+                            <h3>Main Information</h3>
+
+                            <div class="profile-data" style="overflow-x: scroll; min-width: 450px;">
                                 <div class="data-details">
-                                    <h5>Age</h5>
-                                    <h4>24</h4>
+                                    <h5>is Verified?</h5>
+                                    <h4>{{ accinfo.is_verified }}</h4>
                                 </div>
                                 <div class="data-details">
-                                    <h5>Gender</h5>
-                                    <h4>Woman</h4>
+                                    <h5>is Private?</h5>
+                                    <h4>{{ accinfo.is_private }}</h4>
                                 </div>
                                 <div class="data-details">
-                                    <h5>Location</h5>
-                                    <h4>Paris</h4>
+                                    <h5>is Bussiness?</h5>
+                                    <h4>{{ accinfo.is_business_account }}</h4>
+                                </div>
+                                <div class="data-details">
+                                    <h5>Profile ID</h5>
+                                    <h4>{{ accinfo.profile_id }}</h4>
                                 </div>
                             </div>
-                        </div>
-                        <div class="edit-interest">
-                            <h3>What are you looking for ?<i class="fas fa-pen"></i></h3>
-                            <p class="p-small">Men and Women</p>
-                        </div>
-                        <div class="edit-interest">
-                            <h3>Bio<i class="fas fa-pen"></i></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi aliquam leo eu sapien
-                                tristique, eu efficitur mi ornare. Aliquam erat volutpat. Pellentesque rhoncus volutpat
-                                laoreet.Aliquam erat volutpat. Pellentesque rhoncus volutpat laoreet.Aliquam erat
-                                volutpat. Pellentesque rhoncus volutpat laoreet.</p>
-                        </div>
-                        <div class="edit-interest">
-                            <h3>Your interests <i class="fas fa-pen"></i></h3>
-                            <p>#traveling #cooking #summer #jazz #friends #art #walk #dogs #design #architecture #photo
-                                #nature #fun </p>
+
                         </div>
 
-                        <div class="edit-picture">
-                            <div class="picture">
-                                <img
-                                    src="https://images.unsplash.com/photo-1540218660726-95c6764dd7ea?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80">
-                            </div>
-                            <div class="picture">
-                                <img
-                                    src="https://images.unsplash.com/photo-1467020421390-2fb2647a413e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1235&q=80">
-                            </div>
-                            <div class="picture">
-                                <img
-                                    src="https://images.unsplash.com/photo-1488751045188-3c55bbf9a3fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80">
-                            </div>
-                            <div class="picture-add">
-                                <i class="fas fa-plus"></i>
-                            </div>
+                        <div class="edit-interest">
+                            <h3>Additional Information</h3>
+                            <ul>
+                                {% if accinfo.is_business_account == True %}
+                                <li>
+                                    <b>Business Category Name: </b> {{ accinfo.business_category_name }}
+                                </li>
+                                {% endif %}
+
+                                <li>
+                                    <b>Followers: </b> {{ accinfo.followers }}
+                                </li>
+                                <li>
+                                    <b>Followees: </b> {{ accinfo.followees }}
+                                </li>
+
+                                <li>
+                                    <b>Website: </b> {{ accinfo.external_url }}
+                                </li>
+
+                                <li>
+                                    <b>Media Count: </b> {{ accinfo.mediacount }}
+                                </li>
+                                <li>
+                                    <b>IGTV Count: </b> {{ accinfo.igtv_count }}
+                                </li>
+
+                                <li>
+                                    <b>Followed by viewer: </b> {{ accinfo.followed_by_viewer }}
+                                </li>
+                                <li>
+                                    <b>Follows viewer: </b> {{ accinfo.follows_viewer }}
+                                </li>
+                                <li>
+                                    <b>Blocked by viewer: </b> {{ accinfo.blocked_by_viewer }}
+                                </li>
+                                <li>
+                                    <b>Has blocked viewer: </b> {{ accinfo.has_blocked_viewer }}
+                                </li>
+
+                                <li>
+                                    <b>Has highlight reels: </b> {{ accinfo.has_highlight_reels }}
+                                </li>
+                                <li>
+                                    <b>Has viewable story: </b> {{ accinfo.has_viewable_story }}
+                                </li>
+                                <li>
+                                    <b>Has public story: </b> {{ accinfo.has_public_story }}
+                                </li>
+
+                                <li>
+                                    <b>Has requested viewer: </b> {{ accinfo.has_requested_viewer }}
+                                </li>
+                                <li>
+                                    <b>Requested by viewer: </b> {{ accinfo.requested_by_viewer }}
+                                </li>
+
+                                <li>
+                                    <b>Profile pic url: </b> <a href="{{ accinfo.profile_pic_url }}" target="_blank"
+                                        rel="noopener noreferrer">Click here to open</a>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                        <div class="edit-interest">
+                            <h3>Bio</h3>
+                            <p>
+                                {{ accinfo.biography }}
+                            </p>
                         </div>
 
                     </div>
