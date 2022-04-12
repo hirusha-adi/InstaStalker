@@ -427,7 +427,8 @@ body {
 .dashboard .grid-container .matchs .display-matchs:hover {
   visibility: visible;
 }
-.dashboard .grid-container .matchs .display-matchs::-webkit-scrollbar {
+
+/* .dashboard .grid-container .matchs .display-matchs::-webkit-scrollbar {
   width: 8px;
 }
 .dashboard .grid-container .matchs .display-matchs::-webkit-scrollbar-track {
@@ -439,7 +440,7 @@ body {
 }
 .dashboard .grid-container .matchs .display-matchs::-webkit-scrollbar-thumb:hover {
   background: #363B6D;
-}
+} */
 .dashboard .grid-container .matchs .display-matchs .one-match {
   visibility: visible;
   cursor: pointer;
@@ -520,12 +521,14 @@ body {
   padding-top: 10px;
   height: 180px;
   display: flex;
-  overflow-x: auto;
-  visibility: hidden;
+  overflow-y: hidden;
+  /* overflow-x: auto; */
+  /* visibility: hidden; */
 }
 .dashboard .grid-container .profiles-display:hover {
   visibility: visible;
 }
+/* 
 .dashboard .grid-container .profiles-display::-webkit-scrollbar {
   height: 8px;
 }
@@ -538,7 +541,8 @@ body {
 }
 .dashboard .grid-container .profiles-display::-webkit-scrollbar-thumb:hover {
   background: #363B6D;
-}
+} 
+*/
 .dashboard .grid-container .profiles-display .one-profile {
   visibility: visible;
   float: left;
