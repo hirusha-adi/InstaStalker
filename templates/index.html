@@ -2,19 +2,21 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>CodePen - Profile dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>InstaStalker Web - @{{ accinfo.username }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
 
 </head>
 
@@ -30,7 +32,7 @@
                     <!-- 1 - Profile Information | Overview -->
                     <div class="profile grid-area">
                         <div class="img">
-                            <img src="{{ accinfo.profile_pic_url }}">
+                            <img src="{{ accinfo.profile_picture_web_server_url }}">
                             <h3>{{ accinfo.full_name }}</h3>
                             <h5 class="online">@{{ accinfo.username }}</h5>
                             <div class="button">
@@ -70,22 +72,19 @@
                             <!-- <div class="one-profile online"> -->
                             <div class="one-profile">
                                 <div class="img">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1495078065017-564723e7e3e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1300&q=80">
+                                    <img src="{{ url_for('static', filename='images/profile.png') }}">
                                 </div>
                                 <h4>Profile Picture</h4>
                             </div>
                             <div class="one-profile">
                                 <div class="img">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1495078065017-564723e7e3e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1300&q=80">
+                                    <img src="{{ url_for('static', filename='images/info.png') }}">
                                 </div>
                                 <h4>Profile Info</h4>
                             </div>
                             <div class="one-profile">
                                 <div class="img">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1495078065017-564723e7e3e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1300&q=80">
+                                    <img src="{{ url_for('static', filename='images/save.png') }}">
                                 </div>
                                 <h4>All Posts</h4>
                             </div>
@@ -99,43 +98,43 @@
                             <!-- <div class="one-profile online"> -->
                             <div class="one-profile">
                                 <div class="img">
-                                    <img src="">
+                                    <img src="{{ url_for('static', filename='images/profile.png') }}">
                                 </div>
                                 <h4>Profile Picture</h4>
                             </div>
                             <div class="one-profile">
                                 <div class="img">
-                                    <img src="">
+                                    <img src="{{ url_for('static', filename='images/info.png') }}">
                                 </div>
                                 <h4>Profile Info</h4>
                             </div>
                             <div class="one-profile">
                                 <div class="img">
-                                    <img src="">
+                                    <img src="{{ url_for('static', filename='images/upload.png') }}">
                                 </div>
                                 <h4>Uploaded Posts</h4>
                             </div>
                             <div class="one-profile">
                                 <div class="img">
-                                    <img src="">
+                                    <img src="{{ url_for('static', filename='images/tag.png') }}">
                                 </div>
                                 <h4>Tagged Posts</h4>
                             </div>
                             <div class="one-profile">
                                 <div class="img">
-                                    <img src="">
+                                    <img src="{{ url_for('static', filename='images/igtv.png') }}">
                                 </div>
                                 <h4>IGTV Posts</h4>
                             </div>
                             <div class="one-profile">
                                 <div class="img">
-                                    <img src="">
+                                    <img src="{{ url_for('static', filename='images/follow.png') }}">
                                 </div>
                                 <h4>Followers</h4>
                             </div>
                             <div class="one-profile">
                                 <div class="img">
-                                    <img src="">
+                                    <img src="{{ url_for('static', filename='images/follow.png') }}">
                                 </div>
                                 <h4>Followees</h4>
                             </div>
@@ -153,7 +152,7 @@
 
                         <!-- 4-2 Profile Picture -->
                         <div class="profile-picture">
-                            <img src="{{ accinfo.profile_pic_url }}">
+                            <img src="{{ accinfo.profile_picture_web_server_url }}">
                         </div>
 
                         <!-- 4-3 Large Topic -->
@@ -263,19 +262,13 @@
                     <!-- 5 - Usage History -->
                     <div class="matchs grid-area">
                         <div class="header">
-                            <h1>Usage History</h1>
+                            <h1>Usage History
+                                <br>
+                                Alphebatical Order
+                            </h1>
                         </div>
                         <div class="display-matchs">
-                            <div class="one-match">
-                                <div class="one-match-content">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1517935541300-19815e88fa63?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                                    <div class="match-info">
-                                        <h4>John, 30</h4>
-                                        <h5>Last seen 2d ago</h5>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="one-match">
                                 <div class="one-match-content">
                                     <img
@@ -286,86 +279,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="one-match">
-                                <div class="one-match-content">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1495078065017-564723e7e3e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1300&q=80">
-                                    <div class="match-info">
-                                        <h4>Dan, 49</h4>
-                                        <h5>Last seen 15h ago</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="one-match">
-                                <div class="one-match-content">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                                    <div class="match-info">
-                                        <h4>Christopher, 27</h4>
-                                        <h5>Last seen 1w ago</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="one-match">
-                                <div class="one-match-content">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                                    <div class="match-info">
-                                        <h4>Lea, 25</h4>
-                                        <h5 class="online">Online</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="one-match">
-                                <div class="one-match-content">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1517935541300-19815e88fa63?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                                    <div class="match-info">
-                                        <h4>John, 30</h4>
-                                        <h5>Last seen 2d ago</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="one-match">
-                                <div class="one-match-content">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                                    <div class="match-info">
-                                        <h4>Alicia, 23</h4>
-                                        <h5 class="online">Online</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="one-match">
-                                <div class="one-match-content">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1495078065017-564723e7e3e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1300&q=80">
-                                    <div class="match-info">
-                                        <h4>Dan, 49</h4>
-                                        <h5>Last seen 15h ago</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="one-match">
-                                <div class="one-match-content">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                                    <div class="match-info">
-                                        <h4>Christopher, 27</h4>
-                                        <h5>Last seen 1w ago</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="one-match">
-                                <div class="one-match-content">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                                    <div class="match-info">
-                                        <h4>Lea, 25</h4>
-                                        <h5 class="online">Online</h5>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 
@@ -374,6 +288,7 @@
         </div>
 
     </body>
+
     <!-- partial -->
     <script src='https://code.jquery.com/jquery-3.3.1.slim.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js'></script>
