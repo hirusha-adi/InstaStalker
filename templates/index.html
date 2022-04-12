@@ -26,6 +26,8 @@
 
             <div class="dashboard">
                 <div class="grid-container">
+
+                    <!-- 1 - Profile Information | Overview -->
                     <div class="profile grid-area">
                         <div class="img">
                             <img src="{{ accinfo.profile_pic_url }}">
@@ -60,6 +62,8 @@
                             </h5>
                         </div>
                     </div>
+
+                    <!-- 2 - Main Actions -->
                     <div class="last-view grid-area">
                         <h2>Your latest visits.</h2>
                         <div class="profiles-display">
@@ -100,9 +104,9 @@
                                 <h4>Christopher</h4>
                             </div>
                         </div>
-
                     </div>
 
+                    <!-- 3 - All Actions List -->
                     <div class="last-like grid-area">
                         <h2>They liked your profile !</h2>
                         <div class="profiles-display">
@@ -123,19 +127,25 @@
                         </div>
                     </div>
 
+                    <!-- 4 - All Profile Info List | START -->
                     <div class="edit-profile grid-area" id="additiona-information-of-profile">
+
+                        <!-- 4-1 Username at top -->
                         <div class="header">
                             <h1>@{{ accinfo.username }}</h1>
                         </div>
 
+                        <!-- 4-2 Profile Picture -->
                         <div class="profile-picture">
                             <img src="{{ accinfo.profile_pic_url }}">
                         </div>
 
+                        <!-- 4-3 Large Topic -->
                         <h1>{{ accinfo.full_name }}</h1>
+
+                        <!-- 4-4 Main Information (is verified, private, bussiness & account-id ) -->
                         <div class="edit-infos">
                             <h3>Main Information</h3>
-
                             <div class="profile-data" style="overflow-x: scroll; min-width: 450px;">
                                 <div class="data-details">
                                     <h5>is Verified?</h5>
@@ -154,9 +164,10 @@
                                     <h4>{{ accinfo.profile_id }}</h4>
                                 </div>
                             </div>
-
                         </div>
 
+                        <!-- 4-5 All other information list -->
+                        <!-- Has a custom order (not in the order returned by the backend) -->
                         <div class="edit-interest">
                             <h3>Additional Information</h3>
                             <ul>
@@ -222,6 +233,7 @@
                             </ul>
                         </div>
 
+                        <!-- 4-6 Account Biography -->
                         <div class="edit-interest">
                             <h3>Bio</h3>
                             <p>
@@ -230,7 +242,7 @@
                         </div>
 
                     </div>
-
+                    <!-- 4 - All Profile Info List | END -->
 
                     <div class="matchs grid-area">
                         <div class="header">
