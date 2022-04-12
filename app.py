@@ -1,8 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from manager import InstaProfile, Database
 import requests
 import os
 import json
+from PIL import Image
+from threading import Thread
+import subprocess
 
 app = Flask(__name__)
 
@@ -101,6 +104,19 @@ def index():
         accinfo=accinfo,
         final_all_history_list=final_all_history_list,
     )
+
+
+@app.route("/save/profile_pic")
+def save_profile_pic():
+    def open_folder():
+        if os.name == 'nt':
+            subprocess.Popen(['explorer', current_session_folder])
+        else:
+            subprocess.Popen(['xdg-open', current_session_folder])
+
+    t1 = Thread(target=open_folder)
+    t1.start()
+    return redirect(url_for("index"))
 
 
 def runWebServer():

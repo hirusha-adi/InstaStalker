@@ -71,9 +71,11 @@
                         <div class="profiles-display">
                             <!-- <div class="one-profile online"> -->
                             <div class="one-profile">
-                                <div class="img">
-                                    <img src="{{ url_for('static', filename='images/profile.png') }}">
-                                </div>
+                                <a href="{{ url_for('save_profile_pic') }}">
+                                    <div class="img">
+                                        <img src="{{ url_for('static', filename='images/profile.png') }}">
+                                    </div>
+                                </a>
                                 <h4>Profile Picture</h4>
                             </div>
                             <div class="one-profile">
@@ -87,6 +89,12 @@
                                     <img src="{{ url_for('static', filename='images/save.png') }}">
                                 </div>
                                 <h4>All Posts</h4>
+                            </div>
+                            <div class="one-profile">
+                                <div class="img">
+                                    <img src="{{ url_for('static', filename='images/save.png') }}">
+                                </div>
+                                <h4>Everything</h4>
                             </div>
                         </div>
                     </div>
