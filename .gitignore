@@ -3,6 +3,10 @@
 username.txt
 password.txt
 
+# Website Saved Data
+static/data 
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
