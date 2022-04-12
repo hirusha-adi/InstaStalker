@@ -386,7 +386,7 @@ Followees: {data['followees']}
 External URL: {data['external_url']}
 Is Business Account: {data['is_business_account']}
 Business Category Name: {data['business_category_name']}
-Biography: {data['biography']}
+Biography: \n{data['biography']}\n
 Blocked by viewer: {data['blocked_by_viewer']}
 Follows viewer: {data['follows_viewer']}
 Full Name: {data['full_name']}
