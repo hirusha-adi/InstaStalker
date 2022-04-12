@@ -354,6 +354,31 @@ class InstaProfile:
                 else:
                     json.dump(self.followees_list, _file_follow)
 
+    def createProfileTXTFileContent(self, data):
+        return f"""Username: {data['username']}
+Profile ID: {data['profile_id']}
+Is Private: {data['is_private']}
+Followed by viewer: {data['followed_by_viewer']}
+Media Count: {data['mediacount']}
+IGTV Count: {data['igtv_count']}
+Followers: {data['followers']}
+Followees: {data['followees']}
+External URL: {data['external_url']}
+Is Business Account: {data['is_business_account']}
+Business Category Name: {data['business_category_name']}
+\nBiography: \n{data['biography']}\n
+Blocked by viewer: {data['blocked_by_viewer']}
+Follows viewer: {data['follows_viewer']}
+Full Name: {data['full_name']}
+Has blocked viewer: {data['has_blocked_viewer']}
+Has highlight reels: {data['has_highlight_reels']}
+Has public story: {data['has_public_story']}
+Has viewable story: {data['has_viewable_story']}
+Has requested viewer: {data['has_requested_viewer']}
+Is Verified: {data['is_verified']}
+Requested by viewer: {data['requested_by_viewer']}
+Profile pic url: {data['profile_pic_url']}"""
+
     def saveProfileInfo(self, file_format: str = "json", filename: str = None):
         if filename is None:
             filename_file = os.path.join(
@@ -379,29 +404,7 @@ class InstaProfile:
         data = self.getProfileInfo()
         with open(filename_file, "w", encoding="utf-8") as file:
             if file_format == "txt":
-                file.write(f"""Username: {data['username']}
-Profile ID: {data['profile_id']}
-Is Private: {data['is_private']}
-Followed by viewer: {data['followed_by_viewer']}
-Media Count: {data['mediacount']}
-IGTV Count: {data['igtv_count']}
-Followers: {data['followers']}
-Followees: {data['followees']}
-External URL: {data['external_url']}
-Is Business Account: {data['is_business_account']}
-Business Category Name: {data['business_category_name']}
-\nBiography: \n{data['biography']}\n
-Blocked by viewer: {data['blocked_by_viewer']}
-Follows viewer: {data['follows_viewer']}
-Full Name: {data['full_name']}
-Has blocked viewer: {data['has_blocked_viewer']}
-Has highlight reels: {data['has_highlight_reels']}
-Has public story: {data['has_public_story']}
-Has viewable story: {data['has_viewable_story']}
-Has requested viewer: {data['has_requested_viewer']}
-Is Verified: {data['is_verified']}
-Requested by viewer: {data['requested_by_viewer']}
-Profile pic url: {data['profile_pic_url']}""")
+                file.write(self.createProfileTXTFileContent(data=data))
             else:
                 json.dump(data, file, ensure_ascii=True, indent=4)
 

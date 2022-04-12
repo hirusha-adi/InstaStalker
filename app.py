@@ -132,29 +132,7 @@ def save_profile_info_txt():
     if not(os.path.isfile(information_filename_txt)):
         try:
             with open(information_filename_txt, "w", encoding="utf-8") as file:
-                file.write(f"""Username: {accinfo['username']}
-Profile ID: {accinfo['profile_id']}
-Is Private: {accinfo['is_private']}
-Followed by viewer: {accinfo['followed_by_viewer']}
-Media Count: {accinfo['mediacount']}
-IGTV Count: {accinfo['igtv_count']}
-Followers: {accinfo['followers']}
-Followees: {accinfo['followees']}
-External URL: {accinfo['external_url']}
-Is Business Account: {accinfo['is_business_account']}
-Business Category Name: {accinfo['business_category_name']}
-\nBiography: \n{accinfo['biography']}\n
-Blocked by viewer: {accinfo['blocked_by_viewer']}
-Follows viewer: {accinfo['follows_viewer']}
-Full Name: {accinfo['full_name']}
-Has blocked viewer: {accinfo['has_blocked_viewer']}
-Has highlight reels: {accinfo['has_highlight_reels']}
-Has public story: {accinfo['has_public_story']}
-Has viewable story: {accinfo['has_viewable_story']}
-Has requested viewer: {accinfo['has_requested_viewer']}
-Is Verified: {accinfo['is_verified']}
-Requested by viewer: {accinfo['requested_by_viewer']}
-Profile pic url: {accinfo['profile_pic_url']}""")
+                file.write(obj.createProfileTXTFileContent(data=accinfo))
         except:
             obj.saveProfileInfo(
                 filename=information_filename_txt, file_format='txt')
