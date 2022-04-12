@@ -96,6 +96,9 @@ class InstaProfile:
             }
             return True
 
+    def setProfileInfo(self, info):
+        self.profile_dict = info
+
     def getProfileInfo(self):
         """
         Get the basic information of the target profile
