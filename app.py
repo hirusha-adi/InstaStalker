@@ -269,7 +269,37 @@ def save_profile_followees():
 
 @app.route("/save/posts/all")
 def save_all_posts():
-    # COMPLETE THIS
+    def save_info_and_every_post():
+        os.chdir(ORIGINAL_DIR)
+
+        if not(os.path.isfile(information_filename_txt)):
+            # Base Profile Info - txt
+            # No need for json because its being made by default
+            obj.save_ProfileInfo(
+                final_filename=information_filename_txt, file_format='txt')
+
+        # All Posts
+        obj.save_PostsUploaded(ORIGINAL_DIR, uploaded_posts_folder_path, True)
+        obj.save_PostsTagged(ORIGINAL_DIR, tagged_posts_folder_path, True)
+        obj.save_PostsTagged(ORIGINAL_DIR, igtv_posts_folder_path, True)
+
+        # Followers and Followee info if not files already exist
+        if not(profile_followers_list_file_json):
+            obj.save_FollowersFollowees(
+                "followers", profile_followers_list_file_json, "all", "json")
+        if not(os.path.isfile(profile_followees_list_file_json)):
+            obj.save_FollowersFollowees(
+                "followers", profile_followees_list_file_json, "all", "json")
+
+        os.chdir(ORIGINAL_DIR)
+
+    t12 = Thread(target=save_info_and_every_post)
+    t12.start()
+
+    t11 = Thread(target=open_folder, args=(
+        current_session_folder_absolute,))
+    t11.start()
+
     return redirect(url_for('index'))
 
 
