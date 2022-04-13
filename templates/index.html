@@ -98,7 +98,7 @@
                                         <img src="{{ url_for('static', filename='images/save.png') }}">
                                     </div>
                                 </a>
-                                <h4>All Posts</h4>
+                                <h4>All Posts + Info</h4>
                             </div>
                         </div>
                     </div>
@@ -315,7 +315,9 @@
                             {% for history_item in final_all_history_list%}
                             <div class="one-match">
                                 <div class="one-match-content">
-                                    <img src="{{ history_item.image_url_for_web_server }}">
+                                    <a href="{{ url_for('open_history_folder', history=history_item.username) }}">
+                                        <img src="{{ history_item.image_url_for_web_server }}">
+                                    </a>
                                     <div class="match-info">
                                         <h4>{{ history_item.full_name }}</h4>
                                         <h5 class="online">{{ history_item.username }}</h5>
