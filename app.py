@@ -21,7 +21,7 @@ print("Created the object successfully!")
 
 # Login
 print("Please wait while logging in!")
-obj.login(username=Database.USERNAME, password=Database.PASS)
+obj.login(username=Database.USERNAME, password=Database.PASSWORD)
 print("Logged in successfully!")
 
 
@@ -136,6 +136,14 @@ igtv_posts_folder_path = os.path.join(
     "posts",
     "igtv"
 )
+profile_followers_list_file_json = os.path.join(
+    current_session_folder_absolute,
+    "followers.json"
+)
+profile_followees_list_file_json = os.path.join(
+    current_session_folder_absolute,
+    "followees.json"
+)
 
 
 # Support Functions
@@ -214,6 +222,36 @@ def save_posts_igtv():
     )
     t7.start()
 
+    return redirect(url_for('index'))
+
+
+@app.route("/save/profile/followers")
+def save_profile_followers():
+    t8 = Thread(
+        target=obj.save_FollowersFollowees,
+        args=(
+            "followers",
+            profile_followers_list_file_json,
+            "all",
+            "json"
+        )
+    )
+    t8.start()
+    return redirect(url_for('index'))
+
+
+@app.route("/save/profile/followees")
+def save_profile_followees():
+    t9 = Thread(
+        target=obj.save_FollowersFollowees,
+        args=(
+            "followees",
+            profile_followees_list_file_json,
+            "all",
+            "json"
+        )
+    )
+    t9.start()
     return redirect(url_for('index'))
 
 
