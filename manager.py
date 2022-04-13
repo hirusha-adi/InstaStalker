@@ -7,43 +7,41 @@ from instaloader import Instaloader, Profile
 class InstaProfile:
     def __init__(self, target: str = None):
         self.CLEAR = ("clear" if os.name == "posix" else "cls")
-        self.TARGET = target
+        self._TARGET = target
 
-        self.insta = Instaloader()
+        self._insta = Instaloader()
 
         # variables used to store stuff of the user
-        self.profile = None
-        self.profile_dict = None
-        self.tagged_posts = None
-        self.uploaded_posts = None
-        self.igtv_posts = None
-        self.followers = None
-        self.followees = None
-        self.followers_list = {'data': []}
-        self.followees_list = {'data': []}
+        self._profile = None
+        self._profile_dict = None
+        self._tagged_posts = None
+        self._uploaded_posts = None
+        self._igtv_posts = None
+        self._followers = None
+        self._followees = None
+        self._followers_list = {'data': []}
+        self._followees_list = {'data': []}
 
         # variables used to manage stuff of the object
-        self.is_logged_in = False
-        self.is_target_set = False
-        self.is_profile_processed = False
+        self._is_logged_in = False
+        self._is_target_set = False
+        self._is_profile_processed = False
 
-    def ask(self, q: str):
-        """
-        Take uer input
-        """
-        return input(q)
+    @property
+    def TARGET(self): return self._TARGET
 
-    def setTARGET(self, target: str):
-        """
-        Set the taget user
-
-        Args:
-            target (str): Target's username of the instagram account
-        """
-        if self.is_target_set:
+    @TARGET.setter
+    def TARGET(self, target: str):
+        if self._is_target_set:
             return False
-        self.TARGET = target
-        self.is_target_set = True
+
+        self._TARGET = target
+        self._profile = Profile.from_username(
+            self._insta.context,
+            self._TARGET
+        )
+
+        self._is_target_set = True
         return True
 
     def login(self, username: str, password: str):
@@ -54,55 +52,55 @@ class InstaProfile:
             username (str): Username/Email/Phone-Number of the instagram account
             password (str): Password of the instagram account
         """
-        if self.is_logged_in:
+        if self._is_logged_in:
             return False
-        self.insta.login(user=username, passwd=password)
-        self.is_logged_in = True
+        self._insta.login(user=username, passwd=password)
+        self._is_logged_in = True
 
-    def get_is_logged_in(self): return self.is_logged_in
+    def get_is_logged_in(self): return self._is_logged_in
 
     def processProfile(self):
         """
         Process the target profile's basic information
         """
-        if self.is_profile_processed:
+        if self._is_profile_processed:
             return False
         else:
-            self.is_profile_processed = True
-            self.profile = Profile.from_username(
-                self.insta.context, self.TARGET)
-            self.profile_dict = {
-                'username': self.profile.username,
-                'profile_id': self.profile.userid,
-                'is_private': self.profile.is_private,
-                'followed_by_viewer': self.profile.followed_by_viewer,
-                'mediacount': self.profile.mediacount,
-                'igtv_count': self.profile.igtvcount,
-                'followers': self.profile.followers,
-                'followees': self.profile.followees,
-                'external_url': self.profile.external_url,
-                'is_business_account': self.profile.is_business_account,
-                'business_category_name': self.profile.business_category_name,
-                'biography': self.profile.biography,
-                'blocked_by_viewer': self.profile.blocked_by_viewer,
-                'follows_viewer': self.profile.follows_viewer,
-                'full_name': self.profile.full_name,
-                'has_blocked_viewer': self.profile.has_blocked_viewer,
-                'has_highlight_reels': self.profile.has_highlight_reels,
-                'has_public_story': self.profile.has_public_story,
-                'has_viewable_story': self.profile.has_viewable_story,
-                'has_requested_viewer': self.profile.has_requested_viewer,
-                'is_verified': self.profile.is_verified,
-                'requested_by_viewer': self.profile.requested_by_viewer,
-                'profile_pic_url': self.profile.profile_pic_url
+            self._is_profile_processed = True
+            self._profile = Profile.from_username(
+                self._insta.context, self._TARGET)
+            self._profile_dict = {
+                'username': self._profile.username,
+                'profile_id': self._profile.userid,
+                'is_private': self._profile.is_private,
+                'followed_by_viewer': self._profile.followed_by_viewer,
+                'mediacount': self._profile.mediacount,
+                'igtv_count': self._profile.igtvcount,
+                'followers': self._profile.followers,
+                'followees': self._profile.followees,
+                'external_url': self._profile.external_url,
+                'is_business_account': self._profile.is_business_account,
+                'business_category_name': self._profile.business_category_name,
+                'biography': self._profile.biography,
+                'blocked_by_viewer': self._profile.blocked_by_viewer,
+                'follows_viewer': self._profile.follows_viewer,
+                'full_name': self._profile.full_name,
+                'has_blocked_viewer': self._profile.has_blocked_viewer,
+                'has_highlight_reels': self._profile.has_highlight_reels,
+                'has_public_story': self._profile.has_public_story,
+                'has_viewable_story': self._profile.has_viewable_story,
+                'has_requested_viewer': self._profile.has_requested_viewer,
+                'is_verified': self._profile.is_verified,
+                'requested_by_viewer': self._profile.requested_by_viewer,
+                'profile_pic_url': self._profile.profile_pic_url
             }
             return True
 
     def setProfileInfo(self, info):
-        self.profile_dict = info
+        self._profile_dict = info
 
     def getTrue_profile_dict(self):
-        return self.profile_dict
+        return self._profile_dict
 
     def getProfileInfo(self):
         """
@@ -134,9 +132,9 @@ class InstaProfile:
                 "requested_by_viewer"
                 "profile_pic_url"
         """
-        if (self.profile_dict is None) or (self.is_profile_processed is False):
+        if (self._profile_dict is None) or (self._is_profile_processed is False):
             self.processProfile()
-        return self.profile_dict
+        return self._profile_dict
 
     def getPosts(self):
         """
@@ -145,22 +143,29 @@ class InstaProfile:
         Returns:
             NodeIterator[Post]
         """
-        if self.uploaded_posts is None:
-            self.uploaded_posts = self.profile.get_posts()
-        return self.uploaded_posts
+        print("save function called the get func")
+        if self._uploaded_posts is None:
+            print("setting cuz none")
+            self._uploaded_posts = self._profile.get_posts()
+            print("returning ", self._uploaded_posts[0])
+        return self._uploaded_posts
 
-    def savePosts(self):
+    def savePosts(self, target):
         """
         Save all the posts uploaded by the target user
-            insde `./targetUserName/` directory
+            insde `target/` directory
         """
         count = 1
-        for post in self.getPosts():
+        print("save function called")
+        if self._uploaded_posts is None:
+            self.getPosts()
+        for post in self._uploaded_posts:
+            print("starting loop")
             print(
                 f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}")
-            self.insta.download_post(
+            self._insta.download_post(
                 post,
-                target=self.profile.username
+                target=target
             )
 
     def getAllTaggedPosts(self):
@@ -170,9 +175,9 @@ class InstaProfile:
         Returns:
             NodeIterator[Post]
         """
-        if self.tagged_posts is None:
-            self.tagged_posts = self.profile.get_tagged_posts()
-        return self.tagged_posts
+        if self._tagged_posts is None:
+            self._tagged_posts = self._profile.get_tagged_posts()
+        return self._tagged_posts
 
     def saveAllTaggedPosts(self):
         """
@@ -183,9 +188,9 @@ class InstaProfile:
         for post in self.getAllTaggedPosts():
             print(
                 f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}")
-            self.insta.download_post(
+            self._insta.download_post(
                 post,
-                target=self.profile.username
+                target=self._profile.username
             )
 
     def getAllIGTVPosts(self):
@@ -195,9 +200,9 @@ class InstaProfile:
         Returns:
             NodeIterator[Post]
         """
-        if self.igtv_posts is None:
-            self.igtv_posts = self.profile.get_igtv_posts()
-        return self.igtv_posts
+        if self._igtv_posts is None:
+            self._igtv_posts = self._profile.get_igtv_posts()
+        return self._igtv_posts
 
     def saveAllIGTVPosts(self):
         """
@@ -208,9 +213,9 @@ class InstaProfile:
         for post in self.getAllIGTVPosts():
             print(
                 f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}")
-            self.insta.download_post(
+            self._insta.download_post(
                 post,
-                target=self.profile.username
+                target=self._profile.username
             )
 
     def saveAllPosts(self):
@@ -231,9 +236,9 @@ class InstaProfile:
         Returns:
             NodeIterator[Profile]
         """
-        if self.followers is None:
-            self.followers = self.profile.get_followers()
-        return self.followers
+        if self._followers is None:
+            self._followers = self._profile.get_followers()
+        return self._followers
 
     def getFolloweesList(self):
         """
@@ -242,9 +247,9 @@ class InstaProfile:
         Returns:
             NodeIterator[Profile]
         """
-        if self.followees:
-            self.followees = self.profile.get_followees()
-        return self.followees
+        if self._followees:
+            self._followees = self._profile.get_followees()
+        return self._followees
 
     def saveFollowersFollowees(
         self,
@@ -305,7 +310,7 @@ class InstaProfile:
 
         file_name = os.path.join(
             os.getcwd(),
-            str(self.profile.username) +
+            str(self._profile.username) +
             f"_{'followers' if followers == True else 'followees'}"
         )
 
@@ -337,9 +342,9 @@ class InstaProfile:
                 )
 
                 if followers:
-                    self.followers_list['data'].append(text)
+                    self._followers_list['data'].append(text)
                 else:
-                    self.followees_list['data'].append(text)
+                    self._followees_list['data'].append(text)
 
                 print(text)
 
@@ -349,10 +354,10 @@ class InstaProfile:
                 count += 1
 
             if not text_file:
-                if self.followers:
-                    json.dump(self.followers_list, _file_follow)
+                if self._followers:
+                    json.dump(self._followers_list, _file_follow)
                 else:
-                    json.dump(self.followees_list, _file_follow)
+                    json.dump(self._followees_list, _file_follow)
 
     def createProfileTXTFileContent(self, data):
         return f"""Username: {data['username']}
@@ -382,7 +387,7 @@ Profile pic url: {data['profile_pic_url']}"""
     def saveProfileInfo(self, file_format: str = "json", filename: str = None):
         if filename is None:
             filename_file = os.path.join(
-                os.getcwd(), str(self.profile.username))
+                os.getcwd(), str(self._profile.username))
 
             if file_format == "txt":
                 if not(filename_file.endswith(".txt")):
