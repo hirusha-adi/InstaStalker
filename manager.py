@@ -301,10 +301,11 @@ class InstaProfile:
     def save_FollowersFollowees(
         self,
         followers_or_followees: str,
-        formatting: str = None,
+        final_file_name=None,
         mode: str = "simple",
         output: str = "json",
-        save_path=None
+        formatting: str = None,
+        save_path=None,
     ):
         """
         `followers_or_followees`: str -->
@@ -363,43 +364,49 @@ class InstaProfile:
             sys.exit(
                 'Error: Improper value for `followers_or_followees` has been passed to `saveFollowersFollowees()`')
 
-        # Save File Name
-        if save_path is None:
-            file_name = os.path.join(
-                os.getcwd(),
-                str(self._profile.username) +
-                f"_{'followers' if followers == True else 'followees'}"
-            )
+        if final_file_name is None:
 
-        # If save_path is a string
-        if isinstance(save_path, str):
-            # If save_path does not end with a .json or .txt, consider it as a folder
-            if not(save_path.endswith(".json") or save_path.endswith(".txt")):
-                if not(os.path.isdir(save_path)):
-                    # Create this directory if it does not exist
-                    os.makedirs(save_path)
-                # make save file name from the save_path dir
+            # Save File Name
+            if save_path is None:
                 file_name = os.path.join(
-                    save_path,
-                    f"{self._TARGET}_{'followers' if followers == True else 'followees'}"
+                    os.getcwd(),
+                    str(self._profile.username) +
+                    f"_{'followers' if followers == True else 'followees'}"
                 )
-            else:
-                # If save_path end with a .json or .txt, consider it as the file name
-                file_name = os.path.join(save_path)
 
-        # Add file extension if not in file_name
-        if (output == "txt") or (output == "text"):
-            if not file_name.lower().endswith(".txt"):
-                file_name += ".txt"
-            text_file = True
+            # If save_path is a string
+            if isinstance(save_path, str):
+                # If save_path does not end with a .json or .txt, consider it as a folder
+                if not(save_path.endswith(".json") or save_path.endswith(".txt")):
+                    if not(os.path.isdir(save_path)):
+                        # Create this directory if it does not exist
+                        os.makedirs(save_path)
+                    # make save file name from the save_path dir
+                    file_name = os.path.join(
+                        save_path,
+                        f"{self._TARGET}_{'followers' if followers == True else 'followees'}"
+                    )
+                else:
+                    # If save_path end with a .json or .txt, consider it as the file name
+                    file_name = os.path.join(save_path)
+
+            # Add file extension if not in file_name
+            if (output == "txt") or (output == "text"):
+                if not file_name.lower().endswith(".txt"):
+                    file_name += ".txt"
+                text_file = True
+            else:
+                # Default to json
+                if not file_name.lower().endswith(".json"):
+                    file_name += ".json"
+                text_file = False
+
         else:
-            # Default to json
-            if not file_name.lower().endswith(".json"):
-                file_name += ".json"
-            text_file = False
+            file_name = final_file_name
 
         # Open the file
         with open(file_name, "w", encoding="utf-8") as _file_follow:
+
             count = 1  # keep track of the count
 
             # Iterate through the returned NodeIterator[Profile]
@@ -447,6 +454,9 @@ class InstaProfile:
                     json.dump(self._followers_list, _file_follow)
                 else:
                     json.dump(self._followees_list, _file_follow)
+
+        print(
+            f"\nSaved all {'followers' if followers == True else 'followees'} list to {file_name}")
 
     # Create text from a dictionary. returns `str`
     def format_ProfileInfo_Dict2TXT(self, data):
