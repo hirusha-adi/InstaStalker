@@ -1,14 +1,33 @@
-import logging
-from flask import Flask, render_template, redirect, url_for, send_file
-from manager import InstaProfile, Database
-import requests
-import os
 import json
-from threading import Thread
+import logging
+import os
 import subprocess
 import sys
-import texts
 import webbrowser
+from threading import Thread
+
+
+import texts
+from manager import InstaProfile
+from utils import Database
+
+
+def pip_install(name: str):
+    os.system(f'{"pip" if os.name == "nt" else "pip3"} install -U {name}')
+
+
+try:
+    import requests
+except:
+    pip_install("requests")
+    import requests
+
+try:
+    from flask import Flask, redirect, render_template, send_file, url_for
+except:
+    pip_install("flask")
+    from flask import Flask, redirect, render_template, send_file, url_for
+
 
 app = Flask(__name__)
 log = logging.getLogger('werkzeug')
@@ -38,7 +57,7 @@ print("Logged in successfully!")
 print("[*] Please wait while target's profile information is being loaded")
 
 # Process Main Info in obj to prevent fucky errors
-obj._process_profile_data()
+# obj._process_profile_data()
 
 # Folder to store the user data in
 current_session_folder_absolute = os.path.join(
@@ -165,10 +184,13 @@ texts.clear()
 def open_folder(folder_path):
     subprocess.Popen(
         ['explorer' if os.name == 'nt' else 'xdg-open', folder_path])
+    print(
+        f"[+] Ran: {'explorer' if os.name == 'nt' else 'xdg-open'} '{folder_path}'\n\tTo open the folder")
 
 
-@ app.route("/")
+@app.route("/")
 def index():
+    print("[+] Returning `index.html` with required data")
     return render_template(
         "index.html",
         accinfo=accinfo,
@@ -178,70 +200,90 @@ def index():
 
 @app.route("/save/profile/piccture")
 def save_profile_pic():
+    print("[+] Returning profile picture of the current target")
     return send_file(profile_picture_filename)
 
 
 @app.route("/save/profile/info")
 def save_profile_info_txt():
+    print(texts.PROFILE_INFORMATION)
+
     if not(os.path.isfile(information_filename_txt)):
+        print("[*] Loading & Saving profile information!")
         obj.save_ProfileInfo(
             final_filename=information_filename_txt, file_format='txt')
+        print("[+] Saved profile information as text file: `txt` !")
+    print(f"[+] Returning {information_filename_txt} as attachment.")
     return send_file(information_filename_txt, as_attachment=True)
 
 
 @app.route("/save/posts/uploaded")
 def save_posts_uploaded():
+    print(texts.UPLOADED_POSTS)
+
     if not(os.path.isdir(uploaded_posts_folder_path)):
         os.makedirs(uploaded_posts_folder_path)
-
-    t2 = Thread(target=open_folder, args=(uploaded_posts_folder_path,))
-    t2.start()
+        print(f"[+] Made directory {uploaded_posts_folder_path}")
 
     t3 = Thread(
         target=obj.save_PostsUploaded,
         args=(ORIGINAL_DIR, uploaded_posts_folder_path, True)
     )
     t3.start()
+    print("[+] Started new thread for `save_PostsUploaded()`")
+
+    t2 = Thread(target=open_folder, args=(uploaded_posts_folder_path,))
+    t2.start()
 
     return redirect(url_for('index'))
 
 
 @app.route("/save/posts/tagged")
 def save_posts_tagged():
+    print(texts.TAGGED_POSTS)
+
     if not(os.path.isdir(tagged_posts_folder_path)):
         os.makedirs(tagged_posts_folder_path)
-
-    t4 = Thread(target=open_folder, args=(tagged_posts_folder_path,))
-    t4.start()
+        print(f"[+] Made directory {uploaded_posts_folder_path}")
 
     t5 = Thread(
         target=obj.save_PostsTagged,
         args=(ORIGINAL_DIR, tagged_posts_folder_path, True)
     )
     t5.start()
+    print("[+] Started new thread for `save_PostsTagged()`")
+
+    t4 = Thread(target=open_folder, args=(tagged_posts_folder_path,))
+    t4.start()
 
     return redirect(url_for('index'))
 
 
 @app.route("/save/posts/igtv")
 def save_posts_igtv():
+    print(texts.IGTV_POSTS)
+
     if not(os.path.isdir(igtv_posts_folder_path)):
         os.makedirs(igtv_posts_folder_path)
-
-    t6 = Thread(target=open_folder, args=(igtv_posts_folder_path,))
-    t6.start()
+        print(f"[+] Made directory {igtv_posts_folder_path}")
 
     t7 = Thread(
-        target=obj.save_PostsTagged,
+        target=obj.save_PostsIGTV,
         args=(ORIGINAL_DIR, igtv_posts_folder_path, True)
     )
     t7.start()
+    print("[+] Started new thread for `save_PostsIGTV()`")
+
+    t6 = Thread(target=open_folder, args=(igtv_posts_folder_path,))
+    t6.start()
 
     return redirect(url_for('index'))
 
 
 @app.route("/save/profile/followers")
 def save_profile_followers():
+    print(texts.FOLLOWERS)
+
     if not(profile_followers_list_file_json):
         t8 = Thread(
             target=obj.save_FollowersFollowees,
@@ -253,6 +295,7 @@ def save_profile_followers():
             )
         )
         t8.start()
+        print("[+] Started new thread for `save_FollowersFollowees()` for `followers`")
 
     t9 = Thread(target=open_folder, args=(
         current_session_folder_absolute,))
@@ -263,6 +306,8 @@ def save_profile_followers():
 
 @app.route("/save/profile/followees")
 def save_profile_followees():
+    print(texts.FOLLOWEES)
+
     if not(os.path.isfile(profile_followees_list_file_json)):
         t10 = Thread(
             target=obj.save_FollowersFollowees,
@@ -274,6 +319,7 @@ def save_profile_followees():
             )
         )
         t10.start()
+        print("[+] Started new thread for `save_FollowersFollowees()` for `followees`")
 
     t11 = Thread(target=open_folder, args=(
         current_session_folder_absolute,))
@@ -285,6 +331,8 @@ def save_profile_followees():
 @app.route("/save/posts/all")
 def save_all_posts():
     def save_info_and_every_post():
+        print(texts.SAVE__ALL)
+
         os.chdir(ORIGINAL_DIR)
 
         if not(os.path.isfile(information_filename_txt)):
@@ -292,21 +340,34 @@ def save_all_posts():
             # No need for json because its being made by default
             obj.save_ProfileInfo(
                 final_filename=information_filename_txt, file_format='txt')
+            texts.clear()
+            print("[+] Saved profile information")
 
         # All Posts
         obj.save_PostsUploaded(ORIGINAL_DIR, uploaded_posts_folder_path, True)
+        texts.clear()
         obj.save_PostsTagged(ORIGINAL_DIR, tagged_posts_folder_path, True)
-        obj.save_PostsTagged(ORIGINAL_DIR, igtv_posts_folder_path, True)
+        texts.clear()
+        obj.save_PostsIGTV(ORIGINAL_DIR, igtv_posts_folder_path, True)
+        texts.clear()
+        print("[+] Saved Posts")
 
         # Followers and Followee info if not files already exist
         if not(profile_followers_list_file_json):
             obj.save_FollowersFollowees(
                 "followers", profile_followers_list_file_json, "all", "json")
+            texts.clear()
+            print("[+] Saved Followers")
         if not(os.path.isfile(profile_followees_list_file_json)):
             obj.save_FollowersFollowees(
                 "followers", profile_followees_list_file_json, "all", "json")
+            texts.clear()
+            print("[+] Saved Posts")
 
         os.chdir(ORIGINAL_DIR)
+
+        print(texts.COMPLETED)
+        print("[+] Saved all account information and posts")
 
     t12 = Thread(target=save_info_and_every_post)
     t12.start()
@@ -322,6 +383,7 @@ def save_all_posts():
 def open_target_folder():
     t12 = Thread(target=open_folder, args=(current_session_folder_absolute,))
     t12.start()
+    print("[+] Opened current target's folder")
     return redirect(url_for('index'))
 
 
@@ -331,6 +393,7 @@ def open_history_folder(history):
         if item['username'] == history:
             t13 = Thread(target=open_folder, args=(item['folder_path'],))
             t13.start()
+    print(f"[+] Opened {history} 's history folder")
     return redirect(url_for('index'))
 
 
