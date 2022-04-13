@@ -50,7 +50,19 @@ print("Created the object successfully!")
 
 # Login
 print("Please wait while logging in!")
-obj.login(username=Database.USERNAME, password=Database.PASSWORD)
+try:
+    obj.login(username=Database.USERNAME, password=Database.PASSWORD)
+except:
+    login_username = input("Enter login username> ")
+    login_password = input("Enter login password> ")
+    try:
+        obj.login(username=login_username, password=login_password)
+    except:
+        continue_yn = input("[!!] Login Failed! Do you want to exit [y/n] >")
+        if continue_yn.lower() in ("yes", "y", "yeah", "ye", "true", "t"):
+            pass
+        else:
+            sys.exit("Quitting! Have a nice day!")
 print("Logged in successfully!")
 
 
