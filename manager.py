@@ -221,7 +221,7 @@ class InstaProfile:
             # f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
             self._insta.download_post(
                 post,
-                target=target
+                target=str(count)
             )
 
         if subdir:
