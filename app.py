@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, render_template, redirect, url_for, send_file
 from manager import InstaProfile, Database
 import requests
@@ -5,11 +6,20 @@ import os
 import json
 from threading import Thread
 import subprocess
+import sys
+import texts
+import webbrowser
 
 app = Flask(__name__)
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
+try:
+    target_username = sys.argv[1]
+except IndexError:
+    target_username = input("Enter target username> ")
 
-target_username = "maneshsamarathunga"
+print(texts.Loading)
 
 ORIGINAL_DIR = os.getcwd()
 
@@ -108,11 +118,13 @@ for folder_name in os.listdir(all_sessions_folder):
                 'username': f"@{folder_name}",
                 'followers': history_current_profile_info['followers'],
                 'full_name': history_current_profile_info['full_name'],
-                'image_url_for_web_server': f'/static/data/{folder_name}/{folder_name}_profile_pic.png'
+                'image_url_for_web_server': f'/static/data/{folder_name}/{folder_name}_profile_pic.png',
+                'folder_path': current_history_folder
             }
         )
 print("[+] Loaded history")
 
+print("[*] Loading filenames to be used by the web server")
 # Other Files and Folder Paths
 information_filename_txt = os.path.join(
     current_session_folder_absolute,
@@ -144,6 +156,9 @@ profile_followees_list_file_json = os.path.join(
     current_session_folder_absolute,
     "followees.json"
 )
+print("[+] Completed loading everything!")
+
+texts.clear()
 
 
 # Support Functions
@@ -303,14 +318,32 @@ def save_all_posts():
     return redirect(url_for('index'))
 
 
-@app.route("/open")
+@app.route("/open/current")
 def open_target_folder():
     t12 = Thread(target=open_folder, args=(current_session_folder_absolute,))
     t12.start()
     return redirect(url_for('index'))
 
 
+@app.route("/open/<history>")
+def open_history_folder(history):
+    for item in final_all_history_list:
+        if item['username'] == history:
+            t13 = Thread(target=open_folder, args=(item['folder_path'],))
+            t13.start()
+    return redirect(url_for('index'))
+
+
 def runWebServer():
+    texts.clear()
+    print(texts.InstaStalker_Web)
+    print(
+        f"Opening http://{Database.HOST}:{Database.PORT}/ in your default browser\nIf this did not happen, please open this URL in your browser manually!\n\n")
+
+    t14 = Thread(target=webbrowser.open, args=(
+        f"http://localhost:{Database.PORT}/", ))
+    t14.start()
+
     app.run(
         Database.HOST,
         port=int(Database.PORT),
