@@ -21,7 +21,7 @@ print("Created the object successfully!")
 
 # Login
 print("Please wait while logging in!")
-obj.login(username="0774187381", password="E8pUEhvmwBX9PEBB")
+obj.login(username=Database.USERNAME, password=Database.PASS)
 print("Logged in successfully!")
 
 
