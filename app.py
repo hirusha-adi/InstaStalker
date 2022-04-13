@@ -9,46 +9,52 @@ import subprocess
 app = Flask(__name__)
 
 
-target_username = "hirushaadi"
+target_username = "maneshsamarathunga"
+
+ORIGINAL_DIR = os.getcwd()
 
 # Instantiate and set target
 print("Please wait while the object is being created!")
 obj = InstaProfile()
 obj.TARGET = target_username
-obj._process_profile_data()
 print("Created the object successfully!")
 
 # Login
 print("Please wait while logging in!")
-obj.login(username=Database.USERNAME, password=Database.PASSWORD)
+obj.login(username="0774187381", password="E8pUEhvmwBX9PEBB")
 print("Logged in successfully!")
 
 
 print("[*] Please wait while target's profile information is being loaded")
 
+# Process Main Info in obj to prevent fucky errors
+obj._process_profile_data()
+
 # Folder to store the user data in
-current_session_folder = os.path.join(
+current_session_folder_absolute = os.path.join(
     os.getcwd(),
     "static",
     "data",
     target_username
 )
-if not(os.path.isdir(current_session_folder)):
-    os.makedirs(current_session_folder)
+current_session_folder = os.path.join(
+    "static",
+    "data",
+    target_username
+)
+if not(os.path.isdir(current_session_folder_absolute)):
+    os.makedirs(current_session_folder_absolute)
 
 # Main Profile Info
 information_filename_json = os.path.join(
-    current_session_folder,
+    current_session_folder_absolute,
     f"{target_username}.json"
 )
 information_filename_txt = os.path.join(
-    current_session_folder,
+    current_session_folder_absolute,
     f"{target_username}.txt"
 )
 if not(os.path.isfile(information_filename_json)):
-    # accinfo = obj.getProfileInfo()
-    # with open(information_filename, "w", encoding="utf8") as main_data_temp_file:
-    #     json.dump(accinfo, main_data_temp_file)
     obj.save_ProfileInfo(
         file_format="json",
         final_filename=information_filename_json
@@ -61,11 +67,10 @@ if not(os.path.isfile(information_filename_json)):
 else:
     with open(information_filename_json, "r", encoding="utf8") as main_data_temp_file:
         accinfo = json.load(main_data_temp_file)
-        obj.profile_data = accinfo
 
 # Profile Picture
 profile_picture_filename = os.path.join(
-    current_session_folder,
+    current_session_folder_absolute,
     f"{target_username}_profile_pic.png"
 )
 if not(os.path.isfile(profile_picture_filename)):
@@ -93,8 +98,6 @@ final_all_history_list = []
 for folder_name in os.listdir(all_sessions_folder):
     if not(folder_name == target_username):
         current_history_folder = os.path.join(all_sessions_folder, folder_name)
-        # current_history_profile_picture = os.path.join(
-        #     current_history_folder, f'{folder_name}_profile_pic.png')
         current_history_profile_info_filename = os.path.join(
             current_history_folder, f'{folder_name}.json')
         with open(current_history_profile_info_filename, "r", encoding="utf-8") as current_history_profile_info_file:
@@ -108,13 +111,15 @@ for folder_name in os.listdir(all_sessions_folder):
                 'image_url_for_web_server': f'/static/data/{folder_name}/{folder_name}_profile_pic.png'
             }
         )
+print("[+] Loaded history")
 
 # Other Files and Folder Paths
 information_filename_txt = os.path.join(
-    current_session_folder,
+    current_session_folder_absolute,
     f"{target_username}.txt"
 )
 uploaded_posts_folder_path = os.path.join(
+    os.getcwd(),
     current_session_folder,
     "posts",
     "uploaded"
@@ -136,23 +141,16 @@ def index():
     )
 
 
-@app.route("/save/profile_pic")
+@app.route("/save/profile/piccture")
 def save_profile_pic():
-    # t1 = Thread(target=open_folder)
-    # t1.start()
-
     return send_file(profile_picture_filename)
 
 
-@app.route("/save/profile_info")
+@app.route("/save/profile/info")
 def save_profile_info_txt():
     if not(os.path.isfile(information_filename_txt)):
-        try:
-            with open(information_filename_txt, "w", encoding="utf-8") as file:
-                file.write(obj.format_ProfileInfo_Dict2TXT(data=accinfo))
-        except:
-            obj.save_ProfileInfo(
-                filename=information_filename_txt, file_format='txt')
+        obj.save_ProfileInfo(
+            final_filename=information_filename_txt, file_format='txt')
     return send_file(information_filename_txt, as_attachment=True)
 
 
@@ -160,9 +158,16 @@ def save_profile_info_txt():
 def save_posts_uploaded():
     if not(os.path.isdir(uploaded_posts_folder_path)):
         os.makedirs(uploaded_posts_folder_path)
+
     t2 = Thread(target=open_folder, args=(uploaded_posts_folder_path,))
     t2.start()
-    obj.save_PostsUploaded(target=uploaded_posts_folder_path)
+
+    t3 = Thread(
+        target=obj.save_PostsUploaded,
+        args=("uploaded", ORIGINAL_DIR, uploaded_posts_folder_path, True)
+    )
+    t3.start()
+
     return redirect(url_for('index'))
 
 
