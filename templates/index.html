@@ -147,15 +147,19 @@
                                 <h4>IGTV Posts</h4>
                             </div>
                             <div class="one-profile">
-                                <div class="img">
-                                    <img src="{{ url_for('static', filename='images/follow.png') }}">
-                                </div>
+                                <a href="{{ url_for('save_profile_followers') }}">
+                                    <div class="img">
+                                        <img src="{{ url_for('static', filename='images/follow.png') }}">
+                                    </div>
+                                </a>
                                 <h4>Followers</h4>
                             </div>
                             <div class="one-profile">
-                                <div class="img">
-                                    <img src="{{ url_for('static', filename='images/follow.png') }}">
-                                </div>
+                                <a href="{{ url_for('save_profile_followees') }}">
+                                    <div class="img">
+                                        <img src="{{ url_for('static', filename='images/follow.png') }}">
+                                    </div>
+                                </a>
                                 <h4>Followees</h4>
                             </div>
                         </div>
@@ -219,9 +223,15 @@
                                     <b>Followees: </b> {{ accinfo.followees }}
                                 </li>
 
+                                <!-- Show website if not None -->
+                                {% if (accinfo.external_url) %}
                                 <li>
-                                    <b>Website: </b> {{ accinfo.external_url }}
+                                    <b>Website: </b>
+                                    <a href="{{ accinfo.external_url }}" target="_blank" rel="noopener noreferrer">
+                                        {{ accinfo.external_url }}
+                                    </a>
                                 </li>
+                                {% endif %}
 
                                 <li>
                                     <b>Media Count: </b> {{ accinfo.mediacount }}
