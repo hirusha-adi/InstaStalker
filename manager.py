@@ -202,11 +202,7 @@ class InstaProfile:
         return self._uploaded_posts
 
     # Save all uploaded posts
-    def save_PostsUploaded(self, target=None, home=None, save=None, subdir=False):
-        # default to target username
-        if target is None:
-            target = self._TARGET
-
+    def save_PostsUploaded(self, home=None, save=None, subdir=False):
         # process uploaded posts list if not done before
         if self._uploaded_posts is None:
             self._process_PostsUploaded()
@@ -234,14 +230,13 @@ class InstaProfile:
         return self._tagged_posts
 
     # Save all tagged posts
-    def save_PostsTagged(self, target=None):
-        # default to target username
-        if target is None:
-            target = self._TARGET
-
+    def save_PostsTagged(self, home=None, save=None, subdir=False):
         # process tagged posts list if not done before
         if self._tagged_posts is None:
             self._process_PostsTagged()
+
+        if subdir:
+            os.chdir(save)
 
         # iterate through all tagged posts (NodeIterator[Post]) and save all
         count = 1
@@ -250,8 +245,11 @@ class InstaProfile:
                 f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
             self._insta.download_post(
                 post,
-                target=target
+                target=str(count)
             )
+
+        if subdir:
+            os.chdir(home)
 
     # process all IGTV posts
     def _process_PostsIGTV(self):
@@ -260,14 +258,13 @@ class InstaProfile:
         return self._igtv_posts
 
     # Save all IGTV posts
-    def save_PostsIGTV(self, target=None):
-        # default to target username
-        if target is None:
-            target = self._TARGET
-
+    def save_PostsIGTV(self, home=None, save=None, subdir=False):
         # process IGTV posts list if not done before
         if self._igtv_posts is None:
             self._process_PostsIGTV()
+
+        if subdir:
+            os.chdir(save)
 
         # iterate through all IGTV posts (NodeIterator[Post]) and save all
         count = 1
@@ -276,8 +273,11 @@ class InstaProfile:
                 f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
             self._insta.download_post(
                 post,
-                target=target
+                target=str(count)
             )
+
+        if subdir:
+            os.chdir(home)
 
     # Use all the three functions together at once to save all posts -->
     # Uploaded Posts, Tagged Posts and IGTV Posts
