@@ -9,7 +9,10 @@ class InstaProfile:
         self.CLEAR = ("clear" if os.name == "posix" else "cls")
         self._TARGET = target
 
-        self._insta = Instaloader()
+        self._insta = Instaloader(
+            download_geotags=True,
+            download_comments=True,
+        )
 
         # variables used to store stuff of the user
         self._profile = None
@@ -199,7 +202,7 @@ class InstaProfile:
         return self._uploaded_posts
 
     # Save all uploaded posts
-    def save_PostsUploaded(self, target=None):
+    def save_PostsUploaded(self, target=None, home=None, save=None, subdir=False):
         # default to target username
         if target is None:
             target = self._TARGET
@@ -208,15 +211,21 @@ class InstaProfile:
         if self._uploaded_posts is None:
             self._process_PostsUploaded()
 
+        if subdir:
+            os.chdir(save)
+
         # iterate through all uploaded posts (NodeIterator[Post]) and save all
         count = 1
         for post in self._uploaded_posts:
-            print(
-                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
+            # print(
+            # f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
             self._insta.download_post(
                 post,
                 target=target
             )
+
+        if subdir:
+            os.chdir(home)
 
     # process all tagged posts
     def _process_PostsTagged(self):
@@ -486,7 +495,7 @@ Profile pic url: {data['profile_pic_url']}"""
 
             # create base save folder if not exist
             if not os.path.isdir(save_path):
-                os.mkdir(save_path)
+                os.makedirs(save_path)
 
             if filename is None:
                 # default to target username
