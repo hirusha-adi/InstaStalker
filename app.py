@@ -227,31 +227,56 @@ def save_posts_igtv():
 
 @app.route("/save/profile/followers")
 def save_profile_followers():
-    t8 = Thread(
-        target=obj.save_FollowersFollowees,
-        args=(
-            "followers",
-            profile_followers_list_file_json,
-            "all",
-            "json"
+    if not(profile_followers_list_file_json):
+        t8 = Thread(
+            target=obj.save_FollowersFollowees,
+            args=(
+                "followers",
+                profile_followers_list_file_json,
+                "all",
+                "json"
+            )
         )
-    )
-    t8.start()
+        t8.start()
+
+    t9 = Thread(target=open_folder, args=(
+        current_session_folder_absolute,))
+    t9.start()
+
     return redirect(url_for('index'))
 
 
 @app.route("/save/profile/followees")
 def save_profile_followees():
-    t9 = Thread(
-        target=obj.save_FollowersFollowees,
-        args=(
-            "followees",
-            profile_followees_list_file_json,
-            "all",
-            "json"
+    if not(os.path.isfile(profile_followees_list_file_json)):
+        t10 = Thread(
+            target=obj.save_FollowersFollowees,
+            args=(
+                "followees",
+                profile_followees_list_file_json,
+                "all",
+                "json"
+            )
         )
-    )
-    t9.start()
+        t10.start()
+
+    t11 = Thread(target=open_folder, args=(
+        current_session_folder_absolute,))
+    t11.start()
+
+    return redirect(url_for('index'))
+
+
+@app.route("/save/posts/all")
+def save_all_posts():
+    # COMPLETE THIS
+    return redirect(url_for('index'))
+
+
+@app.route("/open")
+def open_target_folder():
+    t12 = Thread(target=open_folder, args=(current_session_folder_absolute,))
+    t12.start()
     return redirect(url_for('index'))
 
 

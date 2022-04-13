@@ -390,21 +390,28 @@ class InstaProfile:
                     # If save_path end with a .json or .txt, consider it as the file name
                     file_name = os.path.join(save_path)
 
-            # Add file extension if not in file_name
-            if (output == "txt") or (output == "text"):
-                if not file_name.lower().endswith(".txt"):
-                    file_name += ".txt"
-                text_file = True
-            else:
-                # Default to json
-                if not file_name.lower().endswith(".json"):
-                    file_name += ".json"
-                text_file = False
-
         else:
             file_name = final_file_name
 
-        # Open the file
+        # Add file extension if not in file_name
+        if (output == "txt") or (output == "text"):
+            if not file_name.lower().endswith(".txt"):
+                file_name += ".txt"
+            text_file = True
+        else:
+            # Default to json
+            if not file_name.lower().endswith(".json"):
+                file_name += ".json"
+            text_file = False
+
+        # Add the query format as the first element of the list
+        if followers:
+            self._followers_list['data'].append(information)
+        else:
+            self._followees_list['data'].append(information)
+
+        print(information)
+
         with open(file_name, "w", encoding="utf-8") as _file_follow:
 
             count = 1  # keep track of the count

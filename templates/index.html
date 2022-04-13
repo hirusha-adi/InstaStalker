@@ -16,8 +16,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-
 </head>
 
 <body>
@@ -71,6 +69,14 @@
                         <div class="profiles-display">
                             <!-- <div class="one-profile online"> -->
                             <div class="one-profile">
+                                <a href="{{ url_for('open_target_folder') }}">
+                                    <div class="img">
+                                        <img src="{{ url_for('static', filename='images/folder.png') }}">
+                                    </div>
+                                </a>
+                                <h4>Open Folder</h4>
+                            </div>
+                            <div class="one-profile">
                                 <a href="{{ url_for('save_profile_pic') }}">
                                     <div class="img">
                                         <img src="{{ url_for('static', filename='images/profile.png') }}">
@@ -87,16 +93,12 @@
                                 <h4>Profile Info</h4>
                             </div>
                             <div class="one-profile">
-                                <div class="img">
-                                    <img src="{{ url_for('static', filename='images/save.png') }}">
-                                </div>
+                                <a href="{{ url_for('save_all_posts') }}">
+                                    <div class="img">
+                                        <img src="{{ url_for('static', filename='images/save.png') }}">
+                                    </div>
+                                </a>
                                 <h4>All Posts</h4>
-                            </div>
-                            <div class="one-profile">
-                                <div class="img">
-                                    <img src="{{ url_for('static', filename='images/save.png') }}">
-                                </div>
-                                <h4>Everything</h4>
                             </div>
                         </div>
                     </div>
@@ -106,6 +108,14 @@
                         <h2>All Actions! Save/Download;</h2>
                         <div class="profiles-display">
                             <!-- <div class="one-profile online"> -->
+                            <div class="one-profile">
+                                <a href="{{ url_for('open_target_folder') }}">
+                                    <div class="img">
+                                        <img src="{{ url_for('static', filename='images/folder.png') }}">
+                                    </div>
+                                </a>
+                                <h4>Open Folder</h4>
+                            </div>
                             <div class="one-profile">
                                 <a href="{{ url_for('save_profile_pic') }}">
                                     <div class="img">
@@ -176,7 +186,9 @@
 
                         <!-- 4-2 Profile Picture -->
                         <div class="profile-picture">
-                            <img src="{{ accinfo.profile_picture_web_server_url }}">
+                            <a href="{{ url_for('save_profile_pic') }}">
+                                <img src="{{ accinfo.profile_picture_web_server_url }}">
+                            </a>
                         </div>
 
                         <!-- 4-3 Large Topic -->
