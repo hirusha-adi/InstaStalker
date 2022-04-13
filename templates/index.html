@@ -131,15 +131,19 @@
                                 <h4>Uploaded Posts</h4>
                             </div>
                             <div class="one-profile">
-                                <div class="img">
-                                    <img src="{{ url_for('static', filename='images/tag.png') }}">
-                                </div>
+                                <a href="{{ url_for('save_posts_tagged') }}">
+                                    <div class="img">
+                                        <img src="{{ url_for('static', filename='images/tag.png') }}">
+                                    </div>
+                                </a>
                                 <h4>Tagged Posts</h4>
                             </div>
                             <div class="one-profile">
-                                <div class="img">
-                                    <img src="{{ url_for('static', filename='images/igtv.png') }}">
-                                </div>
+                                <a href="{{ url_for('save_posts_igtv') }}">
+                                    <div class="img">
+                                        <img src="{{ url_for('static', filename='images/igtv.png') }}">
+                                    </div>
+                                </a>
                                 <h4>IGTV Posts</h4>
                             </div>
                             <div class="one-profile">
