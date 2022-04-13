@@ -124,6 +124,18 @@ uploaded_posts_folder_path = os.path.join(
     "posts",
     "uploaded"
 )
+tagged_posts_folder_path = os.path.join(
+    os.getcwd(),
+    current_session_folder,
+    "posts",
+    "tagged"
+)
+igtv_posts_folder_path = os.path.join(
+    os.getcwd(),
+    current_session_folder,
+    "posts",
+    "igtv"
+)
 
 
 # Support Functions
@@ -164,9 +176,43 @@ def save_posts_uploaded():
 
     t3 = Thread(
         target=obj.save_PostsUploaded,
-        args=("uploaded", ORIGINAL_DIR, uploaded_posts_folder_path, True)
+        args=(ORIGINAL_DIR, uploaded_posts_folder_path, True)
     )
     t3.start()
+
+    return redirect(url_for('index'))
+
+
+@app.route("/save/posts/tagged")
+def save_posts_tagged():
+    if not(os.path.isdir(tagged_posts_folder_path)):
+        os.makedirs(tagged_posts_folder_path)
+
+    t4 = Thread(target=open_folder, args=(tagged_posts_folder_path,))
+    t4.start()
+
+    t5 = Thread(
+        target=obj.save_PostsTagged,
+        args=(ORIGINAL_DIR, tagged_posts_folder_path, True)
+    )
+    t5.start()
+
+    return redirect(url_for('index'))
+
+
+@app.route("/save/posts/igtv")
+def save_posts_igtv():
+    if not(os.path.isdir(igtv_posts_folder_path)):
+        os.makedirs(igtv_posts_folder_path)
+
+    t6 = Thread(target=open_folder, args=(igtv_posts_folder_path,))
+    t6.start()
+
+    t7 = Thread(
+        target=obj.save_PostsTagged,
+        args=(ORIGINAL_DIR, igtv_posts_folder_path, True)
+    )
+    t7.start()
 
     return redirect(url_for('index'))
 
