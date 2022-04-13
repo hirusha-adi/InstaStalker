@@ -13,9 +13,9 @@ class InstaProfile:
 
         # variables used to store stuff of the user
         self._profile = None
-        self._profile_dict = None
-        self._tagged_posts = None
+        self._profile_data = None
         self._uploaded_posts = None
+        self._tagged_posts = None
         self._igtv_posts = None
         self._followers = None
         self._followees = None
@@ -26,6 +26,7 @@ class InstaProfile:
         self._is_logged_in = False
         self._is_target_set = False
         self._is_profile_processed = False
+        self._is_profile_set = False
 
     @property
     def TARGET(self): return self._TARGET
@@ -36,73 +37,22 @@ class InstaProfile:
             return False
 
         self._TARGET = target
+
+        # Processing te profile once the target is set
         self._profile = Profile.from_username(
             self._insta.context,
             self._TARGET
         )
+        self._is_profile_set = True
 
         self._is_target_set = True
         return True
 
-    def login(self, username: str, password: str):
-        """
-        Login into your instagram account
+    @property
+    def insta(self): return self._insta
 
-        Args:
-            username (str): Username/Email/Phone-Number of the instagram account
-            password (str): Password of the instagram account
-        """
-        if self._is_logged_in:
-            return False
-        self._insta.login(user=username, passwd=password)
-        self._is_logged_in = True
-
-    def get_is_logged_in(self): return self._is_logged_in
-
-    def processProfile(self):
-        """
-        Process the target profile's basic information
-        """
-        if self._is_profile_processed:
-            return False
-        else:
-            self._is_profile_processed = True
-            self._profile = Profile.from_username(
-                self._insta.context, self._TARGET)
-            self._profile_dict = {
-                'username': self._profile.username,
-                'profile_id': self._profile.userid,
-                'is_private': self._profile.is_private,
-                'followed_by_viewer': self._profile.followed_by_viewer,
-                'mediacount': self._profile.mediacount,
-                'igtv_count': self._profile.igtvcount,
-                'followers': self._profile.followers,
-                'followees': self._profile.followees,
-                'external_url': self._profile.external_url,
-                'is_business_account': self._profile.is_business_account,
-                'business_category_name': self._profile.business_category_name,
-                'biography': self._profile.biography,
-                'blocked_by_viewer': self._profile.blocked_by_viewer,
-                'follows_viewer': self._profile.follows_viewer,
-                'full_name': self._profile.full_name,
-                'has_blocked_viewer': self._profile.has_blocked_viewer,
-                'has_highlight_reels': self._profile.has_highlight_reels,
-                'has_public_story': self._profile.has_public_story,
-                'has_viewable_story': self._profile.has_viewable_story,
-                'has_requested_viewer': self._profile.has_requested_viewer,
-                'is_verified': self._profile.is_verified,
-                'requested_by_viewer': self._profile.requested_by_viewer,
-                'profile_pic_url': self._profile.profile_pic_url
-            }
-            return True
-
-    def setProfileInfo(self, info):
-        self._profile_dict = info
-
-    def getTrue_profile_dict(self):
-        return self._profile_dict
-
-    def getProfileInfo(self):
+    @property
+    def profile_data(self):
         """
         Get the basic information of the target profile
 
@@ -132,131 +82,220 @@ class InstaProfile:
                 "requested_by_viewer"
                 "profile_pic_url"
         """
-        if (self._profile_dict is None) or (self._is_profile_processed is False):
-            self.processProfile()
-        return self._profile_dict
+        if (self._profile_data is None) or (self._is_profile_processed is False):
+            self._process_profile_data()
+        return self._profile_data
 
-    def getPosts(self):
-        """
-        get the Post list uploaded by the target user
+    @profile_data.setter
+    def profile_data(self, data: dict):
+        self._profile_data = data
 
-        Returns:
-            NodeIterator[Post]
-        """
-        print("save function called the get func")
+        if not self._is_profile_set:
+            self._profile = Profile.from_username(
+                self._insta.context,
+                self._profile_data['username']
+            )
+
+        self._is_profile_processed = True
+
+    @property
+    def uploaded_posts(self):
         if self._uploaded_posts is None:
-            print("setting cuz none")
+            self._process_PostsUploaded()
+        return self._uploaded_posts  # NodeIterator[Post]
+
+    @property
+    def tagged_posts(self):
+        if self._tagged_posts is None:
+            self._process_PostsTagged()
+        return self._tagged_posts  # NodeIterator[Post]
+
+    @property
+    def igtv_posts(self):
+        if self._igtv_posts is None:
+            self._process_PostsIGTV()
+        return self._igtv_posts  # NodeIterator[Post]
+
+    @property
+    def followers(self):
+        if self._followers is None:
+            self._process_Followers()
+        return self._followers  # NodeIterator[Profile]
+
+    @property
+    def followees(self):
+        if self._followees is None:
+            self._process_Followees()
+        return self._followees  # NodeIterator[Profile]
+
+    @property
+    def followers_list(self): return self._followers_list
+
+    @property
+    def followees_list(self): return self._followees_list
+
+    @property
+    def is_logged_in(self): return self._is_logged_in
+
+    @property
+    def is_target_set(self): return self._is_target_set
+
+    @property
+    def is_profile_processed(self): return self._is_profile_processed
+
+    @property
+    def is_profile_set(self): return self._is_profile_set
+
+    # Login into our instagram profile before scraping for data
+    def login(self, username: str, password: str):
+        if self._is_logged_in:
+            return False
+
+        self._insta.login(user=username, passwd=password)
+
+        self._is_logged_in = True
+        return True
+
+    # Process the main profile data (and create a dict)
+    def _process_profile_data(self):
+        if self._is_profile_processed:
+            return False
+        else:
+            if not self._is_profile_set:  # set the profile if has not been set in TARGET's setter
+                self._profile = Profile.from_username(
+                    self._insta.context, self._TARGET)
+            self._profile_data = {
+                'username': self._profile.username,
+                'profile_id': self._profile.userid,
+                'is_private': self._profile.is_private,
+                'followed_by_viewer': self._profile.followed_by_viewer,
+                'mediacount': self._profile.mediacount,
+                'igtv_count': self._profile.igtvcount,
+                'followers': self._profile.followers,
+                'followees': self._profile.followees,
+                'external_url': self._profile.external_url,
+                'is_business_account': self._profile.is_business_account,
+                'business_category_name': self._profile.business_category_name,
+                'biography': self._profile.biography,
+                'blocked_by_viewer': self._profile.blocked_by_viewer,
+                'follows_viewer': self._profile.follows_viewer,
+                'full_name': self._profile.full_name,
+                'has_blocked_viewer': self._profile.has_blocked_viewer,
+                'has_highlight_reels': self._profile.has_highlight_reels,
+                'has_public_story': self._profile.has_public_story,
+                'has_viewable_story': self._profile.has_viewable_story,
+                'has_requested_viewer': self._profile.has_requested_viewer,
+                'is_verified': self._profile.is_verified,
+                'requested_by_viewer': self._profile.requested_by_viewer,
+                'profile_pic_url': self._profile.profile_pic_url
+            }
+            self._is_profile_processed = True
+            return True
+
+    # process all uploaded posts
+    def _process_PostsUploaded(self):
+        if self._uploaded_posts is None:
             self._uploaded_posts = self._profile.get_posts()
-            print("returning ", self._uploaded_posts[0])
         return self._uploaded_posts
 
-    def savePosts(self, target):
-        """
-        Save all the posts uploaded by the target user
-            insde `target/` directory
-        """
-        count = 1
-        print("save function called")
+    # Save all uploaded posts
+    def save_PostsUploaded(self, target=None):
+        # default to target username
+        if target is None:
+            target = self._TARGET
+
+        # process uploaded posts list if not done before
         if self._uploaded_posts is None:
-            self.getPosts()
+            self._process_PostsUploaded()
+
+        # iterate through all uploaded posts (NodeIterator[Post]) and save all
+        count = 1
         for post in self._uploaded_posts:
-            print("starting loop")
             print(
-                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}")
+                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
             self._insta.download_post(
                 post,
                 target=target
             )
 
-    def getAllTaggedPosts(self):
-        """
-        get all Posts that have tagged the target user
-
-        Returns:
-            NodeIterator[Post]
-        """
+    # process all tagged posts
+    def _process_PostsTagged(self):
         if self._tagged_posts is None:
             self._tagged_posts = self._profile.get_tagged_posts()
         return self._tagged_posts
 
-    def saveAllTaggedPosts(self):
-        """
-        Save all Posts that have tagged the target user
-            insde `./targetUserName/` directory
-        """
+    # Save all tagged posts
+    def save_PostsTagged(self, target=None):
+        # default to target username
+        if target is None:
+            target = self._TARGET
+
+        # process tagged posts list if not done before
+        if self._tagged_posts is None:
+            self._process_PostsTagged()
+
+        # iterate through all tagged posts (NodeIterator[Post]) and save all
         count = 1
-        for post in self.getAllTaggedPosts():
+        for post in self._tagged_posts:
             print(
-                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}")
+                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
             self._insta.download_post(
                 post,
-                target=self._profile.username
+                target=target
             )
 
-    def getAllIGTVPosts(self):
-        """
-        get the IGTV list uploaded by the target user
-
-        Returns:
-            NodeIterator[Post]
-        """
+    # process all IGTV posts
+    def _process_PostsIGTV(self):
         if self._igtv_posts is None:
             self._igtv_posts = self._profile.get_igtv_posts()
         return self._igtv_posts
 
-    def saveAllIGTVPosts(self):
-        """
-        Save all the IGTV uploaded by the target user
-            insde `./targetUserName/` directory
-        """
+    # Save all IGTV posts
+    def save_PostsIGTV(self, target=None):
+        # default to target username
+        if target is None:
+            target = self._TARGET
+
+        # process IGTV posts list if not done before
+        if self._igtv_posts is None:
+            self._process_PostsIGTV()
+
+        # iterate through all IGTV posts (NodeIterator[Post]) and save all
         count = 1
-        for post in self.getAllIGTVPosts():
+        for post in self._igtv_posts:
             print(
-                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}")
+                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
             self._insta.download_post(
                 post,
-                target=self._profile.username
+                target=target
             )
 
-    def saveAllPosts(self):
-        """
-        Save all posts -->
-            uploaded by the target +
-            where the target has been tagged and
-            in IGTV
-        """
-        self.savePosts()
-        self.saveAllTaggedPosts()
-        self.saveAllIGTVPosts()
+    # Use all the three functions together at once to save all posts -->
+    # Uploaded Posts, Tagged Posts and IGTV Posts
+    def save_PostsAll(self):
+        self.save_PostsUploaded()
+        self.save_PostsTagged()
+        self.save_PostsIGTV()
 
-    def getFollowersList(self):
-        """
-        get the follower list of the target
-
-        Returns:
-            NodeIterator[Profile]
-        """
+    # process all followers list
+    def _process_Followers(self):
         if self._followers is None:
             self._followers = self._profile.get_followers()
         return self._followers
 
-    def getFolloweesList(self):
-        """
-        get the followee list of the target
-
-        Returns:
-            NodeIterator[Profile]
-        """
+    # process all followees list
+    def _process_Followees(self):
         if self._followees:
             self._followees = self._profile.get_followees()
         return self._followees
 
-    def saveFollowersFollowees(
+    def save_FollowersFollowees(
         self,
         followers_or_followees: str,
         formatting: str = None,
         mode: str = "simple",
-        output: str = "json"
+        output: str = "json",
+        save_path=None
     ):
         """
         `followers_or_followees`: str -->
@@ -280,52 +319,84 @@ class InstaProfile:
         `mode`: str -->
             low
             mid
-            all/high
+            all/high (default)
 
         `output`: str -->
             print_only
             text
+
+        `save_path`: str -->
+            Folder/Directory Path
         """
 
+        # Prioritize Custom Formatting
         if formatting is None:
+            # Default to a mode if custom formatting is not specified
             if mode == "low":
                 information = "{count} | {username} | {full_name}"
             elif mode == "mid":
                 information = "{count} | {username} | {full_name} | {userid} | {is_private} | {is_verified} | {meida_count} | {followers} | {followees}"
-            # elif mode == "all" or mode == "high":
             else:
                 information = "{count} | {username} | {full_name} | {userid} | {is_private} | {is_verified} | {meida_count} | {is_business_account} | {followers} | {followees} | {biography} | {profile_pic_url}"
         else:
+            # Query String equals to custom formatting provided
             information = formatting
 
+        # Decide weather to get followers or followees
         if followers_or_followees.lower().strip() == "followers":
-            users_list = self.getFollowersList()
+            users_list = self._process_Followers()
             followers = True
         elif followers_or_followees.lower().strip() == "followees":
-            users_list = self.getFolloweesList()
+            users_list = self._process_Followees()
             followers = False
         else:
+            # Exit program is wrong value is given, because this is essential
             sys.exit(
                 'Error: Improper value for `followers_or_followees` has been passed to `saveFollowersFollowees()`')
 
-        file_name = os.path.join(
-            os.getcwd(),
-            str(self._profile.username) +
-            f"_{'followers' if followers == True else 'followees'}"
-        )
+        # Save File Name
+        if save_path is None:
+            file_name = os.path.join(
+                os.getcwd(),
+                str(self._profile.username) +
+                f"_{'followers' if followers == True else 'followees'}"
+            )
 
+        # If save_path is a string
+        if isinstance(save_path, str):
+            # If save_path does not end with a .json or .txt, consider it as a folder
+            if not(save_path.endswith(".json") or save_path.endswith(".txt")):
+                if not(os.path.isdir(save_path)):
+                    # Create this directory if it does not exist
+                    os.makedirs(save_path)
+                # make save file name from the save_path dir
+                file_name = os.path.join(
+                    save_path,
+                    f"{self._TARGET}_{'followers' if followers == True else 'followees'}"
+                )
+            else:
+                # If save_path end with a .json or .txt, consider it as the file name
+                file_name = os.path.join(save_path)
+
+        # Add file extension if not in file_name
         if (output == "txt") or (output == "text"):
             if not file_name.lower().endswith(".txt"):
                 file_name += ".txt"
             text_file = True
-        else:  # ``
+        else:
+            # Default to json
             if not file_name.lower().endswith(".json"):
                 file_name += ".json"
             text_file = False
 
+        # Open the file
         with open(file_name, "w", encoding="utf-8") as _file_follow:
-            count = 1
+            count = 1  # keep track of the count
+
+            # Iterate through the returned NodeIterator[Profile]
             for profile in users_list:
+
+                # Format the query (set with a mode or custom formatting)
                 text = information.format(
                     count=count,
                     username=profile.username,
@@ -341,25 +412,35 @@ class InstaProfile:
                     profile_pic_url=profile.profile_pic_url
                 )
 
+                # If Followers are selected
                 if followers:
+                    # Add this to the final dict
                     self._followers_list['data'].append(text)
                 else:
                     self._followees_list['data'].append(text)
 
-                print(text)
+                # Display the current info
+                print(text, "\n")
 
+                # If txt file, write the line to the file
                 if text_file:
                     _file_follow.write(text + "\n")
 
+                # Increase the count
                 count += 1
 
+            # The for loop ends here ------
+
+            # if not text_file, defaults to json from above-processed final dict
             if not text_file:
-                if self._followers:
+                # dump dicts to the file
+                if self.followers:
                     json.dump(self._followers_list, _file_follow)
                 else:
                     json.dump(self._followees_list, _file_follow)
 
-    def createProfileTXTFileContent(self, data):
+    # Create text from a dictionary. returns `str`
+    def format_ProfileInfo_Dict2TXT(self, data):
         return f"""Username: {data['username']}
 Profile ID: {data['profile_id']}
 Is Private: {data['is_private']}
@@ -384,36 +465,68 @@ Is Verified: {data['is_verified']}
 Requested by viewer: {data['requested_by_viewer']}
 Profile pic url: {data['profile_pic_url']}"""
 
-    def saveProfileInfo(self, file_format: str = "json", filename: str = None):
-        if filename is None:
-            filename_file = os.path.join(
-                os.getcwd(), str(self._profile.username))
+    # Save profile info
+    def save_ProfileInfo(self, file_format: str = "json", filename: str = None, save_path=None, final_filename=None):
+        """
+        Dump Base Profile Info
 
-            if file_format == "txt":
-                if not(filename_file.endswith(".txt")):
-                    filename_file += ".txt"
+        Args:
+            file_format (str, optional): `json` or `txt`. Defaults to "json"
+            save_path (str, optional): dir path. Defaults to ./username/
+            filename (str, optional): filename. Defaults to save_path/filename
+            final_filename (str, optional): highest precedence. filename
+        """
+        if final_filename is None:
+            if save_path is None:
+                # Default to ./username/ dir
+                save_path = os.path.join(
+                    os.getcwd(),
+                    self._TARGET
+                )
+
+            # create base save folder if not exist
+            if not os.path.isdir(save_path):
+                os.mkdir(save_path)
+
+            if filename is None:
+                # default to target username
+                filename_file = os.path.join(
+                    save_path,
+                    str(self._TARGET)
+                )
+
+                if file_format == "txt":
+                    if not(filename_file.endswith(".txt")):
+                        filename_file += ".txt"
+                else:
+                    if not(filename_file.endswith(".json")):
+                        filename_file += ".json"
+
             else:
-                if not(filename_file.endswith(".json")):
-                    filename_file += ".json"
+                if file_format == "txt":
+                    if not(filename.endswith(".txt")):
+                        filename += ".txt"
+                else:
+                    if not(filename.endswith(".json")):
+                        filename += ".json"
 
+                filename_file = os.path.join(save_path, filename)
         else:
-            if file_format == "txt":
-                if not(filename.endswith(".txt")):
-                    filename += ".txt"
-            else:
-                if not(filename.endswith(".json")):
-                    filename += ".json"
+            filename_file = final_filename
 
-            filename_file = os.path.join(os.getcwd(), filename)
+        if self._profile_data is None:
+            self._process_profile_data()
 
-        data = self.getProfileInfo()
+        data = self._profile_data
+
+        # Write data to file based on its format
         with open(filename_file, "w", encoding="utf-8") as file:
             if file_format == "txt":
-                file.write(self.createProfileTXTFileContent(data=data))
+                file.write(self.format_ProfileInfo_Dict2TXT(data=data))
             else:
                 json.dump(data, file, ensure_ascii=True, indent=4)
 
-    def saveAll(self, level: str = "low"):
+    def save_Everything(self, level: str = "low"):
         """
         Dump/Save all information of the target instagram profile
 
@@ -423,16 +536,16 @@ Profile pic url: {data['profile_pic_url']}"""
         if not level in ("all", "mid", "low", "high"):
             level = "high"
 
-        self.saveProfileInfo(file_format="json")
-        self.saveAllPosts()
+        self.save_ProfileInfo(file_format="json")
+        self.save_PostsAll()
 
-        self.saveFollowersFollowees(
+        self.save_FollowersFollowees(
             followers_or_followees="followers",
             formatting=None,
             mode=level,
             output="json"
         )
-        self.saveFollowersFollowees(
+        self.save_FollowersFollowees(
             followers_or_followees="followees",
             formatting=None,
             mode=level,
