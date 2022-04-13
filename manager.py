@@ -1,7 +1,18 @@
-import os
+import texts
 import json
+import os
 import sys
-from instaloader import Instaloader, Profile
+
+
+def pip_install(name: str):
+    os.system(f'{"pip" if os.name == "nt" else "pip3"} install -U {name}')
+
+
+try:
+    from instaloader import Instaloader, Profile
+except:
+    pip_install("instaloader")
+    from instaloader import Instaloader, Profile
 
 
 class InstaProfile:
@@ -203,25 +214,30 @@ class InstaProfile:
 
     # Save all uploaded posts
     def save_PostsUploaded(self, home=None, save=None, subdir=False):
+
         # process uploaded posts list if not done before
         if self._uploaded_posts is None:
             self._process_PostsUploaded()
 
         if subdir:
             os.chdir(save)
+            print("[+] Changed current working directory to", save)
 
         # iterate through all uploaded posts (NodeIterator[Post]) and save all
         count = 1
         for post in self._uploaded_posts:
-            # print(
-            # f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
             self._insta.download_post(
                 post,
                 target=str(count)
             )
+            print(f"{count} - Saved Uploaded Post!")
 
         if subdir:
             os.chdir(home)
+            print("[+] Changed current working directory back to", home)
+
+        print(texts.COMPLETED)
+        print("[+] SAVED ALL UPLOADED POSTS!")
 
     # process all tagged posts
     def _process_PostsTagged(self):
@@ -237,19 +253,23 @@ class InstaProfile:
 
         if subdir:
             os.chdir(save)
+            print("[+] Changed current working directory to", save)
 
         # iterate through all tagged posts (NodeIterator[Post]) and save all
         count = 1
         for post in self._tagged_posts:
-            print(
-                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
             self._insta.download_post(
                 post,
                 target=str(count)
             )
+            print(f"{count} - Saved Tagged Post!")
 
         if subdir:
             os.chdir(home)
+            print("[+] Changed current working directory back to", home)
+
+        print(texts.COMPLETED)
+        print("[+] SAVED ALL UPLOADED POSTS!")
 
     # process all IGTV posts
     def _process_PostsIGTV(self):
@@ -265,19 +285,23 @@ class InstaProfile:
 
         if subdir:
             os.chdir(save)
+            print("[+] Changed current working directory to", save)
 
         # iterate through all IGTV posts (NodeIterator[Post]) and save all
         count = 1
         for post in self._igtv_posts:
-            print(
-                f"[{count}]: Title: {post.title}\n\tCaption: {post.caption}\n\tDate: {post.date}\n\tURL:{post.url}\n")
             self._insta.download_post(
                 post,
                 target=str(count)
             )
+            print(f"{count} - Saved IGTV Post!")
 
         if subdir:
             os.chdir(home)
+            print("[+] Changed current working directory back to", home)
+
+        print(texts.COMPLETED)
+        print("[+] SAVED ALL UPLOADED POSTS!")
 
     # Use all the three functions together at once to save all posts -->
     # Uploaded Posts, Tagged Posts and IGTV Posts
@@ -410,6 +434,7 @@ class InstaProfile:
         else:
             self._followees_list['data'].append(information)
 
+        print("\n[+] Selected Formatting for saving follower/followee information: ")
         print(information)
 
         with open(file_name, "w", encoding="utf-8") as _file_follow:
@@ -462,8 +487,9 @@ class InstaProfile:
                 else:
                     json.dump(self._followees_list, _file_follow)
 
+        print(texts.COMPLETED)
         print(
-            f"\nSaved all {'followers' if followers == True else 'followees'} list to {file_name}")
+            f"\n[+] Saved all {'followers' if followers == True else 'followees'} list to {file_name}")
 
     # Create text from a dictionary. returns `str`
     def format_ProfileInfo_Dict2TXT(self, data):
@@ -577,40 +603,3 @@ Profile pic url: {data['profile_pic_url']}"""
             mode=level,
             output="json"
         )
-
-
-class Database:
-    config_filename = os.path.join(os.getcwd(), "config.json")
-
-    if not(os.path.isfile(config_filename)):
-        with open(config_filename, "w", encoding="utf-8") as _file:
-            _file.write(
-                '{\n\t"username": "",\n\t"password": ""\n\t"web": {\n\t\t"host": "0.0.0.0",\n\t\t"port": 8080,\n\t\t"debug": false\n\t}\n}')
-
-    with open(config_filename, "r", encoding="utf-8") as _file:
-        _data = json.load(_file)
-
-    USERNAME = _data["username"].strip()
-    PASSWORD = _data["password"].strip()
-
-    if USERNAME is None:
-        username_file = os.path.join(os.getcwd(), "username.txt")
-        if os.path.isfile(username_file):
-            with open(username_file, "r", encoding="utf-8") as _uname_file:
-                USERNAME = _uname_file.read().strip()
-        else:
-            sys.exit(
-                "No username/email/phone-number is given to log-in. Please fill it in the `config.json` file or have it in the './username.txt' file")
-
-    if PASSWORD is None:
-        password_file = os.path.join(os.getcwd(), "password.txt")
-        if os.path.isfile(password_file):
-            with open(password_file, "r", encoding="utf-8") as _passwd_file:
-                PASSWORD = _uname_file.read().strip()
-        else:
-            sys.exit(
-                "No passowrd is given to log-in. Please fill it in the `config.json` file or have it in the './password.txt' file.")
-
-    HOST = _data["web"]["host"]
-    PORT = _data["web"]["port"]
-    DEBUG = _data["web"]["debug"]
