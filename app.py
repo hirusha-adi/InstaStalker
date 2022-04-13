@@ -14,12 +14,13 @@ target_username = "hirushaadi"
 # Instantiate and set target
 print("Please wait while the object is being created!")
 obj = InstaProfile()
-obj.setTARGET(target_username)
+obj.TARGET = target_username
+obj._process_profile_data()
 print("Created the object successfully!")
 
 # Login
 print("Please wait while logging in!")
-# obj.login(username=Database.USERNAME, password=Database.PASSWORD)
+obj.login(username=Database.USERNAME, password=Database.PASSWORD)
 print("Logged in successfully!")
 
 
@@ -36,18 +37,31 @@ if not(os.path.isdir(current_session_folder)):
     os.makedirs(current_session_folder)
 
 # Main Profile Info
-information_filename = os.path.join(
+information_filename_json = os.path.join(
     current_session_folder,
     f"{target_username}.json"
 )
-if not(os.path.isfile(information_filename)):
-    accinfo = obj.getProfileInfo()
-    with open(information_filename, "w", encoding="utf8") as main_data_temp_file:
-        json.dump(accinfo, main_data_temp_file)
+information_filename_txt = os.path.join(
+    current_session_folder,
+    f"{target_username}.txt"
+)
+if not(os.path.isfile(information_filename_json)):
+    # accinfo = obj.getProfileInfo()
+    # with open(information_filename, "w", encoding="utf8") as main_data_temp_file:
+    #     json.dump(accinfo, main_data_temp_file)
+    obj.save_ProfileInfo(
+        file_format="json",
+        final_filename=information_filename_json
+    )
+    obj.save_ProfileInfo(
+        file_format="txt",
+        final_filename=information_filename_txt
+    )
+    accinfo = obj.profile_data
 else:
-    with open(information_filename, "r", encoding="utf8") as main_data_temp_file:
+    with open(information_filename_json, "r", encoding="utf8") as main_data_temp_file:
         accinfo = json.load(main_data_temp_file)
-        obj.setProfileInfo(accinfo)
+        obj.profile_data = accinfo
 
 # Profile Picture
 profile_picture_filename = os.path.join(
@@ -100,6 +114,17 @@ information_filename_txt = os.path.join(
     current_session_folder,
     f"{target_username}.txt"
 )
+uploaded_posts_folder_path = os.path.join(
+    current_session_folder,
+    "posts",
+    "uploaded"
+)
+
+
+# Support Functions
+def open_folder(folder_path):
+    subprocess.Popen(
+        ['explorer' if os.name == 'nt' else 'xdg-open', folder_path])
 
 
 @ app.route("/")
@@ -113,15 +138,7 @@ def index():
 
 @app.route("/save/profile_pic")
 def save_profile_pic():
-
-    # Will decide about this in the future
-    # def open_folder_profile_pic():
-    # if os.name == 'nt':
-    # subprocess.Popen(['explorer', current_session_folder])
-    # else:
-    # subprocess.Popen(['xdg-open', current_session_folder])
-    #
-    # t1 = Thread(target=open_folder_profile_pic)
+    # t1 = Thread(target=open_folder)
     # t1.start()
 
     return send_file(profile_picture_filename)
@@ -132,12 +149,21 @@ def save_profile_info_txt():
     if not(os.path.isfile(information_filename_txt)):
         try:
             with open(information_filename_txt, "w", encoding="utf-8") as file:
-                file.write(obj.createProfileTXTFileContent(data=accinfo))
+                file.write(obj.format_ProfileInfo_Dict2TXT(data=accinfo))
         except:
-            obj.saveProfileInfo(
+            obj.save_ProfileInfo(
                 filename=information_filename_txt, file_format='txt')
-
     return send_file(information_filename_txt, as_attachment=True)
+
+
+@app.route("/save/posts/uploaded")
+def save_posts_uploaded():
+    if not(os.path.isdir(uploaded_posts_folder_path)):
+        os.makedirs(uploaded_posts_folder_path)
+    t2 = Thread(target=open_folder, args=(uploaded_posts_folder_path,))
+    t2.start()
+    obj.save_PostsUploaded(target=uploaded_posts_folder_path)
+    return redirect(url_for('index'))
 
 
 def runWebServer():
