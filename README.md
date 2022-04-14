@@ -1,9 +1,9 @@
 # InstaStalker
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/36286877/162791937-2682d367-418a-402e-8d0d-64d09d55b9e2.png" alt="BACKGROUND_IMAGE">
+    <img src="https://user-images.githubusercontent.com/36286877/162566157-659bf361-bb69-4b1e-ac01-2fa5cb0be1a7.png" alt="BACKGROUND_IMAGE">
     <br>
-    <img src="https://img.shields.io/badge/status-under%20development-green?style=for-the-badge" alt="Current-Status">
+    <img src="https://img.shields.io/badge/status-discontinued-red?style=for-the-badge" alt="Current-Status">
     <img src="https://img.shields.io/github/release-date/hirusha-adi/InstaStalker?style=for-the-badge" alt="Contributors">
     <br>
     <img src="https://img.shields.io/github/license/hirusha-adi/InstaStalker?style=for-the-badge" alt="Lisence">
@@ -11,20 +11,22 @@
     <img src="https://img.shields.io/github/contributors/hirusha-adi/InstaStalker?style=for-the-badge" alt="Contributors">
 </p>
 
-# How to install
+This was initally in the repo: [`InstaStalk`](https://github.com/hirusha-adi/InstaStalk). Later, i moved to a branch of this repository. This tool is meant to be used for gnu/linux distributions.
 
-## Linux
+## How to compile and Install?
+
+- Linux:
 
 ```bash
-sudo apt update
-sudo apt install python3-pip -y
-pip3 install -r requirements.txt
-
-# to run the program
-python3 InstaStalker.py
-
-# to compile the script
 chmod +x compile.sh
 ./compile.sh
-./dist/InstaStalker # running the compiled version
+```
+
+## How to run from source?
+
+- Linux
+
+```bash
+python3 -m pip install requirements.txt # install dependencies
+python3 InstaStalker.py
 ```
