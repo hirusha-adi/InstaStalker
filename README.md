@@ -13,6 +13,31 @@
 
 Get publicly available - yet hidden instagram profile information. Download posts with all available metadata regarding every post! All this can be done with a web app
 
+# Installation Guide
+
+1. Make a dummy instagram account. (Do not enable [2FA](https://help.instagram.com/566810106808145))
+
+## Ubuntu
+
+```bash
+# install needed applications
+sudo apt update
+sudo apt install git python3 python3-pip nano -y
+
+git clone "https://github.com/hirusha-adi/InstaStalker.git"
+cd ./InstaStalker
+
+nano ./config.json # add login info of dummy account
+python3 app.py # start
+```
+
+## Windows
+
+1. Download and Install [Python3](https://www.python.org/downloads/windows/) (Make sure to enable 'Add to PATH' in the first screen of the installer)
+2. Download the source code as zip by clicking `Source code (zip)` and extract it
+3. Open the `config.json` file in notepad and fill in the login information of the dummy instagram account. Save the file
+4. Double click the `windows.bat` file to start the program
+
 # Image Showcase
 
 - Loading data needed for the web app to start functioning
@@ -23,10 +48,12 @@ Get publicly available - yet hidden instagram profile information. Download post
 
 ![image](https://user-images.githubusercontent.com/36286877/163312572-d0b4a436-3130-40d6-b393-0c7fa5bfde59.png)
 
-- Website - 1
+- Website
 
 ![image](https://user-images.githubusercontent.com/36286877/163312687-9b35a33f-45a9-4ece-82c0-f4be9bce5555.png)
 
-- Website - 2
-- 
 ![image](https://user-images.githubusercontent.com/36286877/163312727-f4eefaf6-1036-4f2a-82a4-547aa3c4d1af.png)
+
+# NOTE:
+
+this program is made to be used for purposes and **NOT** Stalking purposes!
