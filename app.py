@@ -3,9 +3,10 @@ import logging
 import os
 import subprocess
 import sys
+import tkinter.font as font
 import webbrowser
 from threading import Thread
-
+from tkinter import *
 
 import texts
 from manager import InstaProfile
@@ -28,13 +29,37 @@ except:
     pip_install("flask")
     from flask import Flask, redirect, render_template, send_file, url_for
 
+# GUI - Starts Here
+# -------------------------------------------------------------------------------------------------------
+root = Tk()
+root.title("ikman.lk Scrapper")
+root.resizable(True, True)
+
+font_15_bold = font.Font(size="15", weight="bold")
+font_13_bold = font.Font(size="13", weight="bold")
+
+# First Row ----------------
+# Topic
+l_title = Label(root, text="InstaStalker")
+l_title.grid(row=2, column=2, columnspan=2, rowspan=1)
+l_title['font'] = font_15_bold
+
+# Second Row ----------------
+# Target Info
+l_target = Label(root, text="Target: ")
+l_target.grid(row=4, column=2, columnspan=1, rowspan=1)
+l_target['font'] = font_15_bold
+
+
+root.mainloop()
 
 app = Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 try:
-    target_username = sys.argv[1]
+    target_username = "hirushaadi"
+    # target_username = sys.argv[1]
 except IndexError:
     target_username = input("Enter target username> ")
 
@@ -51,7 +76,8 @@ print("Created the object successfully!")
 # Login
 print("Please wait while logging in!")
 try:
-    obj.login(username=Database.USERNAME, password=Database.PASSWORD)
+    # obj.login(username=Database.USERNAME, password=Database.PASSWORD)
+    pass
 except Exception as e:
     print(e)
     login_username = input("Enter login username> ")
