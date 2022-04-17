@@ -17,23 +17,22 @@ class Database:
     USERNAME = _data["username"].strip()
     PASSWORD = _data["password"].strip()
 
-    if USERNAME is None:
+    # https://github.com/hirusha-adi/InstaStalker/issues/3
+    if isinstance(USERNAME, str) and len(USERNAME) == 0:
         username_file = os.path.join(os.getcwd(), "username.txt")
         if os.path.isfile(username_file):
             with open(username_file, "r", encoding="utf-8") as _uname_file:
                 USERNAME = _uname_file.read().strip()
         else:
-            sys.exit(
-                "No username/email/phone-number is given to log-in. Please fill it in the `config.json` file or have it in the './username.txt' file")
+            USERNAME = None
 
-    if PASSWORD is None:
+    if isinstance(PASSWORD, str) and len(PASSWORD) == 0:
         password_file = os.path.join(os.getcwd(), "password.txt")
         if os.path.isfile(password_file):
             with open(password_file, "r", encoding="utf-8") as _passwd_file:
                 PASSWORD = _uname_file.read().strip()
         else:
-            sys.exit(
-                "No passowrd is given to log-in. Please fill it in the `config.json` file or have it in the './password.txt' file.")
+            PASSWORD = None
 
     try:
         HOST: str = _data["web"]["host"]
