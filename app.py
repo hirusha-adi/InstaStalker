@@ -31,27 +31,176 @@ except:
 
 # GUI - Starts Here
 # -------------------------------------------------------------------------------------------------------
+
 root = Tk()
-root.title("ikman.lk Scrapper")
+root.title("InstaStalker")
 root.resizable(True, True)
 
-font_15_bold = font.Font(size="15", weight="bold")
-font_13_bold = font.Font(size="13", weight="bold")
+show_hide_target_value = IntVar(value=0)
+show_hide_password_value = IntVar(value=0)
+show_hide_username_value = IntVar(value=0)
+
+
+def show_hide_taget():
+    if show_hide_target_value.get() == 1:
+        e_target.config(show='')
+    else:
+        e_target.config(show='*')
+
+
+def show_hide_username():
+    if show_hide_username_value.get() == 1:
+        e_username.config(show='')
+    else:
+        e_username.config(show='*')
+
+
+def show_hide_password():
+    if show_hide_password_value.get() == 1:
+        e_password.config(show='')
+    else:
+        e_password.config(show='*')
+
+
+def open_help():
+    webbrowser.open("https://hirusha-adi.github.io/InstaStalker")
+
+
+def clearall():
+    e_target.delete(0, END)
+    e_username.delete(0, END)
+    e_password.delete(0, END)
+
+
+def process_info_from_GUI():
+    pass
+
+
+font_12_bold = font.Font(size="12", weight="bold")
+font_14_bold = font.Font(size="14", weight="bold")
+font_17_bold = font.Font(size="17", weight="bold")
 
 # First Row ----------------
 # Topic
-l_title = Label(root, text="InstaStalker")
-l_title.grid(row=2, column=2, columnspan=2, rowspan=1)
-l_title['font'] = font_15_bold
+l_title = Label(root)
+l_title.config(text="InstaStalker")
+l_title.config(font=font_17_bold)
+l_title.grid(
+    row=1,
+    column=1,
+    columnspan=4,
+    rowspan=1
+)
 
 # Second Row ----------------
 # Target Info
-l_target = Label(root, text="Target: ")
-l_target.grid(row=4, column=2, columnspan=1, rowspan=1)
-l_target['font'] = font_15_bold
+l_target = Label(root)
+l_target.config(text="Target")
+l_target.config(font=font_12_bold)
+l_target.grid(
+    row=2,
+    column=1,
+    columnspan=1,
+    rowspan=1
+)
 
+e_target = Entry(root)
+e_target.config(width=15)
+e_target.config(borderwidth=7)
+e_target.config(font=font_12_bold)
+e_target.grid(
+    row=2,
+    column=2,
+    columnspan=1,
+    rowspan=1
+)
+
+c_target = Checkbutton(root)
+c_target.config(text='')
+c_target.config(variable=show_hide_target_value)
+c_target.config(onvalue=1)
+c_target.config(offvalue=0)
+c_target.config(command=show_hide_taget)
+c_target.config(font=font_12_bold)
+c_target.grid(
+    row=2,
+    column=3,
+    columnspan=1,
+    rowspan=1
+)
+
+
+# Third Row ----------------
+l_title = Label(root)
+l_title.config(text="Login")
+l_title.config(font=font_12_bold)
+l_title.grid(
+    row=3,
+    column=1,
+    columnspan=4,
+    rowspan=1
+)
+
+
+# Fourth Row ----------------
+l_username = Label(root)
+l_username.config(text="Username: ")
+l_username.config(font=font_12_bold)
+l_username.grid(
+    row=4,
+    column=1,
+    columnspan=1,
+    rowspan=1
+)
+
+e_username = Entry(root, width=15, borderwidth=7)
+e_username.config(width=15)
+e_username.config(borderwidth=17)
+e_username.config(font=font_12_bold)
+e_username.grid(
+    row=4,
+    column=2,
+    columnspan=1,
+    rowspan=1
+)
+
+c_username = Checkbutton(root, text='', variable=show_hide_username_value,
+                         onvalue=1, offvalue=0, command=show_hide_username)
+c_username.grid(row=4, column=3, columnspan=1, rowspan=1)
+c_username['font'] = font_12_bold
+
+# Fifth Row ----------------
+l_password = Label(root, text="Password: ")
+l_password.grid(row=5, column=1, columnspan=1, rowspan=1)
+l_password['font'] = font_12_bold
+
+e_password = Entry(root, width=15, borderwidth=7)
+e_password.grid(row=5, column=2, columnspan=1, rowspan=1)
+e_password['font'] = font_12_bold
+
+c_password = Checkbutton(root, text='', variable=show_hide_password_value,
+                         onvalue=1, offvalue=0, command=show_hide_password)
+c_password.grid(row=5, column=3, columnspan=1, rowspan=1)
+c_password['font'] = font_12_bold
+
+# Sixth Row ----------------
+bsavetofile = Button(root, text="Help", command=open_help, padx=30)
+bsavetofile['font'] = font_14_bold
+bsavetofile.grid(row=6, column=1, columnspan=1)
+
+bsavetofile = Button(root, text="Start",
+                     command=process_info_from_GUI, padx=62)
+bsavetofile['font'] = font_14_bold
+bsavetofile.grid(row=6, column=2, columnspan=1)
+
+bsavetofile = Button(root, text="X", command=clearall)
+bsavetofile['font'] = font_14_bold
+bsavetofile.grid(row=6, column=3, columnspan=1)
 
 root.mainloop()
+
+
+sys.exit()
 
 app = Flask(__name__)
 log = logging.getLogger('werkzeug')
