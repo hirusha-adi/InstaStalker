@@ -29,13 +29,23 @@ except:
     pip_install("flask")
     from flask import Flask, redirect, render_template, send_file, url_for
 
+# All Vairables List for the whole program to function
+# -------------------------------------------------------------------------------------------------------
+target_username = None
+login_username = None
+login_password = None
+
+# -------------------------------------------------------------------------------------------------------
+# Vairbales - Ends Here
+
+
 # GUI - Starts Here
 # -------------------------------------------------------------------------------------------------------
-
 root = Tk()
 root.title("InstaStalker")
 root.resizable(True, True)
 
+# Variables needed for the functioning of the GUI
 show_hide_target_value = IntVar(value=0)
 show_hide_password_value = IntVar(value=0)
 show_hide_username_value = IntVar(value=0)
@@ -155,7 +165,7 @@ l_username.grid(
 
 e_username = Entry(root, width=15, borderwidth=7)
 e_username.config(width=15)
-e_username.config(borderwidth=17)
+e_username.config(borderwidth=7)
 e_username.config(font=font_12_bold)
 e_username.grid(
     row=4,
@@ -164,10 +174,19 @@ e_username.grid(
     rowspan=1
 )
 
-c_username = Checkbutton(root, text='', variable=show_hide_username_value,
-                         onvalue=1, offvalue=0, command=show_hide_username)
-c_username.grid(row=4, column=3, columnspan=1, rowspan=1)
-c_username['font'] = font_12_bold
+c_username = Checkbutton(root)
+c_username.config(text='')
+c_username.config(variable=show_hide_username_value)
+c_username.config(onvalue=1)
+c_username.config(offvalue=0)
+c_username.config(command=show_hide_username)
+c_username.config(font=font_12_bold)
+c_username.grid(
+    row=4,
+    column=3,
+    columnspan=1,
+    rowspan=1
+)
 
 # Fifth Row ----------------
 l_password = Label(root, text="Password: ")
@@ -225,7 +244,7 @@ print("Created the object successfully!")
 # Login
 print("Please wait while logging in!")
 try:
-    # obj.login(username=Database.USERNAME, password=Database.PASSWORD)
+    obj.login(username=Database.USERNAME, password=Database.PASSWORD)
     pass
 except Exception as e:
     print(e)
