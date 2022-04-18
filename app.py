@@ -286,7 +286,6 @@ b_open_help.grid(
 
 root.mainloop()
 
-sys.exit()
 
 app = Flask(__name__)
 log = logging.getLogger('werkzeug')
@@ -310,22 +309,35 @@ print("Created the object successfully!")
 
 # Login
 print("Please wait while logging in!")
-try:
-    obj.login(username=Database.USERNAME, password=Database.PASSWORD)
-    pass
-except Exception as e:
-    print(e)
-    login_username = input("Enter login username> ")
-    login_password = input("Enter login password> ")
+
+
+def login_session():
     try:
-        obj.login(username=login_username, password=login_password)
+        obj.login(username=Database.USERNAME, password=Database.PASSWORD)
     except Exception as e:
         print(e)
-        continue_yn = input("[!!] Login Failed! Do you want to exit [y/n] >")
-        if continue_yn.lower() in ("yes", "y", "yeah", "ye", "true", "t"):
-            pass
-        else:
-            sys.exit("Quitting! Have a nice day!")
+        login_username = input("Enter login username> ")
+        login_password = input("Enter login password> ")
+        try:
+            obj.login(username=login_username, password=login_password)
+        except Exception as e:
+            print(e)
+            continue_yn = input(
+                "[!!] Login Failed! Do you want to exit [y/n] >")
+            if continue_yn.lower() in ("yes", "y", "yeah", "ye", "true", "t"):
+                pass
+            else:
+                sys.exit("Quitting! Have a nice day!")
+
+
+if login_username is None or login_password is None:
+    login_session()
+else:
+    try:
+        obj.login(username=Database.USERNAME, password=Database.PASSWORD)
+    except Exception as e:
+        login_session()
+
 print("Logged in successfully!")
 
 
