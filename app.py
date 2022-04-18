@@ -32,8 +32,8 @@ except:
 # All Vairables List for the whole program to function
 # -------------------------------------------------------------------------------------------------------
 target_username = None
-login_username = None
-login_password = None
+login_username = Database.USERNAME  # defaults to None if unable to get value
+login_password = Database.PASSWORD  # defaults to None if unable to get value
 
 # -------------------------------------------------------------------------------------------------------
 # Vairbales - Ends Here
@@ -46,9 +46,17 @@ root.title("InstaStalker")
 root.resizable(True, True)
 
 # Variables needed for the functioning of the GUI
-show_hide_target_value = IntVar(value=0)
-show_hide_password_value = IntVar(value=0)
-show_hide_username_value = IntVar(value=0)
+login_username_gui = StringVar()
+login_password_gui = StringVar()
+show_hide_target_value = IntVar()
+show_hide_username_value = IntVar()
+show_hide_password_value = IntVar()
+
+# setting up the default values for the variables
+if not(login_username is None):  # Username
+    login_username_gui.set(login_username)
+if not(login_password is None):  # Password
+    login_password_gui.set(login_password)
 
 
 def show_hide_taget():
@@ -83,7 +91,10 @@ def clearall():
 
 
 def process_info_from_GUI():
-    pass
+    global target_username, login_username, login_password
+    # .get() --> str, if empty, len() == 0
+    target_username = e_target.get()
+    print(target_username, type(target_username), len(target_username))
 
 
 font_12_bold = font.Font(size="12", weight="bold")
@@ -163,9 +174,10 @@ l_username.grid(
     rowspan=1
 )
 
-e_username = Entry(root, width=15, borderwidth=7)
+e_username = Entry(root)
 e_username.config(width=15)
 e_username.config(borderwidth=7)
+e_username.config(textvariable=login_username_gui)
 e_username.config(font=font_12_bold)
 e_username.grid(
     row=4,
@@ -193,7 +205,8 @@ l_password = Label(root, text="Password: ")
 l_password.grid(row=5, column=1, columnspan=1, rowspan=1)
 l_password['font'] = font_12_bold
 
-e_password = Entry(root, width=15, borderwidth=7)
+e_password = Entry(root, width=15, borderwidth=7,
+                   textvariable=login_password_gui)
 e_password.grid(row=5, column=2, columnspan=1, rowspan=1)
 e_password['font'] = font_12_bold
 
