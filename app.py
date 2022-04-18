@@ -93,8 +93,18 @@ def clearall():
 def process_info_from_GUI():
     global target_username, login_username, login_password
     # .get() --> str, if empty, len() == 0
-    target_username = e_target.get()
-    print(target_username, type(target_username), len(target_username))
+    gui_target_username = e_target.get()
+    gui_login_username = e_username.get()
+    gui_login_password = e_password.get()
+
+    if not(isinstance(gui_target_username, str)) and ((len(gui_target_username) == 0)):
+        target_username = gui_target_username
+
+    if not(isinstance(gui_login_username, str)) and ((len(gui_login_username) == 0)):
+        login_username = gui_login_username
+
+    if not(isinstance(gui_login_password, str)) and ((len(gui_login_password) == 0)):
+        login_password = gui_login_password
 
 
 font_12_bold = font.Font(size="12", weight="bold")
