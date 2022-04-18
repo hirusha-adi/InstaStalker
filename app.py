@@ -14,7 +14,8 @@ from utils import Database
 
 
 def pip_install(name: str):
-    os.system(f'{"pip" if os.name == "nt" else "pip3"} install -U {name}')
+    os.system(
+        f'{"py" if os.name == "nt" else "python3"} -m pip install -U {name}')
 
 
 try:
