@@ -106,6 +106,8 @@ def process_info_from_GUI():
     if not(isinstance(gui_login_password, str)) and ((len(gui_login_password) == 0)):
         login_password = gui_login_password
 
+    root.destroy()
+
 
 font_12_bold = font.Font(size="12", weight="bold")
 font_14_bold = font.Font(size="14", weight="bold")
@@ -263,7 +265,7 @@ b_open_help.grid(
 
 b_start_processing = Button(root)
 b_start_processing.configure(text="Start")
-b_start_processing.configure(command=open_help)
+b_start_processing.configure(command=process_info_from_GUI)
 b_start_processing.configure(padx=62)
 b_start_processing.configure(font=font_14_bold)
 b_start_processing.grid(
