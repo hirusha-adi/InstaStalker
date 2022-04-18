@@ -61,23 +61,23 @@ if not(login_password is None):  # Password
 
 def show_hide_taget():
     if show_hide_target_value.get() == 1:
-        e_target.config(show='')
+        e_target.configure(show='')
     else:
-        e_target.config(show='*')
+        e_target.configure(show='*')
 
 
 def show_hide_username():
     if show_hide_username_value.get() == 1:
-        e_username.config(show='')
+        e_username.configure(show='')
     else:
-        e_username.config(show='*')
+        e_username.configure(show='*')
 
 
 def show_hide_password():
     if show_hide_password_value.get() == 1:
-        e_password.config(show='')
+        e_password.configure(show='')
     else:
-        e_password.config(show='*')
+        e_password.configure(show='*')
 
 
 def open_help():
@@ -114,8 +114,8 @@ font_17_bold = font.Font(size="17", weight="bold")
 # First Row ----------------
 # Topic
 l_title = Label(root)
-l_title.config(text="InstaStalker")
-l_title.config(font=font_17_bold)
+l_title.configure(text="InstaStalker")
+l_title.configure(font=font_17_bold)
 l_title.grid(
     row=1,
     column=1,
@@ -126,8 +126,8 @@ l_title.grid(
 # Second Row ----------------
 # Target Info
 l_target = Label(root)
-l_target.config(text="Target")
-l_target.config(font=font_12_bold)
+l_target.configure(text="Target")
+l_target.configure(font=font_12_bold)
 l_target.grid(
     row=2,
     column=1,
@@ -136,9 +136,9 @@ l_target.grid(
 )
 
 e_target = Entry(root)
-e_target.config(width=15)
-e_target.config(borderwidth=7)
-e_target.config(font=font_12_bold)
+e_target.configure(width=15)
+e_target.configure(borderwidth=7)
+e_target.configure(font=font_12_bold)
 e_target.grid(
     row=2,
     column=2,
@@ -147,12 +147,12 @@ e_target.grid(
 )
 
 c_target = Checkbutton(root)
-c_target.config(text='')
-c_target.config(variable=show_hide_target_value)
-c_target.config(onvalue=1)
-c_target.config(offvalue=0)
-c_target.config(command=show_hide_taget)
-c_target.config(font=font_12_bold)
+c_target.configure(text='')
+c_target.configure(variable=show_hide_target_value)
+c_target.configure(onvalue=1)
+c_target.configure(offvalue=0)
+c_target.configure(command=show_hide_taget)
+c_target.configure(font=font_12_bold)
 c_target.grid(
     row=2,
     column=3,
@@ -163,8 +163,8 @@ c_target.grid(
 
 # Third Row ----------------
 l_title = Label(root)
-l_title.config(text="Login")
-l_title.config(font=font_12_bold)
+l_title.configure(text="Login")
+l_title.configure(font=font_12_bold)
 l_title.grid(
     row=3,
     column=1,
@@ -175,8 +175,8 @@ l_title.grid(
 
 # Fourth Row ----------------
 l_username = Label(root)
-l_username.config(text="Username: ")
-l_username.config(font=font_12_bold)
+l_username.configure(text="Username: ")
+l_username.configure(font=font_12_bold)
 l_username.grid(
     row=4,
     column=1,
@@ -185,10 +185,10 @@ l_username.grid(
 )
 
 e_username = Entry(root)
-e_username.config(width=15)
-e_username.config(borderwidth=7)
-e_username.config(textvariable=login_username_gui)
-e_username.config(font=font_12_bold)
+e_username.configure(width=15)
+e_username.configure(borderwidth=7)
+e_username.configure(textvariable=login_username_gui)
+e_username.configure(font=font_12_bold)
 e_username.grid(
     row=4,
     column=2,
@@ -197,12 +197,12 @@ e_username.grid(
 )
 
 c_username = Checkbutton(root)
-c_username.config(text='')
-c_username.config(variable=show_hide_username_value)
-c_username.config(onvalue=1)
-c_username.config(offvalue=0)
-c_username.config(command=show_hide_username)
-c_username.config(font=font_12_bold)
+c_username.configure(text='')
+c_username.configure(variable=show_hide_username_value)
+c_username.configure(onvalue=1)
+c_username.configure(offvalue=0)
+c_username.configure(command=show_hide_username)
+c_username.configure(font=font_12_bold)
 c_username.grid(
     row=4,
     column=3,
@@ -211,36 +211,80 @@ c_username.grid(
 )
 
 # Fifth Row ----------------
-l_password = Label(root, text="Password: ")
-l_password.grid(row=5, column=1, columnspan=1, rowspan=1)
-l_password['font'] = font_12_bold
+l_password = Label(root)
+l_password.configure(text="Password: ")
+l_password.configure(font=font_12_bold)
+l_password.grid(
+    row=5,
+    column=1,
+    columnspan=1,
+    rowspan=1
+)
 
-e_password = Entry(root, width=15, borderwidth=7,
+e_password = Entry(root, borderwidth=7,
                    textvariable=login_password_gui)
-e_password.grid(row=5, column=2, columnspan=1, rowspan=1)
-e_password['font'] = font_12_bold
+e_password.configure(width=15)
+e_password.configure(borderwidth=7)
+e_password.configure(textvariable=login_password_gui)
+e_password.configure(font=font_12_bold)
+e_password.grid(
+    row=5,
+    column=2,
+    columnspan=1,
+    rowspan=1
+)
 
-c_password = Checkbutton(root, text='', variable=show_hide_password_value,
-                         onvalue=1, offvalue=0, command=show_hide_password)
-c_password.grid(row=5, column=3, columnspan=1, rowspan=1)
-c_password['font'] = font_12_bold
+c_password = Checkbutton(root)
+c_password.configure(text='')
+c_password.configure(variable=show_hide_password_value)
+c_password.configure(onvalue=1)
+c_password.configure(offvalue=0)
+c_password.configure(command=show_hide_password)
+c_password.configure(font=font_12_bold)
+c_password.grid(
+    row=5,
+    column=3,
+    columnspan=1,
+    rowspan=1
+)
 
 # Sixth Row ----------------
-bsavetofile = Button(root, text="Help", command=open_help, padx=30)
-bsavetofile['font'] = font_14_bold
-bsavetofile.grid(row=6, column=1, columnspan=1)
+b_open_help = Button(root)
+b_open_help.configure(text='Help')
+b_open_help.configure(command=open_help)
+b_open_help.configure(padx=30)
+b_open_help.configure(font=font_14_bold)
+b_open_help.grid(
+    row=6,
+    column=1,
+    columnspan=1,
+    rowspan=1
+)
 
-bsavetofile = Button(root, text="Start",
-                     command=process_info_from_GUI, padx=62)
-bsavetofile['font'] = font_14_bold
-bsavetofile.grid(row=6, column=2, columnspan=1)
+b_start_processing = Button(root)
+b_start_processing.configure(text="Start")
+b_start_processing.configure(command=open_help)
+b_start_processing.configure(padx=62)
+b_start_processing.configure(font=font_14_bold)
+b_start_processing.grid(
+    row=6,
+    column=2,
+    columnspan=1,
+    rowspan=1
+)
 
-bsavetofile = Button(root, text="X", command=clearall)
-bsavetofile['font'] = font_14_bold
-bsavetofile.grid(row=6, column=3, columnspan=1)
+b_open_help = Button(root)
+b_open_help.configure(text="X")
+b_open_help.configure(command=clearall)
+b_open_help.configure(font=font_14_bold)
+b_open_help.grid(
+    row=6,
+    column=3,
+    columnspan=1,
+    rowspan=1
+)
 
 root.mainloop()
-
 
 sys.exit()
 
