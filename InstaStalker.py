@@ -1,6 +1,7 @@
 from manager import InstaProfile, Database
 import os
 import sys
+import instaloader
 
 CLEAR = 'clear' if os.name == 'posix' else 'cls'
 
@@ -511,4 +512,11 @@ if __name__ == "__main__":
 
     clear_screen()
     show_logo()
-    ENTIRE_PROGRAM()
+    try:
+        ENTIRE_PROGRAM()
+    except instaloader.exceptions.LoginRequiredException:
+        print("[!!] Login Required")
+        sys.exit("Quitting! Have a nice day!")
+    except Exception as e:
+        print(e)
+        sys.exit("Quitting! Have a nice day!")
