@@ -2,18 +2,15 @@ import texts
 import json
 import os
 import sys
-
-
-def pip_install(name: str):
-    os.system(f'{"pip" if os.name == "nt" else "pip3"} install -U {name}')
-
+from utils import pip_install
 
 try:
     from instaloader import Instaloader, Profile
 except:
     pip_install("instaloader")
     from instaloader import Instaloader, Profile
-
+finally:
+    from instaloader import Instaloader, Profile
 
 class InstaProfile:
     def __init__(self, target: str = None):

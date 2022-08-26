@@ -2,6 +2,10 @@ import json
 import os
 import sys
 
+def pip_install(name: str):
+    os.system(
+        f'{"py" if os.name == "nt" else "python3"} -m pip install -U {name}')
+
 
 class Database:
     config_filename = os.path.join(os.getcwd(), "config.json")
