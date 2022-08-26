@@ -1,8 +1,15 @@
-# 1.2 - Web
+# Changelog
+
+## v1.3 - Web
+
+- improved code
+- fixed a major bug
+
+## 1.2 - Web
 
 - Display the error if any without silently handling it making it easy to debug and giving more information to the end user
 
-# v1.1 - Web
+## v1.1 - Web
 
 - Save tagged, uploaded and igtv posts
 - Save account info
