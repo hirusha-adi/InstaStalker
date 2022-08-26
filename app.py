@@ -461,6 +461,15 @@ profile_followees_list_file_json = os.path.join(
     current_session_folder_absolute,
     "followees.json"
 )
+
+try:
+    os.makedirs(uploaded_posts_folder_path)
+    os.makedirs(tagged_posts_folder_path)
+    os.makedirs(igtv_posts_folder_path)
+    print("[+] Created required folders")
+except:
+    pass
+
 print("[+] Completed loading everything!")
 
 texts.clear()
