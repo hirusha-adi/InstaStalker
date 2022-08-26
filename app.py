@@ -11,11 +11,8 @@ from tkinter import *
 import texts
 from manager import InstaProfile
 from utils import Database
+from utils import pip_install
 
-
-def pip_install(name: str):
-    os.system(
-        f'{"py" if os.name == "nt" else "python3"} -m pip install -U {name}')
 
 
 try:
@@ -97,14 +94,16 @@ def process_info_from_GUI():
     gui_target_username = e_target.get()
     gui_login_username = e_username.get()
     gui_login_password = e_password.get()
-
-    if not(isinstance(gui_target_username, str)) and ((len(gui_target_username) == 0)):
+    
+    if not(not(isinstance(gui_target_username, str)) and ((len(gui_target_username) == 0))):
         target_username = gui_target_username
+    else:
+        target_username = input("Enter target username> ")
 
-    if not(isinstance(gui_login_username, str)) and ((len(gui_login_username) == 0)):
+    if not(not(isinstance(gui_login_username, str)) and ((len(gui_login_username) == 0))) :
         login_username = gui_login_username
 
-    if not(isinstance(gui_login_password, str)) and ((len(gui_login_password) == 0)):
+    if not(not(isinstance(gui_login_password, str)) and ((len(gui_login_password) == 0))):
         login_password = gui_login_password
 
     root.destroy()
@@ -294,11 +293,8 @@ app = Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-try:
-    target_username = "hirushaadi"
-    # target_username = sys.argv[1]
-except IndexError:
-    target_username = input("Enter target username> ")
+# if len(target_username) < 2:
+    # target_username = input("Enter target username> ")
 
 print(texts.Loading)
 
